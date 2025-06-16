@@ -1,9 +1,9 @@
-package com.smartbudgetbounty.service.Sandbox2;
+package com.smartbudgetbounty.service.sandbox2;
 
 import java.util.List;
 
-import com.smartbudgetbounty.dto.Sandbox2.Sandbox2PersonDtoRequest;
-import com.smartbudgetbounty.dto.Sandbox2.Sandbox2PersonDtoResponse;
+import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoRequest;
+import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoResponse;
 
 public interface Sandbox2PersonService {
     List<Sandbox2PersonDtoResponse> getAll();

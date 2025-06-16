@@ -1,4 +1,4 @@
-package com.smartbudgetbounty.service.Sandbox1;
+package com.smartbudgetbounty.service.sandbox1;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoRequest;
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoResponse;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoRequest;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoResponse;
 import com.smartbudgetbounty.entity.Sandbox1_NoRelationship;
 import com.smartbudgetbounty.repository.Sandbox1NoRelationshipRepository;
 import com.smartbudgetbounty.util.LogUtil;

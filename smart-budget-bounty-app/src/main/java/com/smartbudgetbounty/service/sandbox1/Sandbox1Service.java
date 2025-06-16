@@ -1,9 +1,9 @@
-package com.smartbudgetbounty.service.Sandbox1;
+package com.smartbudgetbounty.service.sandbox1;
 
 import java.util.List;
 
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoRequest;
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoResponse;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoRequest;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoResponse;
 
 public interface Sandbox1Service { // Naming convention, is Sandbox1Service for interface and Sandbox1ServiceImpl for class definition. (ISandbox1Service naming is legacy)
 	List<Sandbox1DtoResponse> getAll();

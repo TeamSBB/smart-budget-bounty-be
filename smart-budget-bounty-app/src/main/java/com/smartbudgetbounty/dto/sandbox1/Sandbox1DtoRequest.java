@@ -1,4 +1,4 @@
-package com.smartbudgetbounty.dto.Sandbox1;
+package com.smartbudgetbounty.dto.sandbox1;
 
 
 import jakarta.validation.constraints.NotBlank;
