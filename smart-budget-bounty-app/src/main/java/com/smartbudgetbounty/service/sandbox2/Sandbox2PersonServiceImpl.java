@@ -1,4 +1,4 @@
-package com.smartbudgetbounty.service.Sandbox2;
+package com.smartbudgetbounty.service.sandbox2;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.smartbudgetbounty.dto.Sandbox2.Sandbox2PersonDtoRequest;
-import com.smartbudgetbounty.dto.Sandbox2.Sandbox2PersonDtoResponse;
+import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoRequest;
+import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoResponse;
 import com.smartbudgetbounty.entity.Sandbox2_OneToOne_Passport;
 import com.smartbudgetbounty.entity.Sandbox2_OneToOne_Person;
 import com.smartbudgetbounty.repository.Sandbox2PersonRepository;

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoRequest;
-import com.smartbudgetbounty.dto.Sandbox1.Sandbox1DtoResponse;
-import com.smartbudgetbounty.service.Sandbox1.Sandbox1Service;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoRequest;
+import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoResponse;
+import com.smartbudgetbounty.service.sandbox1.Sandbox1Service;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.validation.Valid;

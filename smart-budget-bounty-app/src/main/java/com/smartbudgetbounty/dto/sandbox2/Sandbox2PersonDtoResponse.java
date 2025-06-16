@@ -1,4 +1,4 @@
-package com.smartbudgetbounty.dto.Sandbox2;
+package com.smartbudgetbounty.dto.sandbox2;
 
 public class Sandbox2PersonDtoResponse {
     private Long id;

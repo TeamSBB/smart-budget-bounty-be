@@ -1,0 +1,89 @@
+package com.smartbudgetbounty.controller;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.smartbudgetbounty.dto.auth.LoginDtoRequest;
+import com.smartbudgetbounty.dto.auth.LoginDtoResponse;
+import com.smartbudgetbounty.dto.auth.RegisterDtoRequest;
+import com.smartbudgetbounty.dto.auth.RegisterDtoResponse;
+import com.smartbudgetbounty.entity.ApiResponseError;
+import com.smartbudgetbounty.entity.User;
+import com.smartbudgetbounty.repository.UserRepository;
+import com.smartbudgetbounty.service.jwt.JwtService;
+import com.smartbudgetbounty.util.LogUtil;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+    private static final Logger logger = LoggerFactory.getLogger(Sandbox1Controller.class);
+    
+    @Autowired
+    AuthenticationManager authenticationManager;
+    
+    @Autowired
+    UserRepository userRepository;
+    
+    @Autowired
+    PasswordEncoder encoder;
+    
+    @Autowired
+    JwtService jwtService;
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDtoRequest loginUserDtoRequest) {
+        LogUtil.logInfoController(logger, "API called: GET /api/auth/login");
+        
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                		loginUserDtoRequest.getUsername(),
+                		loginUserDtoRequest.getPassword()
+                )
+        );
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();        
+        String token = jwtService.generateToken(userDetails.getUsername());
+        
+        return ResponseEntity.ok(new LoginDtoResponse(token, "Token generated for login"));       
+    }
+    
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterDtoRequest registerUserDto) {
+        LogUtil.logInfoController(logger, "API called: GET /api/auth/register");
+        
+        if (userRepository.existsByUsername(registerUserDto.getUsername())) {
+        	 ApiResponseError apiError = new ApiResponseError(
+        	            HttpStatus.CONFLICT,
+        	            "Username is already taken!", // A general message for validation errors
+        	            "/api/auth/register"
+        	        );
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+        }
+        
+        // Create new user's account
+        User newUser = new User(
+                null,
+                registerUserDto.getUsername(),
+                encoder.encode(registerUserDto.getPassword())
+        );
+        userRepository.save(newUser);
+        
+        return ResponseEntity.ok(new RegisterDtoResponse("Created user successfully.", newUser.getUsername()));
+    }
+    
+    // Note
+    // 1. No logout, as JWT is stateless.
+    // 2. Future enhancement, refresh Token.
+}
