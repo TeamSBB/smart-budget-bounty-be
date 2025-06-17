@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoRequest;
 import com.smartbudgetbounty.dto.sandbox2.Sandbox2PersonDtoResponse;
+import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.service.sandbox2.Sandbox2PersonService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -37,41 +38,61 @@ public class Sandbox2Controller {
     public ResponseEntity<?> getAll() {
         LogUtil.logInfoController(logger, "API called: GET /api/sandbox2");
         List<Sandbox2PersonDtoResponse> result = service.getAll();
-        return ResponseEntity.ok(result);
+
+        return ResponseEntity.ok(new ApiResponse<>(
+    		result,
+            "getAll successfully."
+        ));
     }
  
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         LogUtil.logInfoController(logger, "API called: GET /api/sandbox2/{}", id);
         Sandbox2PersonDtoResponse result = service.getById(id);
-        return ResponseEntity.ok(result);
+
+        return ResponseEntity.ok(new ApiResponse<>(
+    		result,
+            "getById successfully."
+        ));
     }
  
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Sandbox2PersonDtoRequest request) {
         LogUtil.logInfoController(logger, "API called: POST /api/sandbox2");
         Sandbox2PersonDtoResponse result = service.create(request);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(new ApiResponse<>(
+    		result,
+            "create successfully."
+        ));
     }
  
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Sandbox2PersonDtoRequest request) {
+    public ResponseEntity<?> updateById(@PathVariable Long id, @Valid @RequestBody Sandbox2PersonDtoRequest request) {
         LogUtil.logInfoController(logger, "API called: PUT /api/sandbox2/{}", id);
         Sandbox2PersonDtoResponse result = service.updateById(id, request);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(new ApiResponse<>(
+    		result,
+            "updateById successfully."
+        ));
     }
  
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         LogUtil.logInfoController(logger, "API called: DELETE /api/sandbox2/{}", id);
         service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse<>(
+    		null,
+            "deleteById successfully."
+        ));
     }
  
     @GetMapping("/passport/{passportNumber}")
     public ResponseEntity<?> getByPassportNumber(@PathVariable String passportNumber) {
         LogUtil.logInfoController(logger, "API called: GET /api/sandbox2/passport/{}", passportNumber);
         List<Sandbox2PersonDtoResponse> result = service.getByPassportNumber(passportNumber);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(new ApiResponse<>(
+    		result,
+            "getByPassportNumber successfully."
+        ));
     }
 }

@@ -3,16 +3,18 @@ package com.smartbudgetbounty.util;
 import org.slf4j.Logger;
 import org.slf4j.MDC;
 
+import com.smartbudgetbounty.filter.LoggingFilter;
+
 public class LogUtil {
     // Get requestId from MDC or fallback
     public static String getRequestId() {
-        String id = MDC.get("X-Request-Id");
+        String id = MDC.get(LoggingFilter.REQUEST_ID_MDC_KEY);
         return id != null ? id : "N/A";
     }
  
     // Get userId from MDC or fallback
     public static String getUserId() {
-        String id = MDC.get("User-Id");
+        String id = MDC.get(LoggingFilter.USER_ID_MDC_KEY);
         return id != null ? id : "N/A";
     }
     
@@ -46,6 +48,14 @@ public class LogUtil {
         String userId = getUserId();
  
         logger.info("[requestId={}, userId={}] Controller - [INFO] - " + message, getRequestId(), getUserId(), args);
+    }
+    
+    // For Controller - High level Log
+    public static void logErrorController(Logger logger, String message, Object... args) {
+        String requestId = getRequestId();
+        String userId = getUserId();
+ 
+        logger.error("[requestId={}, userId={}] Controller - [INFO] - " + message, getRequestId(), getUserId(), args);
     }
     
     // Log start message with context

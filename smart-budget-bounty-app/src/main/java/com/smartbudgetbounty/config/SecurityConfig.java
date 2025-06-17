@@ -27,9 +27,14 @@ public class SecurityConfig {
 	@Autowired
     AuthEntryPointJwt unauthorizedHandler;
 	
+//    private final LoggingFilter loggingFilter;
 
 	@Value("${security.permitted-paths}")
 	private String[] permittedPaths;
+	
+//    public SecurityConfig(LoggingFilter loggingFilter) {
+//        this.loggingFilter = loggingFilter;
+//    }
 	
     @Bean
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {
@@ -63,6 +68,10 @@ public class SecurityConfig {
                 );
         // Add the JWT Token filter before the UsernamePasswordAuthenticationFilter
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
+//        http.addFilterAfter(loggingFilter, UsernamePasswordAuthenticationFilter.class);
+        
         return http.build();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoRequest;
 import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoResponse;
+import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.service.sandbox1.Sandbox1Service;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -33,33 +34,52 @@ public class Sandbox1Controller {
     @GetMapping
     public ResponseEntity<?> getAll() {
         LogUtil.logInfoController(logger, "API called: GET /api/sandbox1");
-        return ResponseEntity.ok(sandbox1Service.getAll());
+       
+        return ResponseEntity.ok(new ApiResponse<>(
+    		sandbox1Service.getAll(),
+            "getAll successfully."
+        ));
     }
  
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         LogUtil.logInfoController(logger, "API called: GET /api/sandbox1/{}", id);
-        return ResponseEntity.ok(sandbox1Service.getById(id));
+
+        return ResponseEntity.ok(new ApiResponse<>(
+    		sandbox1Service.getById(id),
+            "getById successfully."
+        ));
     }
  
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Sandbox1DtoRequest request) {
         LogUtil.logInfoController(logger, "API called: POST /api/sandbox1");
-        Sandbox1DtoResponse response = sandbox1Service.create(request);
-        return ResponseEntity.ok(response);
+
+        Sandbox1DtoResponse dtoResponse = sandbox1Service.create(request);
+        return ResponseEntity.ok(new ApiResponse<>(
+    		dtoResponse,
+            "create successfully."
+        ));
     }
  
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Sandbox1DtoRequest request) {
+    public ResponseEntity<?> updateById(@PathVariable Long id, @Valid @RequestBody Sandbox1DtoRequest request) {
         LogUtil.logInfoController(logger, "API called: PUT /api/sandbox1/{}", id);
         Sandbox1DtoResponse response = sandbox1Service.updateById(id, request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new ApiResponse<>(
+    		response,
+            "updateById successfully."
+        ));
     }
  
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         LogUtil.logInfoController(logger, "API called: DELETE /api/sandbox1/{}", id);
         sandbox1Service.deleteById(id);
-        return ResponseEntity.noContent().build();
+        
+        return ResponseEntity.ok(new ApiResponse<>(
+    		null,
+            "deleteById successfully."
+        ));
     }
 }
