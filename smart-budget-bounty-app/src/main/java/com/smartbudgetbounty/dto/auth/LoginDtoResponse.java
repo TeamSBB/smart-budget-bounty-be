@@ -2,11 +2,9 @@ package com.smartbudgetbounty.dto.auth;
 
 public class LoginDtoResponse {    
 	private String token;
-	private String message; 
 	
-	public LoginDtoResponse(String token, String message) {
+	public LoginDtoResponse(String token) {
         this.token = token;
-        this.message = message;
     }
  
     public String getToken() {
@@ -15,13 +13,5 @@ public class LoginDtoResponse {
  
     public void setToken(String token) {
         this.token = token;
-    }
- 
-    public String getMessage() {
-        return message;
-    }
- 
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

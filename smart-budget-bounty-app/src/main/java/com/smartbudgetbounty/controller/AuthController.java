@@ -19,7 +19,7 @@ import com.smartbudgetbounty.dto.auth.LoginDtoRequest;
 import com.smartbudgetbounty.dto.auth.LoginDtoResponse;
 import com.smartbudgetbounty.dto.auth.RegisterDtoRequest;
 import com.smartbudgetbounty.dto.auth.RegisterDtoResponse;
-import com.smartbudgetbounty.entity.ApiResponseError;
+import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.repository.UserRepository;
 import com.smartbudgetbounty.service.jwt.JwtService;
@@ -46,33 +46,43 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDtoRequest loginUserDtoRequest) {
         LogUtil.logInfoController(logger, "API called: GET /api/auth/login");
         
+        // Check username and password
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                		loginUserDtoRequest.getUsername(),
-                		loginUserDtoRequest.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(
+        		loginUserDtoRequest.getUsername(),
+        		loginUserDtoRequest.getPassword()
+            )
         );
+        
+        // If success, generate jwt token
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();        
         String token = jwtService.generateToken(userDetails.getUsername());
         
-        return ResponseEntity.ok(new LoginDtoResponse(token, "Token generated for login"));       
+
+        // Format DTO and return response.
+        LoginDtoResponse loginResponseDto = new LoginDtoResponse(token);
+        
+        return ResponseEntity.ok(new ApiResponse<>(
+    		loginResponseDto,
+            "Token generated for login"
+        ));    
     }
     
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterDtoRequest registerUserDto) {
         LogUtil.logInfoController(logger, "API called: GET /api/auth/register");
         
+        // User already exist, cannot register user.
         if (userRepository.existsByUsername(registerUserDto.getUsername())) {
-        	 ApiResponseError apiError = new ApiResponseError(
-        	            HttpStatus.CONFLICT,
-        	            "Username is already taken!", // A general message for validation errors
-        	            "/api/auth/register"
-        	        );
+             LogUtil.logErrorController(logger, "Username is already taken!");
 
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(
+                 null,
+                 "Username is already taken!"
+             ));
         }
         
-        // Create new user's account
+        // User don't exist, register user.
         User newUser = new User(
                 null,
                 registerUserDto.getUsername(),
@@ -80,7 +90,13 @@ public class AuthController {
         );
         userRepository.save(newUser);
         
-        return ResponseEntity.ok(new RegisterDtoResponse("Created user successfully.", newUser.getUsername()));
+        // Format DTO and return response.
+        RegisterDtoResponse registerResponseDto = new RegisterDtoResponse(newUser.getUsername());
+        
+        return ResponseEntity.ok(new ApiResponse<>(
+    		registerResponseDto,
+            "Created user successfully"
+        ));
     }
     
     // Note
