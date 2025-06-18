@@ -64,7 +64,7 @@ public class AuthController {
         
         return ResponseEntity.ok(new ApiResponse<>(
     		loginResponseDto,
-            "Token generated for login"
+            "Token generated for login."
         ));    
     }
     
@@ -74,11 +74,11 @@ public class AuthController {
         
         // User already exist, cannot register user.
         if (userRepository.existsByUsername(registerUserDto.getUsername())) {
-             LogUtil.logErrorController(logger, "Username is already taken!");
+             LogUtil.logErrorController(logger, "Email is already taken.");
 
              return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(
                  null,
-                 "Username is already taken!"
+                 "Email is already taken."
              ));
         }
         
@@ -100,7 +100,7 @@ public class AuthController {
         
         return ResponseEntity.ok(new ApiResponse<>(
     		registerResponseDto,
-            "Created user successfully"
+            "Created user successfully."
         ));
     }
     
