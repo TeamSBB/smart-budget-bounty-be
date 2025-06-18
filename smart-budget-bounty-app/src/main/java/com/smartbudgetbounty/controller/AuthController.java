@@ -25,6 +25,8 @@ import com.smartbudgetbounty.repository.UserRepository;
 import com.smartbudgetbounty.service.jwt.JwtService;
 import com.smartbudgetbounty.util.LogUtil;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -43,7 +45,7 @@ public class AuthController {
     JwtService jwtService;
     
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginDtoRequest loginUserDtoRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDtoRequest loginUserDtoRequest) {
         LogUtil.logInfoController(logger, "API called: GET /api/auth/login");
         
         // Check email and password
@@ -69,11 +71,11 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterDtoRequest registerUserDto) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterDtoRequest registerUserDto) {
         LogUtil.logInfoController(logger, "API called: GET /api/auth/register");
         
         // User already exist, cannot register user.
-        if (userRepository.existsByUsername(registerUserDto.getUsername())) {
+        if (userRepository.existsByEmail(registerUserDto.getEmail())) {
              LogUtil.logErrorController(logger, "Email is already taken.");
 
              return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(
@@ -81,6 +83,14 @@ public class AuthController {
                  "Email is already taken."
              ));
         }
+        if (userRepository.existsByUsername(registerUserDto.getUsername())) {
+            LogUtil.logErrorController(logger, "Username is already taken.");
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse<>(
+                null,
+                "Username is already taken."
+            ));
+       }
         
         // User don't exist, register user.
         User newUser = new User(
