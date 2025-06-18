@@ -34,18 +34,37 @@ public class JwtService {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
     
+//    // Generate JWT token
+//    public String generateToken(String username) {
+//        return Jwts.builder()
+//                .setSubject(username)
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//                .signWith(key, SignatureAlgorithm.HS512)
+//                .compact();
+//    }
+    
     // Generate JWT token
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
     
-    // Get username from JWT token
-    public String getUsernameFromToken(String token) {
+//    // Get username from JWT token
+//    public String getUsernameFromToken(String token) {
+//        return Jwts.parserBuilder()
+//                .setSigningKey(key).build()
+//                .parseClaimsJws(token)
+//                .getBody()
+//                .getSubject();
+//    }
+//    
+    // Get email from JWT token
+    public String getEmailFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)

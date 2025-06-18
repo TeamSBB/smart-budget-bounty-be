@@ -46,10 +46,10 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDtoRequest loginUserDtoRequest) {
         LogUtil.logInfoController(logger, "API called: GET /api/auth/login");
         
-        // Check username and password
+        // Check email and password
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-        		loginUserDtoRequest.getUsername(),
+        		loginUserDtoRequest.getEmail(),
         		loginUserDtoRequest.getPassword()
             )
         );
@@ -86,7 +86,12 @@ public class AuthController {
         User newUser = new User(
                 null,
                 registerUserDto.getUsername(),
-                encoder.encode(registerUserDto.getPassword())
+                encoder.encode(registerUserDto.getPassword()),
+        		registerUserDto.getAddress(),
+        		registerUserDto.getContactNumber(),
+        		registerUserDto.getEmail(),
+        		registerUserDto.getFirstName(),
+        		registerUserDto.getLastName()
         );
         userRepository.save(newUser);
         
