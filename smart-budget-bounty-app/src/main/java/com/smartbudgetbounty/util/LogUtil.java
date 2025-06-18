@@ -20,41 +20,26 @@ public class LogUtil {
     
     // For Global Exception - High level Log
     public static void logInfoGlobal(Logger logger, String message, Object... args) {
-        String requestId = getRequestId();
-        String userId = getUserId();
- 
         logger.info("[requestId={}, userId={}] Global Exception - [INFO] - " + message, getRequestId(), getUserId(), args);
     }
     
     // For Global Exception - High level Log
     public static void logErrorGlobal(Logger logger, String message, Object... args) {
-        String requestId = getRequestId();
-        String userId = getUserId();
- 
         logger.error("[requestId={}, userId={}] Global Exception - [ERROR] - " + message, getRequestId(), getUserId(), args);
     }
     
     // For Global Exception - High level Log
     public static void logWarnGlobal(Logger logger, String message, Object... args) {
-        String requestId = getRequestId();
-        String userId = getUserId();
- 
         logger.warn("[requestId={}, userId={}] Global Exception - [WARN] - " + message, getRequestId(), getUserId(), args);
     }
     
     // For Controller - High level Log
     public static void logInfoController(Logger logger, String message, Object... args) {
-        String requestId = getRequestId();
-        String userId = getUserId();
- 
         logger.info("[requestId={}, userId={}] Controller - [INFO] - " + message, getRequestId(), getUserId(), args);
     }
     
     // For Controller - High level Log
     public static void logErrorController(Logger logger, String message, Object... args) {
-        String requestId = getRequestId();
-        String userId = getUserId();
- 
         logger.error("[requestId={}, userId={}] Controller - [INFO] - " + message, getRequestId(), getUserId(), args);
     }
     

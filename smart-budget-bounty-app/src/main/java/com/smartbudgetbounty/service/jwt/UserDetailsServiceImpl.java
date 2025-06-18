@@ -15,15 +15,18 @@ public class UserDetailsServiceImpl  implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.smartbudgetbounty.entity.User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        com.smartbudgetbounty.entity.User user = userRepository.findByUsername(username);
+        com.smartbudgetbounty.entity.User user = userRepository.findByEmail(email);
         
         if (user == null) {
-            throw new UsernameNotFoundException("User Not Found with username: " + username);
+//            throw new UsernameNotFoundException("User Not Found with username: " + username);
+            throw new UsernameNotFoundException("User Not Found with email: " + email);
         }
         
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+//                user.getUsername(),
+        		user.getEmail(),
                 user.getPassword(),
                 Collections.emptyList()
         );

@@ -1,5 +1,6 @@
 package com.smartbudgetbounty.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,31 +11,34 @@ import jakarta.persistence.Table;
 @Table(name = "\"user\"")  // Use escaped quotes to tell DB to treat it literally
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String username;
-    private String password;
+	@Column(nullable=false, unique=true)
+	private String username;
     
-	private String address;
-	private String contactNumber;
+	@Column(nullable=false, unique=true)
 	private String email;
+	
+	private String password;    
+	private String address;	
+	private String contactNumber;	
 	private String firstName;
 	private String lastName;
 
-    public User() {}
+	public User() {}
 
-    public User(Long id, String username, String password) {
-    	this.id = id;
-    	this.username = username;
-    	this.password = password;
+	public User(Long id, String username, String password) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
 	}
     
     
-    public User(Long id, String username, String password, String address,
-			String contactNumber, String email, String firstName,
-			String lastName) {
+	public User(Long id, String username, String password, String address,
+		String contactNumber, String email, String firstName,
+		String lastName) {
 		super();
 		this.id = id;
 		this.username = username;

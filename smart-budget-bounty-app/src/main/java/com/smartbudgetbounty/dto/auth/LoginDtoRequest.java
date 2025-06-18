@@ -4,24 +4,24 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class LoginDtoRequest {
-	@NotBlank(message="username must not be blank")
-	@Size(max = 50, message = "Data must not exceed 50 characters")
-    private String username;
+	@NotBlank(message="email must not be blank")
+	@Size(max = 50, message = "Email must not exceed 50 characters")
+    private String email;
 	
 	@NotBlank(message="password must not be blank")
 	@Size(max = 50, message = "Password must not exceed 50 characters")
     private String password;
     
-	public LoginDtoRequest(String username, String password) {
+	public LoginDtoRequest(String email, String password) {
 		super();
-		this.username = username;
+		this.email = email;
 		this.password = password;
 	}
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;
