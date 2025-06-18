@@ -86,7 +86,12 @@ public class AuthController {
         User newUser = new User(
                 null,
                 registerUserDto.getUsername(),
-                encoder.encode(registerUserDto.getPassword())
+                encoder.encode(registerUserDto.getPassword()),
+        		registerUserDto.getAddress(),
+        		registerUserDto.getContactNumber(),
+        		registerUserDto.getEmail(),
+        		registerUserDto.getFirstName(),
+        		registerUserDto.getLastName()
         );
         userRepository.save(newUser);
         
