@@ -12,16 +12,18 @@ public class CreateSchedulePaymentDtoRequest {
 	private String billName;
 	private Double billAmount;
 	private Instant startDate;
-	private boolean recurringFlag;
+	private String recurrence;
 	
 	public CreateSchedulePaymentDtoRequest(
-			@NotBlank(message = "billName must not be blank") @Size(max = 50, message = "billName must not exceed 50 characters") String billName,
-			Double billAmount, Instant startDate, boolean recurringFlag) {
+			String billName,
+			Double billAmount, 
+			Instant startDate, 
+			String recurrence) {
 		super();
 		this.billName = billName;
 		this.billAmount = billAmount;
 		this.startDate = startDate;
-		this.recurringFlag = recurringFlag;
+		this.recurrence = recurrence;
 	}
 	
 	public String getBillName() {
@@ -42,11 +44,13 @@ public class CreateSchedulePaymentDtoRequest {
 	public void setStartDate(Instant startDate) {
 		this.startDate = startDate;
 	}
-	public boolean isRecurringFlag() {
-		return recurringFlag;
+
+	public String getRecurrence() {
+		return recurrence;
 	}
-	public void setRecurringFlag(boolean recurringFlag) {
-		this.recurringFlag = recurringFlag;
+
+	public void setRecurrence(String recurrence) {
+		this.recurrence = recurrence;
 	}
 	
 	

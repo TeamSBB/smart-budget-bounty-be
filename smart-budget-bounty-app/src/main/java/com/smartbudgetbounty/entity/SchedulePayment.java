@@ -18,7 +18,7 @@ public class SchedulePayment {
 	private String billName;
 	private Double billAmount;
 	private Instant startDate;
-	private boolean recurringFlag;
+	private String recurrence;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")  // owning side: FK is here
@@ -29,12 +29,12 @@ public class SchedulePayment {
 	public SchedulePayment() {}
 	
 	public SchedulePayment(String billName, Double billAmount,
-			Instant startDate, boolean recurringFlag, User user) {
+			Instant startDate, String recurrence, User user) {
 		super();
 		this.billName = billName;
 		this.billAmount = billAmount;
 		this.startDate = startDate;
-		this.recurringFlag = recurringFlag;
+		this.recurrence = recurrence;
 		this.user = user;
 	}
 
@@ -70,12 +70,14 @@ public class SchedulePayment {
 		this.startDate = startDate;
 	}
 
-	public boolean isRecurringFlag() {
-		return recurringFlag;
+	
+
+	public String getRecurrence() {
+		return recurrence;
 	}
 
-	public void setRecurringFlag(boolean recurringFlag) {
-		this.recurringFlag = recurringFlag;
+	public void setRecurrence(String recurrence) {
+		this.recurrence = recurrence;
 	}
 
 	public User getUser() {

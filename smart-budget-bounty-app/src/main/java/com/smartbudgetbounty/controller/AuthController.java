@@ -46,7 +46,7 @@ public class AuthController {
     
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDtoRequest loginUserDtoRequest) {
-        LogUtil.logInfoController(logger, "API called: GET /api/auth/login");
+        LogUtil.logInfoController(logger, "API called: POST /api/auth/login");
         
         // Check email and password
         Authentication authentication = authenticationManager.authenticate(
@@ -60,9 +60,19 @@ public class AuthController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();        
         String token = jwtService.generateToken(userDetails.getUsername());
         
+        User u = userRepository.findByEmail(userDetails.getUsername()); // Confusing part, the username is the email
 
         // Format DTO and return response.
-        LoginDtoResponse loginResponseDto = new LoginDtoResponse(token);
+        LoginDtoResponse loginResponseDto = new LoginDtoResponse(
+        		token, 
+        		u.getId(),
+        		u.getUsername(), 
+        		u.getEmail(), 
+        		u.getAddress(), 
+        		u.getContactNumber(), 
+        		u.getFirstName(), 
+        		u.getLastName()
+		);
         
         return ResponseEntity.ok(new ApiResponse<>(
     		loginResponseDto,
@@ -72,7 +82,7 @@ public class AuthController {
     
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterDtoRequest registerUserDto) {
-        LogUtil.logInfoController(logger, "API called: GET /api/auth/register");
+        LogUtil.logInfoController(logger, "API called: POST /api/auth/register");
         
         // User already exist, cannot register user.
         if (userRepository.existsByEmail(registerUserDto.getEmail())) {

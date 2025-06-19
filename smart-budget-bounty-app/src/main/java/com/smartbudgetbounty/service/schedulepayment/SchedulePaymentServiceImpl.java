@@ -38,7 +38,7 @@ public class SchedulePaymentServiceImpl implements SchedulePaymentService {
         		request.getBillName(), 
         		request.getBillAmount(), 
         		request.getStartDate(), 
-        		request.isRecurringFlag(), 
+        		request.getRecurrence(), 
         		null);     
         repo.save(entity);
         
