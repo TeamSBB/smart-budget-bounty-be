@@ -1,10 +1,14 @@
 package com.smartbudgetbounty.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +30,9 @@ public class User {
 	private String contactNumber;	
 	private String firstName;
 	private String lastName;
+	
+    @OneToMany(mappedBy = "user")  // inverse side
+    private List<SchedulePayment> schedulePayments = new ArrayList<>();
 
 	public User() {}
 
@@ -114,6 +121,14 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public List<SchedulePayment> getSchedulePayments() {
+		return schedulePayments;
+	}
+
+	public void setSchedulePayments(List<SchedulePayment> schedulePayments) {
+		this.schedulePayments = schedulePayments;
+	}
     
     
 }

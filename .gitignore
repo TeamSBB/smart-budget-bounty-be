@@ -1,82 +1,52 @@
-HELP.md
+# Maven
 target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-# Compiled class file
-*.class
+# Eclipse
+.classpath
+.project
+.settings/
 
-# Log file
-*.log
-
-# Package Files
-*.jar
-*.war
-*.ear
-
-# Bytecode cache
-__pycache__/
-*.pyc
-*.pyo
-
-# Gradle files
-.gradle
-/build/
-/out/
-
-# Maven files
-target/
-bin/
-*.iml
-*.ipr
-*.iws
-.mvn/
-
-# Intellij Idea files
+# IntelliJ IDEA
 .idea/
 *.iml
 *.iws
-*.ipr
 
-# Eclipse files
-.settings/
-.project
-.classpath
-.apt_generated
-.factorypath
-
-# Netbeans
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-# VS Code
-.vscode/
-
-# OS generated files
+# OS-specific
 .DS_Store
 Thumbs.db
 
-# Spring Boot specific
-# /src/main/resources/application*.properties # for properties files
-# /src/main/resources/application*.yml # for yml files
-# /src/main/resources/env.properties # for environment specific properties file
+# Spring Boot
+!**/src/main/**/target/classes/
+!**/src/main/**/target/*.jar
+!**/src/main/**/target/*.war
+!**/src/main/**/target/*.ear
+!**/src/main/**/target/*.zip
+!**/src/main/**/target/*.tar.gz
+!**/src/main/**/target/*.log
+!**/src/main/**/target/generated-sources/
+!**/src/main/**/target/generated-test-sources/
 
-# JPA Specific
-*.hbm.xml
-*orm.xml
+# Logs
+*.log
+logs/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+
+# Test results
+TEST-*.xml
+surefire-reports/
