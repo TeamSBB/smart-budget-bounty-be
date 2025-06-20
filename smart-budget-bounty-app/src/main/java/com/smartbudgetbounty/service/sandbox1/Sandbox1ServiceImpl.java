@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoRequest;
 import com.smartbudgetbounty.dto.sandbox1.Sandbox1DtoResponse;
@@ -83,7 +84,8 @@ public class Sandbox1ServiceImpl implements Sandbox1Service {
         
         return response;
     }
- 
+
+	@Transactional(rollbackFor = Exception.class)
     @Override
     public Sandbox1DtoResponse updateById(Long id, Sandbox1DtoRequest request) {
         LogUtil.logStart(logger, "Updating Sandbox1 with ID {} and data: {}", id, request.getData());
@@ -103,7 +105,8 @@ public class Sandbox1ServiceImpl implements Sandbox1Service {
         
         return response;
     }
- 
+
+	@Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(Long id) {
         LogUtil.logStart(logger, "Deleting Sandbox1 with ID {}", id);
