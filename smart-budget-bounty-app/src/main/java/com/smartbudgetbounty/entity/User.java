@@ -14,7 +14,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "\"user\"")  // Use escaped quotes to tell DB to treat it literally
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -34,6 +33,9 @@ public class User {
     @OneToMany(mappedBy = "user")  // inverse side
     private List<SchedulePayment> schedulePayments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")  // inverse side
+    private List<Transaction> transactions = new ArrayList<>();
+    
 	public User() {}
 
 	public User(Long id, String username, String password) {
@@ -129,6 +131,12 @@ public class User {
 	public void setSchedulePayments(List<SchedulePayment> schedulePayments) {
 		this.schedulePayments = schedulePayments;
 	}
-    
-    
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
+	}
 }

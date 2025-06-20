@@ -10,7 +10,9 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper; // Import ObjectMapper
 import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.util.LogUtil;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse; // Needed for direct response writing
  
 @RestControllerAdvice
@@ -36,8 +39,7 @@ public class GlobalExceptionHandler {
  
     // --- Example: Handling MethodArgumentNotValidException (Validation Errors) ---
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(
-            MethodArgumentNotValidException ex, WebRequest request) {
+    public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
  
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
@@ -53,8 +55,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
  
-     @ExceptionHandler(NotFoundException.class) // Assuming NotFoundException is a custom exception
-     public ResponseEntity<ApiResponse<Void>> handleNotFoundException(NotFoundException ex, WebRequest request) {
+     @ExceptionHandler({NotFoundException.class, EntityNotFoundException.class}) // Assuming NotFoundException is a custom exception
+     public ResponseEntity<ApiResponse<Void>> handleNotFoundException(Exception ex, WebRequest request) {
     	 String path = ((ServletWebRequest)request).getRequest().getRequestURI();
          LogUtil.logErrorGlobal(logger, "Entity not found: {}, path: {}", ex.getMessage(), path);
          
@@ -66,8 +68,8 @@ public class GlobalExceptionHandler {
      }
 
      
-     @ExceptionHandler(BadCredentialsException.class) // Assuming NotFoundException is a custom exception
-     public ResponseEntity<ApiResponse<Void>> handleUnauthorziedException(BadCredentialsException ex, WebRequest request) {
+     @ExceptionHandler({BadCredentialsException.class, AuthenticationCredentialsNotFoundException.class, CredentialsExpiredException.class}) // Assuming NotFoundException is a custom exception
+     public ResponseEntity<ApiResponse<Void>> handleUnauthorziedException(Exception ex, WebRequest request) {
 
     	 String path = ((ServletWebRequest)request).getRequest().getRequestURI();
          LogUtil.logErrorGlobal(logger, "Bad Credentials error: {}, path: {}", ex.getMessage(), path);

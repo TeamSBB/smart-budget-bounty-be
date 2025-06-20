@@ -1,0 +1,1 @@
+insert into "user" (address,contact_number,email,first_name,last_name,password,username,id) VALUES ('address','91232333','email@gmail.com','firstname','lastname','P@ssword1','username',default)
