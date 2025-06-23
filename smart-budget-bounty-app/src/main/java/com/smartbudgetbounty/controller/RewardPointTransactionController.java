@@ -36,6 +36,31 @@ public class RewardPointTransactionController {
         this.rewardPointTransactionService = rewardPointTransactionService;
     }
 
+    @PostMapping()
+    public
+        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
+        createRewardPointTransaction(@Valid @RequestBody
+    CreateRewardPointTransactionDtoRequest createDtoReq) {
+        LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
+
+        // Call service to insert into db
+        RewardPointTransactionDtoResponse rewardPointTransactionDto = rewardPointTransactionService.create(
+            createDtoReq
+        );
+
+        URI location = URI.create(
+            "/api/reward-point-transaction/" + rewardPointTransactionDto.getId()
+        );
+
+        return ResponseEntity.created(location).body(
+            new ApiResponse<RewardPointTransactionDtoResponse>(
+                rewardPointTransactionDto,
+                "Created RewardPointTransaction successfully."
+            )
+        );
+
+    }
+
     @GetMapping("/{id}")
     public
         ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
@@ -73,30 +98,5 @@ public class RewardPointTransactionController {
                 )
             )
         );
-    }
-
-    @PostMapping()
-    public
-        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
-        createRewardPointTransaction(@Valid @RequestBody
-    CreateRewardPointTransactionDtoRequest createDtoReq) {
-        LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
-
-        // Call service to insert into db
-        RewardPointTransactionDtoResponse rewardPointTransactionDto = rewardPointTransactionService.create(
-            createDtoReq
-        );
-
-        URI location = URI.create(
-            "/api/reward-point-transaction/" + rewardPointTransactionDto.getId()
-        );
-
-        return ResponseEntity.created(location).body(
-            new ApiResponse<RewardPointTransactionDtoResponse>(
-                rewardPointTransactionDto,
-                "Created RewardPointTransaction successfully."
-            )
-        );
-
     }
 }
