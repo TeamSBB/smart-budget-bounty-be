@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class CreateRewardPointsTransactionDtoRequest {
-    @NotNull(message = "Reward Point Transaction amount is required.")
-    @Positive(message = "Reward Point Transaction amount must be greater than 0.")
+    @NotNull(message = "Reward Points Transaction amount is required.")
+    @Positive(message = "Reward Points Transaction amount must be greater than 0.")
     private Double amount;
 
     @NotNull(message = "Transaction ID is required.")
