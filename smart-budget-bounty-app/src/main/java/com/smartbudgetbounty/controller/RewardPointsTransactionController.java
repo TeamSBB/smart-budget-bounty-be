@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.dto.rewardpointtransaction.CreateRewardPointTransactionDtoRequest;
-import com.smartbudgetbounty.dto.rewardpointtransaction.RewardPointTransactionDtoResponse;
+import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRewardPointsTransactionDtoRequest;
+import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
 import com.smartbudgetbounty.entity.ApiResponse;
-import com.smartbudgetbounty.service.rewardpointtransaction.RewardPointTransactionService;
+import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.util.LogUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,17 +30,17 @@ import jakarta.validation.Valid;
 )
 @RestController
 @RequestMapping("/api/reward-point-transaction")
-public class RewardPointTransactionController {
+public class RewardPointsTransactionController {
     private static final Logger logger = LoggerFactory.getLogger(
-        RewardPointTransactionController.class
+        RewardPointsTransactionController.class
     );
 
-    private final RewardPointTransactionService rewardPointTransactionService;
+    private final RewardPointsTransactionService rewardPointsTransactionService;
 
-    public RewardPointTransactionController(
-        RewardPointTransactionService rewardPointTransactionService
+    public RewardPointsTransactionController(
+        RewardPointsTransactionService rewardPointsTransactionService
     ) {
-        this.rewardPointTransactionService = rewardPointTransactionService;
+        this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
 
     @Operation(summary = "Create a reward point transaction")
@@ -50,29 +50,29 @@ public class RewardPointTransactionController {
     )
     @PostMapping("/user/{userId}")
     public
-        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
-        createRewardPointTransaction(
+        ResponseEntity<ApiResponse<RewardPointsTransactionDtoResponse>>
+        createRewardPointsTransaction(
             @Parameter(description = "ID of the user", required = true) @PathVariable
             Long userId,
             @Valid @RequestBody
-            CreateRewardPointTransactionDtoRequest createDtoReq
+            CreateRewardPointsTransactionDtoRequest createDtoReq
         ) {
         LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
 
         // Call service to insert into db
-        RewardPointTransactionDtoResponse rewardPointTransactionDto = rewardPointTransactionService.create(
+        RewardPointsTransactionDtoResponse rewardPointsTransactionDto = rewardPointsTransactionService.create(
             userId,
             createDtoReq
         );
 
         URI location = URI.create(
-            "/api/reward-point-transaction/" + rewardPointTransactionDto.getId()
+            "/api/reward-point-transaction/" + rewardPointsTransactionDto.getId()
         );
 
         return ResponseEntity.created(location).body(
-            new ApiResponse<RewardPointTransactionDtoResponse>(
-                rewardPointTransactionDto,
-                "Created RewardPointTransaction successfully."
+            new ApiResponse<RewardPointsTransactionDtoResponse>(
+                rewardPointsTransactionDto,
+                "Created RewardPointsTransaction successfully."
             )
         );
 
@@ -82,8 +82,8 @@ public class RewardPointTransactionController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/user/{userId}")
     public
-        ResponseEntity<ApiResponse<List<RewardPointTransactionDtoResponse>>>
-        getRewardPointTransactionsByUserId(
+        ResponseEntity<ApiResponse<List<RewardPointsTransactionDtoResponse>>>
+        getRewardPointsTransactionsByUserId(
             @Parameter(description = "ID of the user", required = true) @PathVariable
             Long userId
         ) {
@@ -92,15 +92,15 @@ public class RewardPointTransactionController {
             "API called: GET /api/reward-point-transaction/user/" + userId
         );
 
-        List<RewardPointTransactionDtoResponse> rewardPointTransactionDtos = rewardPointTransactionService.getByUserId(
+        List<RewardPointsTransactionDtoResponse> rewardPointsTransactionDtos = rewardPointsTransactionService.getByUserId(
             userId
         );
 
         return ResponseEntity.ok(
-            new ApiResponse<List<RewardPointTransactionDtoResponse>>(
-                rewardPointTransactionDtos,
+            new ApiResponse<List<RewardPointsTransactionDtoResponse>>(
+                rewardPointsTransactionDtos,
                 String.format(
-                    "Retrieved RewardPointTransactions for userId %d successfully",
+                    "Retrieved RewardPointsTransactions for userId %d successfully",
                     userId
                 )
             )
@@ -111,20 +111,20 @@ public class RewardPointTransactionController {
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/{id}")
     public
-        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
-        getRewardPointTransactionById(
+        ResponseEntity<ApiResponse<RewardPointsTransactionDtoResponse>>
+        getRewardPointsTransactionById(
             @Parameter(description = "ID of the reward point transaction", required = true)
             @PathVariable
             Long id
         ) {
         LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
 
-        RewardPointTransactionDtoResponse responseDto = rewardPointTransactionService.getById(id);
+        RewardPointsTransactionDtoResponse responseDto = rewardPointsTransactionService.getById(id);
 
         return ResponseEntity.ok(
-            new ApiResponse<RewardPointTransactionDtoResponse>(
+            new ApiResponse<RewardPointsTransactionDtoResponse>(
                 responseDto,
-                "Retrieved RewardPointTransaction successfully."
+                "Retrieved RewardPointsTransaction successfully."
             )
         );
     }

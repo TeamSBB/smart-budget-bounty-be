@@ -1,15 +1,15 @@
-package com.smartbudgetbounty.dto.rewardpointtransaction;
+package com.smartbudgetbounty.dto.rewardpointstransaction;
 
 import java.time.Instant;
 
-public class RewardPointTransactionDtoResponse {
+public class RewardPointsTransactionDtoResponse {
     private Long id;
     private Double amount;
     private Instant date;
     private Long userId;
     private Long transactionId;
 
-    public RewardPointTransactionDtoResponse(
+    public RewardPointsTransactionDtoResponse(
         Long id,
         Double amount,
         Instant date,

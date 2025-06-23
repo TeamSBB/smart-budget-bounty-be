@@ -1,10 +1,10 @@
-package com.smartbudgetbounty.dto.rewardpointtransaction;
+package com.smartbudgetbounty.dto.rewardpointstransaction;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public class CreateRewardPointTransactionDtoRequest {
+public class CreateRewardPointsTransactionDtoRequest {
     @NotNull(message = "Reward Point Transaction amount is required.")
     @Positive(message = "Reward Point Transaction amount must be greater than 0.")
     private Double amount;
@@ -13,7 +13,7 @@ public class CreateRewardPointTransactionDtoRequest {
     @PositiveOrZero(message = "Transaction ID must be 0 or greater.")
     private Long transactionId;
 
-    public CreateRewardPointTransactionDtoRequest(Double amount, Long transactionId) {
+    public CreateRewardPointsTransactionDtoRequest(Double amount, Long transactionId) {
         super();
         this.amount = amount;
         this.transactionId = transactionId;

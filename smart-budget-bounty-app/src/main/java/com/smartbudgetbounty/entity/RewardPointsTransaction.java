@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class RewardPointTransaction {
+public class RewardPointsTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +26,11 @@ public class RewardPointTransaction {
     @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
-    public RewardPointTransaction() {
+    public RewardPointsTransaction() {
         super();
     }
 
-    public RewardPointTransaction(Double amount, Instant date, User user, Transaction transaction) {
+    public RewardPointsTransaction(Double amount, Instant date, User user, Transaction transaction) {
         super();
         this.amount = amount;
         this.rewardDate = date;
