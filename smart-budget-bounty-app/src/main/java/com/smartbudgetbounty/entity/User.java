@@ -35,6 +35,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")  // inverse side
     private List<Transaction> transactions = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user") // inverse side
+	private List<RewardPointTransaction> rewardPointTransactions = new ArrayList<>();
     
 	public User() {}
 
