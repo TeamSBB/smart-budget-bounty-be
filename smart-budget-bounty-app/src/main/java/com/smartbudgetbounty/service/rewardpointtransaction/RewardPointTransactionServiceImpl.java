@@ -54,17 +54,40 @@ public class RewardPointTransactionServiceImpl implements RewardPointTransaction
     }
 
     @Override
-    public RewardPointTransactionDtoResponse getById(Long id) {
-        LogUtil.logStart(logger, "Getting RewardPointTransaction by id.");
+    public
+        RewardPointTransactionDtoResponse
+        create(Long userId, CreateRewardPointTransactionDtoRequest request) {
+        LogUtil.logStart(logger, "Creating RewardPointTransaction.");
 
-        RewardPointTransaction rewardPointTransaction = rewardPointTransactionRepository.findById(
-            id
-        ).orElseThrow(() -> {
-            LogUtil.logError(logger, "RewardPointTransaction not found for id: {}", id);
-            return new EntityNotFoundException("RewardPointTransaction not found for id: " + id);
-        });
+        Optional<User> user = userRepository.findById(userId);
 
-        LogUtil.logEnd(logger, "Retrieved RewardPointTransaction: {}", rewardPointTransaction);
+        if (user.isEmpty()) {
+            LogUtil.logError(logger, "Unable to find userId: {}.", userId);
+            throw new EntityNotFoundException("Unable to find userId: " + userId);
+        }
+
+        Optional<Transaction> transaction = transactionRepository.findById(
+            request.getTransactionId()
+        );
+
+        if (transaction.isEmpty()) {
+            LogUtil.logError(
+                logger,
+                "Unable to find transactionId: {}.",
+                request.getTransactionId()
+            );
+            throw new EntityNotFoundException(
+                "Unable to find transactionId: " + request.getTransactionId()
+            );
+        }
+
+        Instant now = Instant.now();
+
+        RewardPointTransaction rewardPointTransaction = rewardPointTransactionRepository.save(
+            new RewardPointTransaction(request.getAmount(), now, user.get(), transaction.get())
+        );
+
+        LogUtil.logEnd(logger, "Created RewardPointTransaction: {}", rewardPointTransaction);
 
         return toRewardPointTransactionDtoResponse(rewardPointTransaction);
     }
@@ -103,40 +126,17 @@ public class RewardPointTransactionServiceImpl implements RewardPointTransaction
     }
 
     @Override
-    public
-        RewardPointTransactionDtoResponse
-        create(CreateRewardPointTransactionDtoRequest request) {
-        LogUtil.logStart(logger, "Creating RewardPointTransaction.");
+    public RewardPointTransactionDtoResponse getById(Long id) {
+        LogUtil.logStart(logger, "Getting RewardPointTransaction by id.");
 
-        Optional<User> user = userRepository.findById(request.getUserId());
+        RewardPointTransaction rewardPointTransaction = rewardPointTransactionRepository.findById(
+            id
+        ).orElseThrow(() -> {
+            LogUtil.logError(logger, "RewardPointTransaction not found for id: {}", id);
+            return new EntityNotFoundException("RewardPointTransaction not found for id: " + id);
+        });
 
-        if (user.isEmpty()) {
-            LogUtil.logError(logger, "Unable to find userId: {}.", request.getUserId());
-            throw new EntityNotFoundException("Unable to find userId: " + request.getUserId());
-        }
-
-        Optional<Transaction> transaction = transactionRepository.findById(
-            request.getTransactionId()
-        );
-
-        if (transaction.isEmpty()) {
-            LogUtil.logError(
-                logger,
-                "Unable to find transactionId: {}.",
-                request.getTransactionId()
-            );
-            throw new EntityNotFoundException(
-                "Unable to find transactionId: " + request.getTransactionId()
-            );
-        }
-
-        Instant now = Instant.now();
-
-        RewardPointTransaction rewardPointTransaction = rewardPointTransactionRepository.save(
-            new RewardPointTransaction(request.getAmount(), now, user.get(), transaction.get())
-        );
-
-        LogUtil.logEnd(logger, "Created RewardPointTransaction: {}", rewardPointTransaction);
+        LogUtil.logEnd(logger, "Retrieved RewardPointTransaction: {}", rewardPointTransaction);
 
         return toRewardPointTransactionDtoResponse(rewardPointTransaction);
     }

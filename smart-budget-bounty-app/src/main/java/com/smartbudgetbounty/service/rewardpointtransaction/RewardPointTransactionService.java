@@ -6,9 +6,10 @@ import com.smartbudgetbounty.dto.rewardpointtransaction.CreateRewardPointTransac
 import com.smartbudgetbounty.dto.rewardpointtransaction.RewardPointTransactionDtoResponse;
 
 public interface RewardPointTransactionService {
-    RewardPointTransactionDtoResponse getById(Long id);
+    RewardPointTransactionDtoResponse
+        create(Long userId, CreateRewardPointTransactionDtoRequest request);
 
     List<RewardPointTransactionDtoResponse> getByUserId(Long userId);
 
-    RewardPointTransactionDtoResponse create(CreateRewardPointTransactionDtoRequest request);
+    RewardPointTransactionDtoResponse getById(Long id);
 }

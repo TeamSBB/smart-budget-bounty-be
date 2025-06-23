@@ -36,15 +36,17 @@ public class RewardPointTransactionController {
         this.rewardPointTransactionService = rewardPointTransactionService;
     }
 
-    @PostMapping()
+    @PostMapping("/user/{userId}")
     public
         ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
-        createRewardPointTransaction(@Valid @RequestBody
+        createRewardPointTransaction(@PathVariable
+    Long userId, @Valid @RequestBody
     CreateRewardPointTransactionDtoRequest createDtoReq) {
         LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
 
         // Call service to insert into db
         RewardPointTransactionDtoResponse rewardPointTransactionDto = rewardPointTransactionService.create(
+            userId,
             createDtoReq
         );
 
@@ -59,20 +61,6 @@ public class RewardPointTransactionController {
             )
         );
 
-    }
-
-    @GetMapping("/{id}")
-    public
-        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
-        getRewardPointTransactionById(@PathVariable
-    Long id) {
-        LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
-
-        RewardPointTransactionDtoResponse responseDto = rewardPointTransactionService.getById(id);
-
-        return ResponseEntity.ok(
-            new ApiResponse<>(responseDto, "Retrieved RewardPointTransaction successfully.")
-        );
     }
 
     @GetMapping("/user/{userId}")
@@ -97,6 +85,20 @@ public class RewardPointTransactionController {
                     userId
                 )
             )
+        );
+    }
+
+    @GetMapping("/{id}")
+    public
+        ResponseEntity<ApiResponse<RewardPointTransactionDtoResponse>>
+        getRewardPointTransactionById(@PathVariable
+    Long id) {
+        LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
+
+        RewardPointTransactionDtoResponse responseDto = rewardPointTransactionService.getById(id);
+
+        return ResponseEntity.ok(
+            new ApiResponse<>(responseDto, "Retrieved RewardPointTransaction successfully.")
         );
     }
 }

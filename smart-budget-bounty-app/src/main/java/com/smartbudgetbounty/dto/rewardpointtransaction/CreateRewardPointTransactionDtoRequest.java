@@ -9,18 +9,13 @@ public class CreateRewardPointTransactionDtoRequest {
     @Positive(message = "Reward Point Transaction amount must be greater than 0.")
     private Double amount;
 
-    @NotNull(message = "User ID is required.")
-    @PositiveOrZero(message = "User ID must be 0 or greater.")
-    private Long userId;
-
     @NotNull(message = "Transaction ID is required.")
     @PositiveOrZero(message = "Transaction ID must be 0 or greater.")
     private Long transactionId;
 
-    public CreateRewardPointTransactionDtoRequest(Double amount, Long userId, Long transactionId) {
+    public CreateRewardPointTransactionDtoRequest(Double amount, Long transactionId) {
         super();
         this.amount = amount;
-        this.userId = userId;
         this.transactionId = transactionId;
     }
 
@@ -30,14 +25,6 @@ public class CreateRewardPointTransactionDtoRequest {
 
     public void setAmount(Double amount) {
         this.amount = amount;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getTransactionId() {
