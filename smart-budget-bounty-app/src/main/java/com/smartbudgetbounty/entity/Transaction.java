@@ -37,6 +37,10 @@ public class Transaction {
 //	@JoinColumn(name="account_id")
 //	private Account account;
 
+	public Transaction() {
+		super();
+	}
+
 	public Transaction(Double transactionAmount, Instant createdAt,
 		String recipientName, String paymentMethod, String paynowRecipient, 
 		String accountNumber, String remarks,
