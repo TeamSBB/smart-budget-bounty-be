@@ -1,75 +1,32 @@
-package com.smartbudgetbounty.entity;
+package com.smartbudgetbounty.dto.schedulepayment;
 
 import java.time.Instant;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+public class SchedulePaymentDtoResponse {
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-@Entity
-public class SchedulePayment {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	// Common fields
 	private String recipientName;
 	private String paymentMethod;
-	
+
 	// Giro
 	private String bankName;
 	private String accountNumber;
 	private Double transferLimit;
-	
+
 	// Standing Instruction
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
 	private Instant startDate;
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
 	private Instant endDate;
-	
 	private String frequency;
-	
+
 	// Credit/Debit Card
 	private String cardNumber;
 	private String nameOnCard;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
 	private Instant expiryDate;
-	
 	private String cvv;
-	
-	@ManyToOne
-	@JoinColumn(name = "user_id")  // owning side: FK is here
-	private User user;
 
-	//TODO1: Yet to add 1 more r/s to Rewards Table
-	
-	public SchedulePayment() {}
+	private Long userId;
 
-	public SchedulePayment(Long id, String recipientName, String paymentMethod, String bankName,
-			String accountNumber, Double transferLimit, Instant startDate, Instant endDate, String frequency,
-			String cardNumber, String nameOnCard, Instant expiryDate, String cvv, User user) {
-		super();
-		this.id = id;
-		this.recipientName = recipientName;
-		this.paymentMethod = paymentMethod;
-		this.bankName = bankName;
-		this.accountNumber = accountNumber;
-		this.transferLimit = transferLimit;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.frequency = frequency;
-		this.cardNumber = cardNumber;
-		this.nameOnCard = nameOnCard;
-		this.expiryDate = expiryDate;
-		this.cvv = cvv;
-		this.user = user;
-	}
+	// Getters and Setters...
 
 	public Long getId() {
 		return id;
@@ -175,13 +132,11 @@ public class SchedulePayment {
 		this.cvv = cvv;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
 }
-

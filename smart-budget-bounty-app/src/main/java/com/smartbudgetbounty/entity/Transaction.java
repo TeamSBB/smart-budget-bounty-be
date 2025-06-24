@@ -29,6 +29,12 @@ public class Transaction {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@ManyToOne // Owner - Because in a one-many r/s, the many is the owner
+	@JoinColumn(name = "payment_method_id", nullable = false, referencedColumnName="id")
+	private PaymentMethod paymentMethod2;
+	
+	
+	
 //	@OneToOne // Owner - Because Transaction exist then can have rewards
 //	@JoinColumn(name="reward_id")
 //	private Reward reward;
@@ -145,6 +151,17 @@ public class Transaction {
 
 	public void setTransferDate(Instant transferDate) {
 		this.transferDate = transferDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", transactionAmount="
+				+ transactionAmount + ", createdAt=" + createdAt
+				+ ", recipientName=" + recipientName + ", paymentMethod="
+				+ paymentMethod + ", paynowRecipient=" + paynowRecipient
+				+ ", accountNumber=" + accountNumber + ", remarks=" + remarks
+				+ ", transferDate=" + transferDate + ", user=" + user
+				+ ", paymentMethod2=" + paymentMethod2 + "]";
 	}
 	
 	

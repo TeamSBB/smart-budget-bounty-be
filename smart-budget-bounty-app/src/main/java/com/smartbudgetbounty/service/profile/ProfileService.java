@@ -1,0 +1,16 @@
+package com.smartbudgetbounty.service.profile;
+
+import com.smartbudgetbounty.dto.profile.GetProfileInfoDtoResponse;
+import com.smartbudgetbounty.dto.profile.UpsertProfileBankInfoDtoRequest;
+import com.smartbudgetbounty.dto.profile.UpsertProfileBankInfoDtoResponse;
+import com.smartbudgetbounty.dto.profile.UpsertProfileCardInfoDtoRequest;
+import com.smartbudgetbounty.dto.profile.UpsertProfileCardInfoDtoResponse;
+import com.smartbudgetbounty.dto.profile.UpsertProfilePaynowInfoDtoRequest;
+import com.smartbudgetbounty.dto.profile.UpsertProfilePaynowInfoDtoResponse;
+
+public interface ProfileService {
+	GetProfileInfoDtoResponse getProfileInfo(Long accountId);
+	UpsertProfileBankInfoDtoResponse upsertBankInfo(UpsertProfileBankInfoDtoRequest request);
+	UpsertProfileCardInfoDtoResponse upsertCardInfo(UpsertProfileCardInfoDtoRequest request);
+	UpsertProfilePaynowInfoDtoResponse upsertPaynowInfo(UpsertProfilePaynowInfoDtoRequest request);
+}

@@ -1,5 +1,6 @@
 package com.smartbudgetbounty.entity;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class User {
 	private String contactNumber;	
 	private String firstName;
 	private String lastName;
+
+	private Instant createdAt;
+	private Instant updatedAt;
+	private Instant lastLogin;
 	
     @OneToMany(mappedBy = "user")  // inverse side
     private List<SchedulePayment> schedulePayments = new ArrayList<>();
@@ -45,14 +50,14 @@ public class User {
 		this.id = id;
 		this.username = username;
 		this.password = password;
+		createdAt = lastLogin = Instant.now();
 	}
     
     
-	public User(Long id, String username, String password, String address,
+	public User(String username, String password, String address,
 		String contactNumber, String email, String firstName,
 		String lastName) {
 		super();
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.address = address;
@@ -60,6 +65,7 @@ public class User {
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		createdAt = lastLogin = updatedAt = Instant.now();
 	}
 
 	public String getAddress() {
@@ -142,4 +148,52 @@ public class User {
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
 	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Instant getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Instant lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public List<RewardPointsTransaction> getRewardPointsTransactions() {
+		return rewardPointsTransactions;
+	}
+
+	public void setRewardPointsTransactions(
+			List<RewardPointsTransaction> rewardPointsTransactions) {
+		this.rewardPointsTransactions = rewardPointsTransactions;
+	}
+
+	public Instant getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Instant updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", email=" + email
+				+ ", password=" + password + ", address=" + address
+				+ ", contactNumber=" + contactNumber + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + ", lastLogin="
+				+ lastLogin + ", schedulePayments=" + schedulePayments
+				+ ", transactions=" + transactions
+				+ ", rewardPointsTransactions=" + rewardPointsTransactions
+				+ "]";
+	}
+	
+	
 }
