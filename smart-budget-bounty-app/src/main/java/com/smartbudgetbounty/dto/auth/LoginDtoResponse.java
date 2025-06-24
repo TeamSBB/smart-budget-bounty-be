@@ -2,7 +2,8 @@ package com.smartbudgetbounty.dto.auth;
 
 public class LoginDtoResponse {    
 	private String token;
-	private Long id;
+	private Long userId;
+	private Long accountId;
 	private String username;
 	private String email;
 	private String address;	
@@ -10,12 +11,13 @@ public class LoginDtoResponse {
 	private String firstName;
 	private String lastName;
 	
-    public LoginDtoResponse(String token, Long id, String username, String email,
+    public LoginDtoResponse(String token, Long userId, Long accountId, String username, String email,
 			String address, String contactNumber,
 			String firstName, String lastName) {
 		super();
 		this.token = token;
-		this.id = id;
+		this.userId = userId;
+		this.accountId = accountId;
 		this.username = username;
 		this.email = email;
 		this.address = address;
@@ -24,12 +26,20 @@ public class LoginDtoResponse {
 		this.lastName = lastName;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(Long id) {
+		this.userId = id;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getToken() {
