@@ -1,83 +1,52 @@
-package com.smartbudgetbounty.entity;
+package com.smartbudgetbounty.dto.schedulepayment;
 
 import java.time.Instant;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+public class SchedulePaymentDtoRequest {
 
-@Entity
-public class SchedulePayment {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	// Common fields
+	@NotBlank(message = "Recipient name is required")
 	private String recipientName;
+
+	@NotBlank(message = "Payment method is required")
 	private String paymentMethod;
-	
+
 	// Giro
 	private String bankName;
+
+	@Pattern(regexp = "\\d{7,12}", message = "Account number must be 7 to 12 digits")
 	private String accountNumber;
+
+	@Positive(message = "Transfer limit must be a positive number")
 	private Double transferLimit;
-	
+
 	// Standing Instruction
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
 	private Instant startDate;
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
 	private Instant endDate;
-	
 	private String frequency;
-	
+
 	// Credit/Debit Card
+	@Pattern(regexp = "\\d{16}", message = "Card number must be 16 digits")
 	private String cardNumber;
+
 	private String nameOnCard;
-	
-	@JsonFormat(pattern = "dd-MM-yyyy", timezone = "Asia/Singapore")
+
+	@Future(message = "Expiry date must be in the future")
 	private Instant expiryDate;
-	
+
+	@Pattern(regexp = "\\d{3}", message = "CVV must be 3 digits")
 	private String cvv;
-	
-	@ManyToOne
-	@JoinColumn(name = "user_id")  // owning side: FK is here
-	private User user;
 
-	//TODO1: Yet to add 1 more r/s to Rewards Table
-	
-	public SchedulePayment() {}
+	@NotNull(message = "User ID is required")
+	private Long userId;
 
-	public SchedulePayment(Long id, String recipientName, String paymentMethod, String bankName,
-			String accountNumber, Double transferLimit, Instant startDate, Instant endDate, String frequency,
-			String cardNumber, String nameOnCard, Instant expiryDate, String cvv, User user) {
-		super();
-		this.id = id;
-		this.recipientName = recipientName;
-		this.paymentMethod = paymentMethod;
-		this.bankName = bankName;
-		this.accountNumber = accountNumber;
-		this.transferLimit = transferLimit;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.frequency = frequency;
-		this.cardNumber = cardNumber;
-		this.nameOnCard = nameOnCard;
-		this.expiryDate = expiryDate;
-		this.cvv = cvv;
-		this.user = user;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	// Getters and Setters...
 
 	public String getRecipientName() {
 		return recipientName;
@@ -175,13 +144,11 @@ public class SchedulePayment {
 		this.cvv = cvv;
 	}
 
-	public User getUser() {
-		return user;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	
 }
-
