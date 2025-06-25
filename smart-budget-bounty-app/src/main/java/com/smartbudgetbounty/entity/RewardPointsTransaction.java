@@ -38,7 +38,7 @@ public class RewardPointsTransaction {
     }
 
     // constructor for earning reward points from making a transaction
-    // - is null
+    // - rewardVoucher is null
     public RewardPointsTransaction(
         Double amount,
         Instant pointsTransactionDate,
@@ -54,7 +54,7 @@ public class RewardPointsTransaction {
     }
 
     // constructor for redeeming reward points to earn a reward voucher
-    // x
+    // - transaction is null, rewardVoucher will be assigned later
     public RewardPointsTransaction(Double amount, Instant pointsTransactionDate, User user) {
         super();
         this.pointsTransactionType = RewardPointsTransactionType.REDEEMED;
