@@ -17,6 +17,7 @@ public class RewardVoucher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private RewardVoucherStatus voucherStatus;
     private Double discount;
     private Instant earnDate;
