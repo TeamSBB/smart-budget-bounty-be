@@ -53,6 +53,8 @@ public class TransactionServiceImpl implements TransactionService {
     		request.getTransferDate() != null ? request.getTransferDate() :  Instant.now(),
     		u.get()
 		));
+        
+        // TODO: call RewardPointsTransactionServiceImpl.createEarn
 
         LogUtil.logEnd(logger, "Created Transaction: {}", entity);
         
