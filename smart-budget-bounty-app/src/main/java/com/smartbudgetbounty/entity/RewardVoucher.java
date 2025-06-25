@@ -23,11 +23,15 @@ public class RewardVoucher {
     private Instant earnDate;
     private Instant redeemDate;
 
-    @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
+    // RewardVoucher (owning side) -> User (inverse side)
+    // - RewardVoucher holds the foreign key to User
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne // Inverse side - Because RewardPointsTransaction exist then can have RewardVouchers
+    // RewardVoucher (owning side) -> RewardPointsTransaction (inverse side)
+    // - RewardVoucher holds the foreign key to RewardPointsTransaction
+    @OneToOne
     @JoinColumn(name = "reward_points_transaction_id")
     private RewardPointsTransaction rewardPointsTransaction;
 
