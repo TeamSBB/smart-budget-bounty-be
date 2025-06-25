@@ -119,7 +119,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
 
-    // retrieve RewardPointsTransaction
+    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
+    // - to be called by other services
     @Override
     public RewardPointsTransaction getById(Long id) {
         LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
@@ -136,14 +137,17 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return rewardPointsTransaction;
     }
 
-    // retrieve RewardPointsTransaction and return it as a RewardPointsTransactionResponseDto
+    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository and return it as a
+    // RewardPointsTransactionResponseDto
+    // - to be called by RewardPointsTransactionController
     @Override
     public RewardPointsTransactionResponseDto getDtoById(Long id) {
         RewardPointsTransaction rewardPointsTransaction = getById(id);
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
 
-    // retrieve a user's RewardPointsTransactions
+    // retrieve a user's RewardPointsTransactions from RewardPointsTransactions and return it as a
+    // RewardPointsTransactionResponseDto
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {

@@ -8,16 +8,25 @@ import com.smartbudgetbounty.entity.Transaction;
 import com.smartbudgetbounty.entity.User;
 
 public interface RewardPointsTransactionService {
-    // to be called by TransactionService whenever a Transaction is created
+    // create and persist RewardPointsTransaction
+    // - to be called by TransactionService whenever a Transaction is created
     RewardPointsTransactionResponseDto createEarn(User user, Transaction transaction);
 
-    // to be called by RewardPointsTransactionController
+    // create and persist RewardPointsTransaction
+    // - to be called by RewardPointsTransactionController
     RewardPointsTransactionResponseDto createRedeem(Long userId, Integer redeemAmount);
 
+    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
+    // - to be called by other services
     RewardPointsTransaction getById(Long id);
 
+    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository and return it as a
+    // RewardPointsTransactionResponseDto
+    // - to be called by RewardPointsTransactionController
     RewardPointsTransactionResponseDto getDtoById(Long id);
 
-    // to be called by RewardPointsTransactionController
+    // retrieve a user's RewardPointsTransactions from RewardPointsTransactions and return it as a
+    // RewardPointsTransactionResponseDto
+    // - to be called by RewardPointsTransactionController
     List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId);
 }

@@ -37,6 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     // create and persist Transaction
+    // - to be called by TransactionController
     @Override
     public CreateTransactionDtoResponse create(CreateTransactionDtoRequest request) {
         LogUtil.logStart(logger, "Creating Transaction.");
@@ -78,6 +79,8 @@ public class TransactionServiceImpl implements TransactionService {
         );
     }
 
+    // retrieve Transaction from TransactionRepository
+    // - to be called by other services
     @Override
     public Transaction getById(Long id) {
         LogUtil.logStart(logger, "Getting Transaction by id.");
@@ -86,7 +89,7 @@ public class TransactionServiceImpl implements TransactionService {
             LogUtil.logError(logger, "Unable to find transactionId: {}.", id);
             return new EntityNotFoundException("Unable to find transactionId: " + id);
         });
-        
+
         LogUtil.logEnd(logger, "Retrieved Transaction: {}", transaction);
 
         return transaction;
