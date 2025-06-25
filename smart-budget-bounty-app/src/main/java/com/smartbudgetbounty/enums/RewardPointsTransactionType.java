@@ -13,4 +13,9 @@ public enum RewardPointsTransactionType {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public String toString() {
+        return name() + " - " + description;
+    }
 }
