@@ -4,10 +4,12 @@ import java.time.Instant;
 
 public class RewardPointsTransactionDtoResponse {
     private Long id;
+    private String pointsTransactionType;
     private Double amount;
-    private Instant date;
+    private Instant pointsTransactionDate;
     private Long userId;
     private Long transactionId;
+    private Long rewardVoucherId;
 
     public RewardPointsTransactionDtoResponse(
         Long id,
@@ -19,7 +21,7 @@ public class RewardPointsTransactionDtoResponse {
         super();
         this.id = id;
         this.amount = amount;
-        this.date = date;
+        this.pointsTransactionDate = date;
         this.userId = userId;
         this.transactionId = transactionId;
     }
@@ -32,6 +34,14 @@ public class RewardPointsTransactionDtoResponse {
         this.id = id;
     }
 
+    public String getPointsTransactionType() {
+        return pointsTransactionType;
+    }
+
+    public void setPointsTransactionType(String pointsTransactionType) {
+        this.pointsTransactionType = pointsTransactionType;
+    }
+
     public Double getAmount() {
         return amount;
     }
@@ -40,12 +50,12 @@ public class RewardPointsTransactionDtoResponse {
         this.amount = amount;
     }
 
-    public Instant getDate() {
-        return date;
+    public Instant getPointsTransactionDate() {
+        return pointsTransactionDate;
     }
 
-    public void setDate(Instant date) {
-        this.date = date;
+    public void setPointsTransactionDate(Instant pointsTransactionDate) {
+        this.pointsTransactionDate = pointsTransactionDate;
     }
 
     public Long getUserId() {
@@ -62,5 +72,13 @@ public class RewardPointsTransactionDtoResponse {
 
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public Long getRewardVoucherId() {
+        return rewardVoucherId;
+    }
+
+    public void setRewardVoucherId(Long rewardVoucherId) {
+        this.rewardVoucherId = rewardVoucherId;
     }
 }
