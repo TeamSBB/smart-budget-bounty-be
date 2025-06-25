@@ -1,7 +1,6 @@
 package com.smartbudgetbounty.service.transaction;
 
 import java.time.Instant;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +40,15 @@ public class TransactionServiceImpl implements TransactionService {
     public CreateTransactionDtoResponse create(CreateTransactionDtoRequest request) {
         LogUtil.logStart(logger, "Creating Transaction.");
 
-        Optional<User> u = userRepo.findById(request.getUserId());
-
-        if (u.isEmpty()) {
+        // get user from repository
+        User user = userRepo.findById(request.getUserId()).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find userId: {}.", request.getUserId());
-            throw new EntityNotFoundException("Unable to find userId: " + request.getUserId());
-        }
+            return new EntityNotFoundException("Unable to find userId: " + request.getUserId());
+        });
 
+        // create and persist transaction
         Instant now = Instant.now();
-        Transaction entity = transactionRepo.save(
+        Transaction transaction = transactionRepo.save(
             new Transaction(
                 request.getTransactionAmount(),
                 now,
@@ -59,24 +58,25 @@ public class TransactionServiceImpl implements TransactionService {
                 request.getAccountNumber(),
                 request.getRemarks(),
                 request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
-                u.get()
+                user
             )
         );
 
         // TODO: call RewardPointsTransactionServiceImpl.createEarn
+        rewardPointsTransactionService.createEarn(user, transaction);
 
-        LogUtil.logEnd(logger, "Created Transaction: {}", entity);
+        LogUtil.logEnd(logger, "Created Transaction: {}", transaction);
 
         return new CreateTransactionDtoResponse(
-            entity.getId(),
-            entity.getTransactionAmount(),
-            entity.getRecipientName(),
+            transaction.getId(),
+            transaction.getTransactionAmount(),
+            transaction.getRecipientName(),
             now,
             request.getTransferDate() != null ? request.getTransferDate() : now,
-            entity.getPaymentMethod(),
-            entity.getPaynowRecipient(),
-            entity.getAccountNumber(),
-            entity.getRemarks()
+            transaction.getPaymentMethod(),
+            transaction.getPaynowRecipient(),
+            transaction.getAccountNumber(),
+            transaction.getRemarks()
         );
     }
 }
