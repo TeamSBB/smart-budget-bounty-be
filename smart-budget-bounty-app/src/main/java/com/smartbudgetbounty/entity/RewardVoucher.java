@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class RewardVoucherTransaction {
+public class RewardVoucher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +29,12 @@ public class RewardVoucherTransaction {
     @JoinColumn(name = "reward_points_transaction_id")
     private RewardPointsTransaction rewardPointsTransaction;
 
-    public RewardVoucherTransaction() {
+    public RewardVoucher() {
         super();
     }
 
     // constructor for earning a reward voucher from redeeming reward points
-    public RewardVoucherTransaction(
+    public RewardVoucher(
         Double discount,
         Instant rewardTransactionDate,
         User user,
