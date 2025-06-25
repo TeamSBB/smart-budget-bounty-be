@@ -2,6 +2,8 @@ package com.smartbudgetbounty.entity;
 
 import java.time.Instant;
 
+import com.smartbudgetbounty.enums.RewardVoucherStatus;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class RewardVoucherTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private RewardVoucherStatus voucherStatus;
     private Double discount;
     private Instant rewardTransactionDate;
 
@@ -30,7 +33,7 @@ public class RewardVoucherTransaction {
         super();
     }
 
-    // constructor for RewardPointsTransaction initiating RewardVoucherTransaction
+    // constructor for earning a reward voucher from redeeming reward points
     public RewardVoucherTransaction(
         Double discount,
         Instant rewardTransactionDate,
@@ -38,6 +41,7 @@ public class RewardVoucherTransaction {
         RewardPointsTransaction rewardPointsTransaction
     ) {
         super();
+        this.voucherStatus = RewardVoucherStatus.AVAILABLE;
         this.discount = discount;
         this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
@@ -46,6 +50,14 @@ public class RewardVoucherTransaction {
 
     public Long getId() {
         return id;
+    }
+
+    public RewardVoucherStatus getVoucherStatus() {
+        return voucherStatus;
+    }
+
+    public void setVoucherStatus(RewardVoucherStatus voucherStatus) {
+        this.voucherStatus = voucherStatus;
     }
 
     public void setId(Long id) {
