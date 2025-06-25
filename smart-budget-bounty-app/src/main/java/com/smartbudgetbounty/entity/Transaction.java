@@ -107,14 +107,6 @@ public class Transaction {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getRecipientName() {
         return recipientName;
     }
@@ -161,6 +153,30 @@ public class Transaction {
 
     public void setTransferDate(Instant transferDate) {
         this.transferDate = transferDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public PaymentMethod getPaymentMethod2() {
+        return paymentMethod2;
+    }
+
+    public void setPaymentMethod2(PaymentMethod paymentMethod2) {
+        this.paymentMethod2 = paymentMethod2;
+    }
+
+    public RewardPointsTransaction getRewardPointsTransaction() {
+        return rewardPointsTransaction;
+    }
+
+    public void setRewardPointsTransaction(RewardPointsTransaction rewardPointsTransaction) {
+        this.rewardPointsTransaction = rewardPointsTransaction;
     }
 
     @Override
