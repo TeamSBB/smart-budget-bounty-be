@@ -16,7 +16,7 @@ public class RewardPointsTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double amount;
-    private Instant rewardDate;
+    private Instant rewardTransactionDate;
 
     @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
     @JoinColumn(name = "user_id")
@@ -37,22 +37,22 @@ public class RewardPointsTransaction {
     // constructor for Transaction initiating RewardPointsTransaction
     public RewardPointsTransaction(
         Double amount,
-        Instant rewardDate,
+        Instant rewardTransactionDate,
         User user,
         Transaction transaction
     ) {
         super();
         this.amount = amount;
-        this.rewardDate = rewardDate;
+        this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
         this.transaction = transaction;
     }
 
     // constructor for RewardPointsTransaction initiating RewardVoucherTransaction
-    public RewardPointsTransaction(Double amount, Instant rewardDate, User user) {
+    public RewardPointsTransaction(Double amount, Instant rewardTransactionDate, User user) {
         super();
         this.amount = amount;
-        this.rewardDate = rewardDate;
+        this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
     }
 
@@ -72,12 +72,12 @@ public class RewardPointsTransaction {
         this.amount = amount;
     }
 
-    public Instant getRewardDate() {
-        return rewardDate;
+    public Instant getRewardTransactionDate() {
+        return rewardTransactionDate;
     }
 
-    public void setRewardDate(Instant rewardDate) {
-        this.rewardDate = rewardDate;
+    public void setRewardTransactionDate(Instant rewardTransactionDate) {
+        this.rewardTransactionDate = rewardTransactionDate;
     }
 
     public User getUser() {

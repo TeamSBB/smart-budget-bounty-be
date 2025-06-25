@@ -16,7 +16,7 @@ public class RewardVoucherTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double discount;
-    private Instant rewardDate;
+    private Instant rewardTransactionDate;
 
     @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
     @JoinColumn(name = "user_id")
@@ -33,13 +33,13 @@ public class RewardVoucherTransaction {
     // constructor for RewardPointsTransaction initiating RewardVoucherTransaction
     public RewardVoucherTransaction(
         Double discount,
-        Instant rewardDate,
+        Instant rewardTransactionDate,
         User user,
         RewardPointsTransaction rewardPointsTransaction
     ) {
         super();
         this.discount = discount;
-        this.rewardDate = rewardDate;
+        this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
         this.rewardPointsTransaction = rewardPointsTransaction;
     }
@@ -60,12 +60,12 @@ public class RewardVoucherTransaction {
         this.discount = discount;
     }
 
-    public Instant getRewardDate() {
-        return rewardDate;
+    public Instant getRewardTransactionDate() {
+        return rewardTransactionDate;
     }
 
-    public void setRewardDate(Instant rewardDate) {
-        this.rewardDate = rewardDate;
+    public void setRewardTransactionDate(Instant rewardTransactionDate) {
+        this.rewardTransactionDate = rewardTransactionDate;
     }
 
     public User getUser() {
