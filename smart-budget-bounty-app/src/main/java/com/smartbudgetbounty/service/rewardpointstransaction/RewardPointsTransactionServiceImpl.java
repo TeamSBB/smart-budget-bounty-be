@@ -66,7 +66,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // - to be called by TransactionService whenever a Transaction is created
     @Override
     public RewardPointsTransactionResponseDto createEarn(User user, Transaction transaction) {
-        LogUtil.logStart(logger, "Creating EARNED RewardPointsTransaction.");
+        LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
 
         // create rewardPointsTransaction
         RewardPointsTransaction rewardPointsTransaction = new RewardPointsTransaction(
@@ -84,11 +84,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         rewardPointsTransactionRepository.save(rewardPointsTransaction);
         transactionRepository.save(transaction);
 
-        LogUtil.logEnd(
-            logger,
-            "Created EARNED RewardPointsTransaction: {}",
-            rewardPointsTransaction
-        );
+        LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", rewardPointsTransaction);
 
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
@@ -123,27 +119,31 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
 
+    // retrieve RewardPointsTransaction
     @Override
     public RewardPointsTransaction getById(Long id) {
+        LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
+
         RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.findById(
             id
         ).orElseThrow(() -> {
             LogUtil.logError(logger, "RewardPointsTransaction not found for id: {}", id);
             return new EntityNotFoundException("RewardPointsTransaction not found for id: " + id);
         });
+
+        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", rewardPointsTransaction);
+
         return rewardPointsTransaction;
     }
 
+    // retrieve RewardPointsTransaction and return it as a RewardPointsTransactionResponseDto
     @Override
     public RewardPointsTransactionResponseDto getDtoById(Long id) {
-        LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
         RewardPointsTransaction rewardPointsTransaction = getById(id);
-        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", rewardPointsTransaction);
-
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
 
-    // Retrieves a user's RewardPointsTransactions
+    // retrieve a user's RewardPointsTransactions
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
