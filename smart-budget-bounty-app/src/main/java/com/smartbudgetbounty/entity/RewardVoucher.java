@@ -19,7 +19,8 @@ public class RewardVoucher {
     private Long id;
     private RewardVoucherStatus voucherStatus;
     private Double discount;
-    private Instant rewardTransactionDate;
+    private Instant earnDate;
+    private Instant redeemDate;
 
     @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
     @JoinColumn(name = "user_id")
@@ -43,13 +44,17 @@ public class RewardVoucher {
         super();
         this.voucherStatus = RewardVoucherStatus.AVAILABLE;
         this.discount = discount;
-        this.rewardTransactionDate = rewardTransactionDate;
+        this.earnDate = rewardTransactionDate;
         this.user = user;
         this.rewardPointsTransaction = rewardPointsTransaction;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public RewardVoucherStatus getVoucherStatus() {
@@ -60,10 +65,6 @@ public class RewardVoucher {
         this.voucherStatus = voucherStatus;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Double getDiscount() {
         return discount;
     }
@@ -72,12 +73,20 @@ public class RewardVoucher {
         this.discount = discount;
     }
 
-    public Instant getRewardTransactionDate() {
-        return rewardTransactionDate;
+    public Instant getEarnDate() {
+        return earnDate;
     }
 
-    public void setRewardTransactionDate(Instant rewardTransactionDate) {
-        this.rewardTransactionDate = rewardTransactionDate;
+    public void setEarnDate(Instant earnDate) {
+        this.earnDate = earnDate;
+    }
+
+    public Instant getRedeemDate() {
+        return redeemDate;
+    }
+
+    public void setRedeemDate(Instant redeemDate) {
+        this.redeemDate = redeemDate;
     }
 
     public User getUser() {
