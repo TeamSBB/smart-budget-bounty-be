@@ -31,13 +31,14 @@ public class RewardPointsTransaction {
 
     @OneToOne // Owner - Because RewardPointsTransaction exist then can have RewardVouchers
     @JoinColumn(name = "reward_voucher_id")
-    private RewardVoucher rewardVoucherTransaction;
+    private RewardVoucher rewardVoucher;
 
     public RewardPointsTransaction() {
         super();
     }
 
     // constructor for earning reward points from making a transaction
+    // - is null
     public RewardPointsTransaction(
         Double amount,
         Instant pointsTransactionDate,
@@ -53,6 +54,7 @@ public class RewardPointsTransaction {
     }
 
     // constructor for redeeming reward points to earn a reward voucher
+    // x
     public RewardPointsTransaction(Double amount, Instant pointsTransactionDate, User user) {
         super();
         this.pointsTransactionType = RewardPointsTransactionType.REDEEMED;
@@ -109,11 +111,11 @@ public class RewardPointsTransaction {
         this.transaction = transaction;
     }
 
-    public RewardVoucher getRewardVoucherTransaction() {
-        return rewardVoucherTransaction;
+    public RewardVoucher getRewardVoucher() {
+        return rewardVoucher;
     }
 
-    public void setRewardVoucherTransaction(RewardVoucher rewardVoucherTransaction) {
-        this.rewardVoucherTransaction = rewardVoucherTransaction;
+    public void setRewardVoucher(RewardVoucher rewardVoucher) {
+        this.rewardVoucher = rewardVoucher;
     }
 }
