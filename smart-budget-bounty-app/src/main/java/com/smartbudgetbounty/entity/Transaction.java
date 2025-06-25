@@ -2,12 +2,14 @@ package com.smartbudgetbounty.entity;
 
 import java.time.Instant;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Transaction {
@@ -37,9 +39,17 @@ public class Transaction {
     @JoinColumn(name = "payment_method_id", nullable = false, referencedColumnName = "id")
     private PaymentMethod paymentMethod2;
 
-//	@OneToOne // Owner - Because Transaction exist then can have rewards
-//	@JoinColumn(name="reward_id")
-//	private Reward reward;
+    // Transaction (inverse side) <- RewardPointsTransaction (owning side)
+    // - RewardPointsTransaction holds the foreign key to Transaction
+    @OneToOne(
+        // relationship is mapped by the "transaction" field in RewardVoucher
+        mappedBy = "transaction",
+        // cascade operations from Transaction (parent) to RewardPointsTransaction (child)
+        cascade = CascadeType.ALL,
+        // delete RewardPointsTransaction (child) if it is removed from Transaction (parent)
+        orphanRemoval = true
+    )
+    private RewardPointsTransaction rewardPointsTransaction;
 
 //	@OneToOne // Owner - Because Transaction is created for an Account, not the other way around
 //	@JoinColumn(name="account_id")
