@@ -13,17 +13,21 @@ public class RewardPointsTransactionResponseDto {
 
     public RewardPointsTransactionResponseDto(
         Long id,
+        String pointsTransactionType,
         Double amount,
-        Instant date,
+        Instant pointsTransactionDate,
         Long userId,
-        Long transactionId
+        Long transactionId,
+        Long rewardVoucherId
     ) {
         super();
         this.id = id;
+        this.pointsTransactionType = pointsTransactionType;
         this.amount = amount;
-        this.pointsTransactionDate = date;
+        this.pointsTransactionDate = pointsTransactionDate;
         this.userId = userId;
         this.transactionId = transactionId;
+        this.rewardVoucherId = rewardVoucherId;
     }
 
     public Long getId() {
