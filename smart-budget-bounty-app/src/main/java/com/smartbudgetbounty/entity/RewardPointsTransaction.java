@@ -2,6 +2,8 @@ package com.smartbudgetbounty.entity;
 
 import java.time.Instant;
 
+import com.smartbudgetbounty.enums.RewardPointsTransactionType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class RewardPointsTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private RewardPointsTransactionType rewardTransactionType;
     private Double amount;
     private Instant rewardTransactionDate;
 
@@ -34,7 +37,7 @@ public class RewardPointsTransaction {
         super();
     }
 
-    // constructor for Transaction initiating RewardPointsTransaction
+    // constructor for earning reward points from making a transaction
     public RewardPointsTransaction(
         Double amount,
         Instant rewardTransactionDate,
@@ -42,15 +45,17 @@ public class RewardPointsTransaction {
         Transaction transaction
     ) {
         super();
+        this.rewardTransactionType = RewardPointsTransactionType.EARNED;
         this.amount = amount;
         this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
         this.transaction = transaction;
     }
 
-    // constructor for RewardPointsTransaction initiating RewardVoucherTransaction
+    // constructor for redeeming reward points to earn a reward voucher
     public RewardPointsTransaction(Double amount, Instant rewardTransactionDate, User user) {
         super();
+        this.rewardTransactionType = RewardPointsTransactionType.REDEEMED;
         this.amount = amount;
         this.rewardTransactionDate = rewardTransactionDate;
         this.user = user;
@@ -62,6 +67,14 @@ public class RewardPointsTransaction {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public RewardPointsTransactionType getRewardTransactionType() {
+        return rewardTransactionType;
+    }
+
+    public void setRewardTransactionType(RewardPointsTransactionType rewardTransactionType) {
+        this.rewardTransactionType = rewardTransactionType;
     }
 
     public Double getAmount() {
