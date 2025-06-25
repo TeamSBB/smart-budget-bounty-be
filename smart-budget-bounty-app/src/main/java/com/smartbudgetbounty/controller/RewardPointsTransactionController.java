@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRewardPointsTransactionDtoRequest;
+import com.smartbudgetbounty.dto.rewardpointstransaction.CreateEarnRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
 import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
@@ -43,7 +43,7 @@ public class RewardPointsTransactionController {
     @PostMapping("/user/{userId}")
     public ResponseEntity<ApiResponse<RewardPointsTransactionDtoResponse>> createRewardPointsTransaction(
             @Parameter(description = "ID of the user", required = true) @PathVariable Long userId,
-            @Valid @RequestBody CreateRewardPointsTransactionDtoRequest createDtoReq) {
+            @Valid @RequestBody CreateEarnRewardPointsTransactionRequestDto createDtoReq) {
         LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
 
         // Call service to insert into db

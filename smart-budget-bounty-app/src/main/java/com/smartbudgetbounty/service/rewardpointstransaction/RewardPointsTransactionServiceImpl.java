@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRewardPointsTransactionDtoRequest;
+import com.smartbudgetbounty.dto.rewardpointstransaction.CreateEarnRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transaction;
@@ -56,7 +56,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     @Override
     public
         RewardPointsTransactionDtoResponse
-        create(Long userId, CreateRewardPointsTransactionDtoRequest request) {
+        create(Long userId, CreateEarnRewardPointsTransactionRequestDto request) {
         LogUtil.logStart(logger, "Creating RewardPointsTransaction.");
 
         Optional<User> user = userRepository.findById(userId);
