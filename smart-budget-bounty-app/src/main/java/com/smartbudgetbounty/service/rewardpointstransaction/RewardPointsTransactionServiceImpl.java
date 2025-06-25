@@ -3,7 +3,6 @@ package com.smartbudgetbounty.service.rewardpointstransaction;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
 import com.smartbudgetbounty.repository.TransactionRepository;
-import com.smartbudgetbounty.repository.UserRepository;
+import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -28,18 +27,18 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         RewardPointsTransactionServiceImpl.class
     );
 
-    private final RewardPointsTransactionRepository rewardPointsTransactionRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final TransactionRepository transactionRepository;
+    private final RewardPointsTransactionRepository rewardPointsTransactionRepository;
 
     public RewardPointsTransactionServiceImpl(
-        RewardPointsTransactionRepository rewardPointsTransactionRepository,
-        UserRepository userRepository,
-        TransactionRepository transactionRepository
+        UserService userService,
+        TransactionRepository transactionRepository,
+        RewardPointsTransactionRepository rewardPointsTransactionRepository
     ) {
-        this.rewardPointsTransactionRepository = rewardPointsTransactionRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.transactionRepository = transactionRepository;
+        this.rewardPointsTransactionRepository = rewardPointsTransactionRepository;
     }
 
     // helper methods
@@ -57,28 +56,17 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         );
     }
 
-    int toRewardPointsAmount(Double transactionAmount) {
+    Integer toRewardPointsAmount(Double transactionAmount) {
         return (int) Math.floor(transactionAmount);
     }
 
     // service methods
 
-    // method to be called whenever a Transaction is created
+    // create and persist RewardPointsTransaction
+    // - to be called by TransactionService whenever a Transaction is created
     @Override
-    public RewardPointsTransactionResponseDto createEarn(Long userId, Long transactionId) {
+    public RewardPointsTransactionResponseDto createEarn(User user, Transaction transaction) {
         LogUtil.logStart(logger, "Creating EARNED RewardPointsTransaction.");
-
-        // get user from repository
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find userId: {}.", userId);
-            return new EntityNotFoundException("Unable to find userId: " + userId);
-        });
-
-        // get transaction from repository
-        Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find transactionId: {}.", transactionId);
-            return new EntityNotFoundException("Unable to find transactionId: " + transactionId);
-        });
 
         // create rewardPointsTransaction
         RewardPointsTransaction rewardPointsTransaction = new RewardPointsTransaction(
@@ -105,28 +93,26 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
     }
 
+    // create and persist RewardPointsTransaction
+    // - to be called by RewardPointsTransactionController
     @Override
-    public RewardPointsTransactionResponseDto createRedeem(Long userId, int redeemAmount) {
+    public RewardPointsTransactionResponseDto createRedeem(Long userId, Integer redeemAmount) {
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
-        // get user from repository
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find userId: {}.", userId);
-            return new EntityNotFoundException("Unable to find userId: " + userId);
-        });
+        // get User from repository
+        User user = userService.getById(userId);
 
-        // create rewardPointsTransaction
-        RewardPointsTransaction rewardPointsTransaction = new RewardPointsTransaction(
-            RewardPointsTransactionType.REDEEM,
-            redeemAmount,
-            Instant.now(),
-            user
+        // create and persist RewardPointsTransaction
+        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.save(
+            new RewardPointsTransaction(
+                RewardPointsTransactionType.REDEEM,
+                redeemAmount,
+                Instant.now(),
+                user
+            )
         );
 
-        // persist RewardPointsTransaction
-        rewardPointsTransactionRepository.save(rewardPointsTransaction);
-
-        // TODO: call RewardVoucherServiceImpl.create
+        // TODO: call RewardVoucherServiceImpl.create to create and persist RewardVoucher
 
         LogUtil.logEnd(
             logger,
@@ -138,19 +124,36 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     @Override
-    public List<RewardPointsTransactionResponseDto> getByUserId(Long userId) {
+    public RewardPointsTransaction getById(Long id) {
+        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.findById(
+            id
+        ).orElseThrow(() -> {
+            LogUtil.logError(logger, "RewardPointsTransaction not found for id: {}", id);
+            return new EntityNotFoundException("RewardPointsTransaction not found for id: " + id);
+        });
+        return rewardPointsTransaction;
+    }
+
+    @Override
+    public RewardPointsTransactionResponseDto getDtoById(Long id) {
+        LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
+        RewardPointsTransaction rewardPointsTransaction = getById(id);
+        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", rewardPointsTransaction);
+
+        return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
+    }
+
+    // Retrieves a user's RewardPointsTransactions
+    // - to be called by RewardPointsTransactionController
+    @Override
+    public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
         LogUtil.logStart(logger, "Getting list of RewardPointsTransaction by userId.");
 
-        Optional<User> user = userRepository.findById(userId);
+        // get User from repository
+        User user = userService.getById(userId);
 
-        if (user.isEmpty()) {
-            LogUtil.logError(logger, "Unable to find userId: {}.", userId);
-            throw new EntityNotFoundException("Unable to find userId: " + userId);
-        }
-
-        List<RewardPointsTransaction> rewardPointsTransactions = rewardPointsTransactionRepository.findByUserId(
-            user.get().getId()
-        );
+        // convert RewardPointsTransactions to RewardPointsTransactionResponseDto
+        List<RewardPointsTransaction> rewardPointsTransactions = user.getRewardPointsTransactions();
 
         ArrayList<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
 
@@ -163,27 +166,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         LogUtil.logEnd(
             logger,
             "Retrieved RewardPointsTransactions for userId {}: {}",
-            user.get().getId(),
+            user.getId(),
             rewardPointsTransactionDtos
         );
 
         return rewardPointsTransactionDtos;
     }
-
-    @Override
-    public RewardPointsTransactionResponseDto getById(Long id) {
-        LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
-
-        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.findById(
-            id
-        ).orElseThrow(() -> {
-            LogUtil.logError(logger, "RewardPointsTransaction not found for id: {}", id);
-            return new EntityNotFoundException("RewardPointsTransaction not found for id: " + id);
-        });
-
-        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", rewardPointsTransaction);
-
-        return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
-    }
-
 }

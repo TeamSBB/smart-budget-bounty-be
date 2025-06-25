@@ -71,7 +71,7 @@ public class RewardPointsTransactionController {
                 "API called: GET /api/reward-point-transaction/user/" + userId);
 
         List<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = rewardPointsTransactionService
-                .getByUserId(
+                .getDtosByUserId(
                         userId);
 
         return ResponseEntity.ok(
@@ -89,7 +89,7 @@ public class RewardPointsTransactionController {
             @Parameter(description = "ID of the reward points transaction", required = true) @PathVariable Long id) {
         LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
 
-        RewardPointsTransactionResponseDto responseDto = rewardPointsTransactionService.getById(id);
+        RewardPointsTransactionResponseDto responseDto = rewardPointsTransactionService.getDtoById(id);
 
         return ResponseEntity.ok(
                 new ApiResponse<RewardPointsTransactionResponseDto>(
