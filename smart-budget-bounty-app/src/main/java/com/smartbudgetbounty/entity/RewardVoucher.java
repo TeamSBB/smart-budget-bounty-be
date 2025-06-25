@@ -5,6 +5,8 @@ import java.time.Instant;
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +20,9 @@ public class RewardVoucher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private RewardVoucherStatus voucherStatus;
+
     private Double discount;
     private Instant earnDate;
     private Instant redeemDate;
@@ -40,18 +44,12 @@ public class RewardVoucher {
     }
 
     // constructor for earning a reward voucher from redeeming reward points
-    public RewardVoucher(
-        Double discount,
-        Instant rewardTransactionDate,
-        User user,
-        RewardPointsTransaction rewardPointsTransaction
-    ) {
+    public RewardVoucher(Double discount, Instant rewardTransactionDate, User user) {
         super();
         this.voucherStatus = RewardVoucherStatus.AVAILABLE;
         this.discount = discount;
         this.earnDate = rewardTransactionDate;
         this.user = user;
-        this.rewardPointsTransaction = rewardPointsTransaction;
     }
 
     public Long getId() {
