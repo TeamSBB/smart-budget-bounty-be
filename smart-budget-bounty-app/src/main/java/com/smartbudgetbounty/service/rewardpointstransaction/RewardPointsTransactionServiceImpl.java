@@ -47,7 +47,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return new RewardPointsTransactionDtoResponse(
             rewardPointsTransaction.getId(),
             rewardPointsTransaction.getAmount(),
-            rewardPointsTransaction.getDate(),
+            rewardPointsTransaction.getRewardDate(),
             rewardPointsTransaction.getUser().getId(),
             rewardPointsTransaction.getTransaction().getId()
         );
