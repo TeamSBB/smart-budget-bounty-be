@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateEarnRewardPointsTransactionRequestDto;
-import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
+import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transaction;
 import com.smartbudgetbounty.entity.User;
@@ -42,9 +42,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         this.transactionRepository = transactionRepository;
     }
 
-    RewardPointsTransactionDtoResponse
+    RewardPointsTransactionResponseDto
         toRewardPointsTransactionDtoResponse(RewardPointsTransaction rewardPointsTransaction) {
-        return new RewardPointsTransactionDtoResponse(
+        return new RewardPointsTransactionResponseDto(
             rewardPointsTransaction.getId(),
             rewardPointsTransaction.getAmount(),
             rewardPointsTransaction.getRewardDate(),
@@ -55,7 +55,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     @Override
     public
-        RewardPointsTransactionDtoResponse
+        RewardPointsTransactionResponseDto
         create(Long userId, CreateEarnRewardPointsTransactionRequestDto request) {
         LogUtil.logStart(logger, "Creating RewardPointsTransaction.");
 
@@ -93,7 +93,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     @Override
-    public List<RewardPointsTransactionDtoResponse> getByUserId(Long userId) {
+    public List<RewardPointsTransactionResponseDto> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Getting list of RewardPointsTransaction by userId.");
 
         Optional<User> user = userRepository.findById(userId);
@@ -107,7 +107,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             user.get().getId()
         );
 
-        ArrayList<RewardPointsTransactionDtoResponse> rewardPointsTransactionDtos = new ArrayList<RewardPointsTransactionDtoResponse>();
+        ArrayList<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
 
         for (RewardPointsTransaction rewardPointsTransaction : rewardPointsTransactions) {
             rewardPointsTransactionDtos.add(
@@ -126,7 +126,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     @Override
-    public RewardPointsTransactionDtoResponse getById(Long id) {
+    public RewardPointsTransactionResponseDto getById(Long id) {
         LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
 
         RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.findById(

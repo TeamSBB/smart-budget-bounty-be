@@ -3,13 +3,13 @@ package com.smartbudgetbounty.service.rewardpointstransaction;
 import java.util.List;
 
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateEarnRewardPointsTransactionRequestDto;
-import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
+import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 
 public interface RewardPointsTransactionService {
-    RewardPointsTransactionDtoResponse
+    RewardPointsTransactionResponseDto
         create(Long userId, CreateEarnRewardPointsTransactionRequestDto request);
 
-    List<RewardPointsTransactionDtoResponse> getByUserId(Long userId);
+    List<RewardPointsTransactionResponseDto> getByUserId(Long userId);
 
-    RewardPointsTransactionDtoResponse getById(Long id);
+    RewardPointsTransactionResponseDto getById(Long id);
 }

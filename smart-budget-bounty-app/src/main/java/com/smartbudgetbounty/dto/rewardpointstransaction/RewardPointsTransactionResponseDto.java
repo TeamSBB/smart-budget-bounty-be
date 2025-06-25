@@ -2,7 +2,7 @@ package com.smartbudgetbounty.dto.rewardpointstransaction;
 
 import java.time.Instant;
 
-public class RewardPointsTransactionDtoResponse {
+public class RewardPointsTransactionResponseDto {
     private Long id;
     private String pointsTransactionType;
     private Double amount;
@@ -11,7 +11,7 @@ public class RewardPointsTransactionDtoResponse {
     private Long transactionId;
     private Long rewardVoucherId;
 
-    public RewardPointsTransactionDtoResponse(
+    public RewardPointsTransactionResponseDto(
         Long id,
         Double amount,
         Instant date,
