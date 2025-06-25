@@ -127,4 +127,12 @@ public class UserServiceImpl implements UserService {
 		return new RegisterDtoResponse(u.getUsername());
 	}
 
+	@Override
+	public User getById(Long id) {
+        User user = userRepo.findById(id).orElseThrow(() -> {
+            LogUtil.logError(logger, "Unable to find userId: {}.", id);
+            return new EntityNotFoundException("Unable to find userId: " + id);
+        });
+	    return user;
+	}
 }
