@@ -1,8 +1,8 @@
 package com.smartbudgetbounty.enums;
 
 public enum RewardPointsTransactionType {
-    EARNED("Reward points earned from making transactions"),
-    REDEEMED("Reward points redeemed for reward vouchers");
+    EARN("Adds reward points earned from making transactions"),
+    REDEEM("Deducts reward points used to redeem reward vouchers");
 
     private final String description;
 
