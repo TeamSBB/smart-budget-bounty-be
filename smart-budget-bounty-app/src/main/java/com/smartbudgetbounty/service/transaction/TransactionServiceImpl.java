@@ -15,13 +15,15 @@ import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransac
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     private final UserService userService;
-    private final TransactionRepository transactionRepo;
+    private final TransactionRepository transactionRepository;
     private final RewardPointsTransactionService rewardPointsTransactionService;
 
     public TransactionServiceImpl(
@@ -30,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
         RewardPointsTransactionService rewardPointsTransactionService
     ) {
         this.userService = userService;
-        this.transactionRepo = transactionRepo;
+        this.transactionRepository = transactionRepo;
         this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
 
@@ -43,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         // create and persist Transaction
         Instant now = Instant.now();
-        Transaction transaction = transactionRepo.save(
+        Transaction transaction = transactionRepository.save(
             new Transaction(
                 request.getTransactionAmount(),
                 now,
@@ -73,5 +75,14 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.getAccountNumber(),
             transaction.getRemarks()
         );
+    }
+
+    @Override
+    public Transaction getById(Long id) {
+        Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> {
+            LogUtil.logError(logger, "Unable to find transactionId: {}.", id);
+            return new EntityNotFoundException("Unable to find transactionId: " + id);
+        });
+        return transaction;
     }
 }
