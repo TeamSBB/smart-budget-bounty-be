@@ -24,7 +24,7 @@ public class RewardPointsTransaction {
     @Enumerated(EnumType.STRING)
     private RewardPointsTransactionType pointsTransactionType;
 
-    private int amount;
+    private Integer amount;
     private Instant pointsTransactionDate;
 
     // RewardPointsTransaction (owning side) -> User (inverse side)
@@ -57,7 +57,7 @@ public class RewardPointsTransaction {
 
     public RewardPointsTransaction(
         RewardPointsTransactionType pointsTransactionType,
-        int amount,
+        Integer amount,
         Instant pointsTransactionDate,
         User user
     ) {
@@ -84,11 +84,11 @@ public class RewardPointsTransaction {
         this.pointsTransactionType = pointsTransactionType;
     }
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
