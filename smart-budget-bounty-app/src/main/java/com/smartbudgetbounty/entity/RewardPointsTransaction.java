@@ -4,7 +4,10 @@ import java.time.Instant;
 
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,20 +20,35 @@ public class RewardPointsTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
     private RewardPointsTransactionType pointsTransactionType;
+
     private Double amount;
     private Instant pointsTransactionDate;
 
-    @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
+    // RewardPointsTransaction (owning side) -> User (inverse side)
+    // - RewardPointsTransaction holds the foreign key to User
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne // Inverse side - Because Transaction exist then can have RewardPoints
+    // RewardPointsTransaction (owning side) -> Transaction (inverse side)
+    // - RewardPointsTransaction holds the foreign key to Transaction
+    @OneToOne
     @JoinColumn(name = "transaction_id")
     private Transaction transaction;
 
-    @OneToOne // Owner - Because RewardPointsTransaction exist then can have RewardVouchers
-    @JoinColumn(name = "reward_voucher_id")
+    // RewardPointsTransaction (inverse side) <- RewardVoucher (owning side)
+    // - RewardVoucher holds the foreign key to RewardPointsTransaction
+    @OneToOne(
+        // relationship is mapped by the "reward_points_transaction" field in RewardVoucher
+        mappedBy = "reward_points_transaction",
+        // cascade operations from RewardPointsTransaction (parent) to RewardVoucher (child)
+        cascade = CascadeType.ALL,
+        // delete RewardVoucher (child) if it is removed from RewardPointsTransaction (parent)
+        orphanRemoval = true
+    )
     private RewardVoucher rewardVoucher;
 
     public RewardPointsTransaction() {
