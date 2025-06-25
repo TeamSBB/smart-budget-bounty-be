@@ -80,10 +80,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction getById(Long id) {
+        LogUtil.logStart(logger, "Getting Transaction by id.");
+
         Transaction transaction = transactionRepository.findById(id).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find transactionId: {}.", id);
             return new EntityNotFoundException("Unable to find transactionId: " + id);
         });
+        
+        LogUtil.logEnd(logger, "Retrieved Transaction: {}", transaction);
+
         return transaction;
     }
 }

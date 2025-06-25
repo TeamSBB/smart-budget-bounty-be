@@ -129,10 +129,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getById(Long id) {
+	    LogUtil.logStart(logger, "Getting User by id.");
+	    
         User user = userRepo.findById(id).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find userId: {}.", id);
             return new EntityNotFoundException("Unable to find userId: " + id);
         });
+        
+        LogUtil.logEnd(logger, "Retrieved User: {}", user);
+        
 	    return user;
 	}
 }
