@@ -25,11 +25,15 @@ public class Transaction {
 
     private Instant transferDate;
 
-    @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
+    // Transaction (owning side) -> User (inverse side)
+    // - Transaction holds the foreign key to User
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
+    // Transaction (owning side) -> User (inverse side)
+    // - Transaction holds the foreign key to User
+    @ManyToOne
     @JoinColumn(name = "payment_method_id", nullable = false, referencedColumnName = "id")
     private PaymentMethod paymentMethod2;
 
