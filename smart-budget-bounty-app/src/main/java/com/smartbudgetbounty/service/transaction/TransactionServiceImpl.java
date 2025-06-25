@@ -36,6 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
         this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
 
+    // create and persist Transaction
     @Override
     public CreateTransactionDtoResponse create(CreateTransactionDtoRequest request) {
         LogUtil.logStart(logger, "Creating Transaction.");
