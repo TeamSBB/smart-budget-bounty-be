@@ -13,6 +13,7 @@ import com.smartbudgetbounty.entity.Transaction;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.repository.TransactionRepository;
 import com.smartbudgetbounty.repository.UserRepository;
+import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,12 +23,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
-    private final TransactionRepository transactionRepo;
     private final UserRepository userRepo;
+    private final TransactionRepository transactionRepo;
+    private final RewardPointsTransactionService rewardPointsTransactionService;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepo, UserRepository userRepo) {
-        this.transactionRepo = transactionRepo;
+    public TransactionServiceImpl(
+        UserRepository userRepo,
+        TransactionRepository transactionRepo,
+        RewardPointsTransactionService rewardPointsTransactionService
+    ) {
         this.userRepo = userRepo;
+        this.transactionRepo = transactionRepo;
+        this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
 
     @Override
@@ -72,5 +79,4 @@ public class TransactionServiceImpl implements TransactionService {
             entity.getRemarks()
         );
     }
-
 }
