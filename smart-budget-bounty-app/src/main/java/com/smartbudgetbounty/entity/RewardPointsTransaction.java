@@ -55,27 +55,14 @@ public class RewardPointsTransaction {
         super();
     }
 
-    // constructor for earning reward points from making a transaction
-    // - rewardVoucher is null
     public RewardPointsTransaction(
+        RewardPointsTransactionType pointsTransactionType,
         Double amount,
         Instant pointsTransactionDate,
-        User user,
-        Transaction transaction
+        User user
     ) {
         super();
-        this.pointsTransactionType = RewardPointsTransactionType.EARNED;
-        this.amount = amount;
-        this.pointsTransactionDate = pointsTransactionDate;
-        this.user = user;
-        this.transaction = transaction;
-    }
-
-    // constructor for redeeming reward points to earn a reward voucher
-    // - transaction is null, rewardVoucher will be assigned later
-    public RewardPointsTransaction(Double amount, Instant pointsTransactionDate, User user) {
-        super();
-        this.pointsTransactionType = RewardPointsTransactionType.REDEEMED;
+        this.pointsTransactionType = pointsTransactionType;
         this.amount = amount;
         this.pointsTransactionDate = pointsTransactionDate;
         this.user = user;
