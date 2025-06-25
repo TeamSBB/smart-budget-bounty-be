@@ -17,9 +17,9 @@ public class RewardPointsTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private RewardPointsTransactionType rewardTransactionType;
+    private RewardPointsTransactionType pointsTransactionType;
     private Double amount;
-    private Instant rewardTransactionDate;
+    private Instant pointsTransactionDate;
 
     @ManyToOne // Owner - Because in a one-many r/s, the many is the owner
     @JoinColumn(name = "user_id")
@@ -40,24 +40,24 @@ public class RewardPointsTransaction {
     // constructor for earning reward points from making a transaction
     public RewardPointsTransaction(
         Double amount,
-        Instant rewardTransactionDate,
+        Instant pointsTransactionDate,
         User user,
         Transaction transaction
     ) {
         super();
-        this.rewardTransactionType = RewardPointsTransactionType.EARNED;
+        this.pointsTransactionType = RewardPointsTransactionType.EARNED;
         this.amount = amount;
-        this.rewardTransactionDate = rewardTransactionDate;
+        this.pointsTransactionDate = pointsTransactionDate;
         this.user = user;
         this.transaction = transaction;
     }
 
     // constructor for redeeming reward points to earn a reward voucher
-    public RewardPointsTransaction(Double amount, Instant rewardTransactionDate, User user) {
+    public RewardPointsTransaction(Double amount, Instant pointsTransactionDate, User user) {
         super();
-        this.rewardTransactionType = RewardPointsTransactionType.REDEEMED;
+        this.pointsTransactionType = RewardPointsTransactionType.REDEEMED;
         this.amount = amount;
-        this.rewardTransactionDate = rewardTransactionDate;
+        this.pointsTransactionDate = pointsTransactionDate;
         this.user = user;
     }
 
@@ -69,12 +69,12 @@ public class RewardPointsTransaction {
         this.id = id;
     }
 
-    public RewardPointsTransactionType getRewardTransactionType() {
-        return rewardTransactionType;
+    public RewardPointsTransactionType getPointsTransactionType() {
+        return pointsTransactionType;
     }
 
-    public void setRewardTransactionType(RewardPointsTransactionType rewardTransactionType) {
-        this.rewardTransactionType = rewardTransactionType;
+    public void setPointsTransactionType(RewardPointsTransactionType pointsTransactionType) {
+        this.pointsTransactionType = pointsTransactionType;
     }
 
     public Double getAmount() {
@@ -85,12 +85,12 @@ public class RewardPointsTransaction {
         this.amount = amount;
     }
 
-    public Instant getRewardTransactionDate() {
-        return rewardTransactionDate;
+    public Instant getPointsTransactionDate() {
+        return pointsTransactionDate;
     }
 
-    public void setRewardTransactionDate(Instant rewardTransactionDate) {
-        this.rewardTransactionDate = rewardTransactionDate;
+    public void setPointsTransactionDate(Instant pointsTransactionDate) {
+        this.pointsTransactionDate = pointsTransactionDate;
     }
 
     public User getUser() {
