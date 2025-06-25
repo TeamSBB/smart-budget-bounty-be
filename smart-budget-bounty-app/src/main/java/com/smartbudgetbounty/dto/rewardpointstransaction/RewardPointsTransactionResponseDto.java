@@ -5,7 +5,7 @@ import java.time.Instant;
 public class RewardPointsTransactionResponseDto {
     private Long id;
     private String pointsTransactionType;
-    private Double amount;
+    private int amount;
     private Instant pointsTransactionDate;
     private Long userId;
     private Long transactionId;
@@ -14,7 +14,7 @@ public class RewardPointsTransactionResponseDto {
     public RewardPointsTransactionResponseDto(
         Long id,
         String pointsTransactionType,
-        Double amount,
+        int amount,
         Instant pointsTransactionDate,
         Long userId,
         Long transactionId,
@@ -46,11 +46,11 @@ public class RewardPointsTransactionResponseDto {
         this.pointsTransactionType = pointsTransactionType;
     }
 
-    public Double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
