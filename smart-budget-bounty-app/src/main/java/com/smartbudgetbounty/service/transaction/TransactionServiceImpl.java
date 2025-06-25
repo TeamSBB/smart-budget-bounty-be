@@ -11,27 +11,25 @@ import com.smartbudgetbounty.dto.transaction.CreateTransactionDtoResponse;
 import com.smartbudgetbounty.entity.Transaction;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.repository.TransactionRepository;
-import com.smartbudgetbounty.repository.UserRepository;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
+import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
-    private final UserRepository userRepo;
+    private final UserService userService;
     private final TransactionRepository transactionRepo;
     private final RewardPointsTransactionService rewardPointsTransactionService;
 
     public TransactionServiceImpl(
-        UserRepository userRepo,
+        UserService userService,
         TransactionRepository transactionRepo,
         RewardPointsTransactionService rewardPointsTransactionService
     ) {
-        this.userRepo = userRepo;
+        this.userService = userService;
         this.transactionRepo = transactionRepo;
         this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
@@ -41,12 +39,9 @@ public class TransactionServiceImpl implements TransactionService {
         LogUtil.logStart(logger, "Creating Transaction.");
 
         // get user from repository
-        User user = userRepo.findById(request.getUserId()).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find userId: {}.", request.getUserId());
-            return new EntityNotFoundException("Unable to find userId: " + request.getUserId());
-        });
+        User user = userService.getById(request.getUserId());
 
-        // create and persist transaction
+        // create and persist Transaction
         Instant now = Instant.now();
         Transaction transaction = transactionRepo.save(
             new Transaction(
@@ -62,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
             )
         );
 
-        // TODO: call RewardPointsTransactionServiceImpl.createEarn
+        // create and persist RewardPointsTransaction
         rewardPointsTransactionService.createEarn(user, transaction);
 
         LogUtil.logEnd(logger, "Created Transaction: {}", transaction);
