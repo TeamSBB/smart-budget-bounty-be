@@ -37,7 +37,7 @@ public class RewardVoucher {
     // - RewardVoucher holds the foreign key to RewardPointsTransaction
     @OneToOne
     @JoinColumn(name = "reward_points_transaction_id")
-    private RewardPointsTransaction rewardPointsTransaction;
+    private RewardPointsTransaction pointsTransaction;
 
     public RewardVoucher() {
         super();
@@ -99,11 +99,11 @@ public class RewardVoucher {
         this.user = user;
     }
 
-    public RewardPointsTransaction getRewardPointsTransaction() {
-        return rewardPointsTransaction;
+    public RewardPointsTransaction getPointsTransaction() {
+        return pointsTransaction;
     }
 
-    public void setRewardPointsTransaction(RewardPointsTransaction rewardPointsTransaction) {
-        this.rewardPointsTransaction = rewardPointsTransaction;
+    public void setPointsTransaction(RewardPointsTransaction pointsTransaction) {
+        this.pointsTransaction = pointsTransaction;
     }
 }
