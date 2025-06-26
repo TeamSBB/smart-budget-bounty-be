@@ -5,13 +5,13 @@ import java.util.List;
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
-import com.smartbudgetbounty.entity.Transaction;
+import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 
 public interface RewardPointsTransactionService {
     // create and persist RewardPointsTransaction
     // - to be called by TransactionService whenever a Transaction is created
-    RewardPointsTransactionResponseDto createEarn(User user, Transaction transaction);
+    RewardPointsTransactionResponseDto createEarn(User user, Transfer transaction);
 
     // create and persist RewardPointsTransaction
     // - to be called by RewardPointsTransactionController
