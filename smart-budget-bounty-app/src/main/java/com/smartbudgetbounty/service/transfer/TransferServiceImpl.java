@@ -1,6 +1,8 @@
 package com.smartbudgetbounty.service.transfer;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +46,8 @@ public class TransferServiceImpl implements TransferService {
 
     // helper methods
 
-    // convert Transfer to CreateTransferDtoResponse
-    private TransferResponseDto toCreateTransferDtoResponse(Transfer transfer) {
+    // convert Transfer toTransferResponseDto
+    private TransferResponseDto toTransferResponseDto(Transfer transfer) {
         return new TransferResponseDto(
             transfer.getId(),
             transfer.getTransactionAmount(),
@@ -59,6 +61,21 @@ public class TransferServiceImpl implements TransferService {
             transfer.getBankName(),
             transfer.getBeneficiaryName()
         );
+    }
+
+    // convert a list of Transfers to a list of TransferResponseDtos
+    private List<TransferResponseDto> toTransferResponseDtos(
+        List<Transfer> transfers
+    ) {
+        ArrayList<TransferResponseDto> transferResponseDtos = new ArrayList<TransferResponseDto>();
+
+        for (Transfer transfer : transfers) {
+            transferResponseDtos.add(
+                toTransferResponseDto(transfer)
+            );
+        }
+
+        return transferResponseDtos;
     }
 
     // service methods
@@ -106,7 +123,7 @@ public class TransferServiceImpl implements TransferService {
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 
-        return toCreateTransferDtoResponse(transfer);
+        return toTransferResponseDto(transfer);
     }
 
     // retrieve Transfer from TransferRepository
@@ -123,5 +140,24 @@ public class TransferServiceImpl implements TransferService {
         LogUtil.logEnd(logger, "Retrieved Transfer: {}", transfer);
 
         return transfer;
+    }
+
+    // retrieve a user's Transfers from TransferRepository and return it as a
+    // TransferResponseDto
+    // - to be called by TransferController
+    public List<TransferResponseDto> getDtosByUserId(Long userId) {
+        LogUtil.logStart(logger, "Getting Transfers by id.");
+
+        // get User from repository
+        User user = userService.getById(userId);
+
+        // convert Transfers to TransferResponseDtos
+        List<TransferResponseDto> transfers = toTransferResponseDtos(
+            user.getTransfers()
+        );
+
+        LogUtil.logEnd(logger, "Retrieved Transfers: {}", transfers);
+
+        return transfers;
     }
 }

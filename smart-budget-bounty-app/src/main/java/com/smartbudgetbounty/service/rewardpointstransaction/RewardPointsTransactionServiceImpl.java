@@ -68,15 +68,15 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     private List<RewardPointsTransactionResponseDto> toRewardPointsTransactionResponseDtos(
         List<RewardPointsTransaction> pointsTransactions
     ) {
-        ArrayList<RewardPointsTransactionResponseDto> pointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
+        ArrayList<RewardPointsTransactionResponseDto> pointsTransactionResponseDtos = new ArrayList<RewardPointsTransactionResponseDto>();
 
         for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
-            pointsTransactionDtos.add(
+            pointsTransactionResponseDtos.add(
                 toRewardPointsTransactionResponseDto(pointsTransaction)
             );
         }
 
-        return pointsTransactionDtos;
+        return pointsTransactionResponseDtos;
     }
 
     private Integer toRewardPointsAmount(Double transferAmount) {
@@ -181,10 +181,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         // get User from repository
         User user = userService.getById(userId);
 
-        // convert RewardPointsTransactions to RewardPointsTransactionResponseDto
-        List<RewardPointsTransaction> pointsTransactions = user.getPointsTransactions();
+        // convert RewardPointsTransactions to RewardPointsTransactionResponseDtos
         List<RewardPointsTransactionResponseDto> pointsTransactionDtos = toRewardPointsTransactionResponseDtos(
-            pointsTransactions
+            user.getPointsTransactions()
         );
 
         LogUtil.logEnd(
