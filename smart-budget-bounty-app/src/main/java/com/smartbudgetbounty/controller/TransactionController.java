@@ -26,17 +26,19 @@ public class TransactionController {
     public TransactionController(TransactionService transferService) {
         this.transferService = transferService;
     }
-    
+
     @PostMapping()
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody CreateTransactionDtoRequest createDtoReq) {
+    public ResponseEntity<?> createTransaction(
+        @Valid @RequestBody
+        CreateTransactionDtoRequest createDtoReq
+    ) {
         LogUtil.logInfoController(logger, "API called: POST /api/transaction");
-        
+
         // Call service to insert into db
         CreateTransactionDtoResponse createResponseDto = transferService.create(createDtoReq);
-        
-        return ResponseEntity.ok(new ApiResponse<>(
-    		createResponseDto,
-            "Created transaction successfully."
-        ));    
+
+        return ResponseEntity.ok(
+            new ApiResponse<>(createResponseDto, "Created transaction successfully.")
+        );
     }
 }

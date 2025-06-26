@@ -43,20 +43,20 @@ public class RewardPointsTransactionController {
         this.rewardPointsTransactionService = rewardPointsTransactionService;
     }
 
-    @Operation(summary = "Create a REDEEM RewardPointsTransaction")
+    @Operation(
+        summary = "Create a REDEEM RewardPointsTransaction"
+    )
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
         responseCode = "201",
         description = "Created"
     )
     @PostMapping("/user/{userId}")
-    public
-        ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>>
-        createRedeemRewardPointsTransaction(
-            @Parameter(description = "ID of the user", required = true) @PathVariable
-            Long userId,
-            @Valid @RequestBody
-            CreateRedeemRewardPointsTransactionRequestDto requestDto
-        ) {
+    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> createRedeemRewardPointsTransaction(
+        @Parameter(description = "ID of the user", required = true) @PathVariable
+        Long userId,
+        @Valid @RequestBody
+        CreateRedeemRewardPointsTransactionRequestDto requestDto
+    ) {
         LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
 
         // create and persist RewardPointsTransaction
@@ -79,16 +79,21 @@ public class RewardPointsTransactionController {
 
     }
 
-    @Operation(summary = "Retrieve a RewardPointsTransaction by its ID")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK")
+    @Operation(
+        summary = "Retrieve a RewardPointsTransaction by its ID"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+        responseCode = "200",
+        description = "OK"
+    )
     @GetMapping("/{id}")
-    public
-        ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>>
-        getRewardPointsTransactionById(
-            @Parameter(description = "ID of the reward points transaction", required = true)
-            @PathVariable
-            Long id
-        ) {
+    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> getRewardPointsTransactionById(
+        @Parameter(
+            description = "ID of the reward points transaction",
+            required = true
+        ) @PathVariable
+        Long id
+    ) {
         LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
 
         RewardPointsTransactionResponseDto responseDto = rewardPointsTransactionService.getDtoById(
@@ -103,15 +108,18 @@ public class RewardPointsTransactionController {
         );
     }
 
-    @Operation(summary = "Retrieve a user's list of RewardPointsTransactions")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK")
+    @Operation(
+        summary = "Retrieve a user's list of RewardPointsTransactions"
+    )
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+        responseCode = "200",
+        description = "OK"
+    )
     @GetMapping("/user/{userId}")
-    public
-        ResponseEntity<ApiResponse<List<RewardPointsTransactionResponseDto>>>
-        getRewardPointsTransactionsByUserId(
-            @Parameter(description = "ID of the user", required = true) @PathVariable
-            Long userId
-        ) {
+    public ResponseEntity<ApiResponse<List<RewardPointsTransactionResponseDto>>> getRewardPointsTransactionsByUserId(
+        @Parameter(description = "ID of the user", required = true) @PathVariable
+        Long userId
+    ) {
         LogUtil.logInfoController(
             logger,
             "API called: GET /api/reward-point-transaction/user/" + userId

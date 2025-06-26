@@ -15,8 +15,10 @@ public interface RewardPointsTransactionService {
 
     // create and persist RewardPointsTransaction
     // - to be called by RewardPointsTransactionController
-    RewardPointsTransactionResponseDto
-        createRedeem(Long userId, CreateRedeemRewardPointsTransactionRequestDto requestDto);
+    RewardPointsTransactionResponseDto createRedeem(
+        Long userId,
+        CreateRedeemRewardPointsTransactionRequestDto requestDto
+    );
 
     // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
     // - to be called by other services

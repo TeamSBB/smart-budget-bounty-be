@@ -44,8 +44,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // helper methods
 
-    RewardPointsTransactionResponseDto
-        toRewardPointsTransactionResponseDto(RewardPointsTransaction rewardPointsTransaction) {
+    RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
+        RewardPointsTransaction rewardPointsTransaction
+    ) {
         return new RewardPointsTransactionResponseDto(
             rewardPointsTransaction.getId(),
             rewardPointsTransaction.getPointsTransactionType().name(),
@@ -93,9 +94,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // create and persist RewardPointsTransaction
     // - to be called by RewardPointsTransactionController
     @Override
-    public
-        RewardPointsTransactionResponseDto
-        createRedeem(Long userId, CreateRedeemRewardPointsTransactionRequestDto requestDto) {
+    public RewardPointsTransactionResponseDto createRedeem(
+        Long userId,
+        CreateRedeemRewardPointsTransactionRequestDto requestDto
+    ) {
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
         // get User from repository
