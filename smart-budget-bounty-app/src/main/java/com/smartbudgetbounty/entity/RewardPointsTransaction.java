@@ -24,13 +24,13 @@ public class RewardPointsTransaction {
 
     @OneToOne // Inverse side - Because Transaction exist then can have rewards
     @JoinColumn(name = "transaction_id")
-    private Transaction transaction;
+    private Transfer transaction;
 
     public RewardPointsTransaction() {
         super();
     }
 
-    public RewardPointsTransaction(Double amount, Instant date, User user, Transaction transaction) {
+    public RewardPointsTransaction(Double amount, Instant date, User user, Transfer transaction) {
         super();
         this.amount = amount;
         this.rewardDate = date;
@@ -70,11 +70,11 @@ public class RewardPointsTransaction {
         this.user = user;
     }
 
-    public Transaction getTransaction() {
+    public Transfer getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(Transfer transaction) {
         this.transaction = transaction;
     }
 }

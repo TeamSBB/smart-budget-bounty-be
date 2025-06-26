@@ -1,0 +1,87 @@
+package com.smartbudgetbounty.service.transfer;
+
+import java.time.Instant;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
+import com.smartbudgetbounty.dto.transfer.CreateTransferDtoResponse;
+import com.smartbudgetbounty.entity.PaymentMethod;
+import com.smartbudgetbounty.entity.Transfer;
+import com.smartbudgetbounty.entity.User;
+import com.smartbudgetbounty.repository.PaymentMethodRepository;
+import com.smartbudgetbounty.repository.TransferRepository;
+import com.smartbudgetbounty.repository.UserRepository;
+import com.smartbudgetbounty.util.LogUtil;
+
+import jakarta.persistence.EntityNotFoundException;
+
+@Service
+public class TransferServiceImpl implements TransferService {
+
+	private static final Logger logger = LoggerFactory.getLogger(TransferServiceImpl.class);
+
+	private final TransferRepository transactionRepo;
+	private final UserRepository userRepo;
+	private final PaymentMethodRepository paymentMethodRepo;
+	
+	public TransferServiceImpl(TransferRepository transactionRepo, UserRepository userRepo, PaymentMethodRepository paymentMethodRepo) {
+		this.transactionRepo = transactionRepo;
+		this.userRepo = userRepo;
+		this.paymentMethodRepo = paymentMethodRepo;
+	}
+	
+	@Override
+	public CreateTransferDtoResponse create(CreateTransferDtoRequest request) {
+        LogUtil.logStart(logger, "Creating Transaction.");
+		
+        Optional<User> u = userRepo.findById(request.getUserId());
+        
+        if(u.isEmpty()) {
+    	 LogUtil.logError(logger, "Unable to find userId: {}.", request.getUserId());
+         throw new EntityNotFoundException("Unable to find userId: " + request.getUserId());
+        }
+
+        Optional<PaymentMethod> paymentMethod = paymentMethodRepo.findById(request.getPaymentMethodId());
+        
+        if(paymentMethod.isEmpty()) {
+    	 LogUtil.logError(logger, "Unable to find paymentId: {}.", request.getPaymentMethodId());
+         throw new EntityNotFoundException("Unable to find paymentId: " + request.getPaymentMethodId());
+        }
+        
+        Instant now = Instant.now();
+        Transfer entity = transactionRepo.save(new Transfer(
+    		request.getTransactionAmount(),
+    		now,
+    		request.getRecipientName(),
+    		paymentMethod.get(),
+    		request.getPaynowPhoneNumber(),
+    		request.getAccountNumber(),
+    		request.getRemarks(),
+    		request.getBankName(),
+    		request.getBeneficiaryName(),
+    		request.getTransferDate() != null ? request.getTransferDate() :  Instant.now(),
+    		u.get()
+		));
+
+        LogUtil.logEnd(logger, "Created Transaction: {}", entity);
+		
+		return new CreateTransferDtoResponse(
+			entity.getId(), 
+			entity.getTransactionAmount(), 
+			entity.getRecipientName(), 
+			request.getPaymentMethodId(),
+			now,
+			request.getTransferDate() != null ? request.getTransferDate() : now,
+			entity.getPaynowPhoneNumber(),
+			entity.getAccountNumber(),
+			entity.getRemarks(),
+			entity.getBankName(),
+			entity.getBeneficiaryName()
+		);
+	}
+
+}

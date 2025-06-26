@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRewardPointsTransactionDtoRequest;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionDtoResponse;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
-import com.smartbudgetbounty.entity.Transaction;
+import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
-import com.smartbudgetbounty.repository.TransactionRepository;
+import com.smartbudgetbounty.repository.TransferRepository;
 import com.smartbudgetbounty.repository.UserRepository;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -30,12 +30,12 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     private final RewardPointsTransactionRepository rewardPointsTransactionRepository;
     private final UserRepository userRepository;
-    private final TransactionRepository transactionRepository;
+    private final TransferRepository transactionRepository;
 
     public RewardPointsTransactionServiceImpl(
         RewardPointsTransactionRepository rewardPointsTransactionRepository,
         UserRepository userRepository,
-        TransactionRepository transactionRepository
+        TransferRepository transactionRepository
     ) {
         this.rewardPointsTransactionRepository = rewardPointsTransactionRepository;
         this.userRepository = userRepository;
@@ -66,7 +66,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             throw new EntityNotFoundException("Unable to find userId: " + userId);
         }
 
-        Optional<Transaction> transaction = transactionRepository.findById(
+        Optional<Transfer> transaction = transactionRepository.findById(
             request.getTransactionId()
         );
 
