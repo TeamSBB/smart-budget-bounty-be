@@ -28,15 +28,20 @@ public class TransferController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createTransfer(@Valid @RequestBody CreateTransferDtoRequest createDtoReq) {
+    public ResponseEntity<?> createTransfer(
+        @Valid @RequestBody
+        CreateTransferDtoRequest createDtoReq
+    ) {
         LogUtil.logInfoController(logger, "API called: POST /api/transfer");
-        
+
         // Call service to insert into db
         CreateTransferDtoResponse createResponseDto = transferService.create(createDtoReq);
-        
-        return ResponseEntity.ok(new ApiResponse<>(
-    		createResponseDto,
-            "Created transaction successfully."
-        ));
+
+        return ResponseEntity.ok(
+            new ApiResponse<>(
+                createResponseDto,
+                "Created transaction successfully."
+            )
+        );
     }
 }
