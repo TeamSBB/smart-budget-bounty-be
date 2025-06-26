@@ -142,9 +142,19 @@ public class TransferServiceImpl implements TransferService {
         return transfer;
     }
 
+    // retrieve Transfer from TransferRepository and return it as a
+    // TransferResponseDto
+    // - to be called by TransferController
+    @Override
+    public TransferResponseDto getDtoById(Long id) {
+        Transfer transfer = getById(id);
+        return toTransferResponseDto(transfer);
+    }
+
     // retrieve a user's Transfers from TransferRepository and return it as a
     // TransferResponseDto
     // - to be called by TransferController
+    @Override
     public List<TransferResponseDto> getDtosByUserId(Long userId) {
         LogUtil.logStart(logger, "Getting Transfers by id.");
 

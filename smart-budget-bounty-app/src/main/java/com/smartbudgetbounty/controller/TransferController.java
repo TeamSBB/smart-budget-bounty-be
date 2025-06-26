@@ -45,17 +45,36 @@ public class TransferController {
         return ResponseEntity.ok(
             new ApiResponse<>(
                 createResponseDto,
-                "Created transaction successfully."
+                "Created Transfer successfully."
             )
         );
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<TransferResponseDto>> getTransferById(
+        @Parameter @PathVariable
+        Long id
+    ) {
+        LogUtil.logInfoController(logger, "API called: GET /api/transfer/" + id);
+
+        TransferResponseDto transferResponseDto = transferService.getDtoById(
+            id
+        );
+
+        return ResponseEntity.ok(
+            new ApiResponse<TransferResponseDto>(
+                transferResponseDto,
+                "Retrieved Transfer successfully."
+            )
+        );
+    }
+
+    @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponse<List<TransferResponseDto>>> getTransfersByUserId(
         @Parameter @PathVariable
         Long userId
     ) {
-        LogUtil.logInfoController(logger, "API called: GET /api/transfer/" + userId);
+        LogUtil.logInfoController(logger, "API called: GET /api/transfer/user/" + userId);
 
         List<TransferResponseDto> transferResponseDtos = transferService.getDtosByUserId(
             userId

@@ -16,6 +16,11 @@ public interface TransferService {
     // - to be called by other services
     Transfer getById(Long id);
 
+    // retrieve Transfer from TransferRepository and return it as a
+    // TransferResponseDto
+    // - to be called by TransferController
+    TransferResponseDto getDtoById(Long id);
+
     // retrieve a user's Transfers from TransferRepository and return it as a
     // TransferResponseDto
     // - to be called by TransferController
