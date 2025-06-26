@@ -171,8 +171,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
-    // retrieve a user's RewardPointsTransactions from RewardPointsTransactions and return it as a
-    // RewardPointsTransactionResponseDto
+    // retrieve a user's RewardPointsTransactions from RewardPointsTransactionRepository and return
+    // it as a RewardPointsTransactionResponseDto
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
