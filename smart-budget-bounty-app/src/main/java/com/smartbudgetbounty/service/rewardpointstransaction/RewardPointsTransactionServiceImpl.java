@@ -162,7 +162,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         User user = userService.getById(userId);
 
         // convert RewardPointsTransactions to RewardPointsTransactionResponseDto
-        List<RewardPointsTransaction> rewardPointsTransactions = user.getRewardPointsTransactions();
+        List<RewardPointsTransaction> rewardPointsTransactions = user.getPointsTransactions();
 
         ArrayList<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
 
