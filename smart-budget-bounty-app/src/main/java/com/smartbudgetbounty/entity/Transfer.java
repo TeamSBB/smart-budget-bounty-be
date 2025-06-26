@@ -17,17 +17,24 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double transactionAmount;
-    private Instant createdAt;
+    // Card
     private String recipientName;
 
+    // Paynow
     private String paynowPhoneNumber;
-    private String accountNumber;
+
+    // Bank
+    private Instant transferDate;
     private String bankName;
     private String beneficiaryName;
-    private String remarks;
 
-    private Instant transferDate;
+    // Card and Bank
+    private String accountNumber;
+
+    // Generic
+    private Double transactionAmount;
+    private Instant createdAt;
+    private String remarks;
 
     // Transfer (owning side) -> User (inverse side)
     // - Transfer holds the foreign key to User
