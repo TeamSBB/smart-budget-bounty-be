@@ -30,31 +30,32 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     private final UserService userService;
     private final TransferRepository transferRepository;
-    private final RewardPointsTransactionRepository rewardPointsTransferRepository;
+    private final RewardPointsTransactionRepository pointsTransactionRepository;
 
     public RewardPointsTransactionServiceImpl(
         UserService userService,
         TransferRepository transferRepository,
-        RewardPointsTransactionRepository rewardPointsTransferRepository
+        RewardPointsTransactionRepository pointsTransactionRepository
     ) {
+        super();
         this.userService = userService;
         this.transferRepository = transferRepository;
-        this.rewardPointsTransferRepository = rewardPointsTransferRepository;
+        this.pointsTransactionRepository = pointsTransactionRepository;
     }
 
     // helper methods
 
     RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
-        RewardPointsTransaction rewardPointsTransaction
+        RewardPointsTransaction pointsTransaction
     ) {
         return new RewardPointsTransactionResponseDto(
-            rewardPointsTransaction.getId(),
-            rewardPointsTransaction.getPointsTransactionType().name(),
-            rewardPointsTransaction.getAmount(),
-            rewardPointsTransaction.getPointsTransactionDate(),
-            rewardPointsTransaction.getUser().getId(),
-            rewardPointsTransaction.getTransfer().getId(),
-            rewardPointsTransaction.getRewardVoucher().getId()
+            pointsTransaction.getId(),
+            pointsTransaction.getPointsTransactionType().name(),
+            pointsTransaction.getAmount(),
+            pointsTransaction.getPointsTransactionDate(),
+            pointsTransaction.getUser().getId(),
+            pointsTransaction.getTransfer().getId(),
+            pointsTransaction.getRewardVoucher().getId()
         );
     }
 
@@ -71,7 +72,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
 
         // create rewardPointsTransaction
-        RewardPointsTransaction rewardPointsTransaction = new RewardPointsTransaction(
+        RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
             RewardPointsTransactionType.EARN,
             toRewardPointsAmount(transfer.getTransactionAmount()),
             Instant.now(),
@@ -79,16 +80,16 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         );
 
         // set bidirectional relationship between RewardPointsTransaction and Transfer
-        rewardPointsTransaction.setTransfer(transfer);
-        transfer.setPointsTransaction(rewardPointsTransaction);
+        pointsTransaction.setTransfer(transfer);
+        transfer.setPointsTransaction(pointsTransaction);
 
-        // persist RewardPointsTransaction and Transaction
-        rewardPointsTransferRepository.save(rewardPointsTransaction);
+        // persist RewardPointsTransaction and Transfer
+        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
         transferRepository.save(transfer);
 
-        LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", rewardPointsTransaction);
+        LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", pointsTransaction);
 
-        return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
+        return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
     // create and persist RewardPointsTransaction
@@ -104,7 +105,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         User user = userService.getById(userId);
 
         // create and persist RewardPointsTransaction
-        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransferRepository.save(
+        RewardPointsTransaction pointsTransaction = pointsTransactionRepository.save(
             new RewardPointsTransaction(
                 RewardPointsTransactionType.REDEEM,
                 requestDto.getRedeemAmount(),
@@ -118,10 +119,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         LogUtil.logEnd(
             logger,
             "Created REDEEM RewardPointsTransaction: {}",
-            rewardPointsTransaction
+            pointsTransaction
         );
 
-        return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
+        return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
     // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
@@ -130,16 +131,16 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     public RewardPointsTransaction getById(Long id) {
         LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
 
-        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransferRepository.findById(
+        RewardPointsTransaction pointsTransaction = pointsTransactionRepository.findById(
             id
         ).orElseThrow(() -> {
             LogUtil.logError(logger, "RewardPointsTransaction not found for id: {}", id);
             return new EntityNotFoundException("RewardPointsTransaction not found for id: " + id);
         });
 
-        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", rewardPointsTransaction);
+        LogUtil.logEnd(logger, "Retrieved RewardPointsTransaction: {}", pointsTransaction);
 
-        return rewardPointsTransaction;
+        return pointsTransaction;
     }
 
     // retrieve RewardPointsTransaction from RewardPointsTransactionRepository and return it as a
@@ -147,8 +148,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // - to be called by RewardPointsTransactionController
     @Override
     public RewardPointsTransactionResponseDto getDtoById(Long id) {
-        RewardPointsTransaction rewardPointsTransaction = getById(id);
-        return toRewardPointsTransactionResponseDto(rewardPointsTransaction);
+        RewardPointsTransaction pointsTransaction = getById(id);
+        return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
     // retrieve a user's RewardPointsTransactions from RewardPointsTransactions and return it as a
@@ -162,13 +163,13 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         User user = userService.getById(userId);
 
         // convert RewardPointsTransactions to RewardPointsTransactionResponseDto
-        List<RewardPointsTransaction> rewardPointsTransactions = user.getPointsTransactions();
+        List<RewardPointsTransaction> pointsTransactions = user.getPointsTransactions();
 
-        ArrayList<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
+        ArrayList<RewardPointsTransactionResponseDto> pointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
 
-        for (RewardPointsTransaction rewardPointsTransaction : rewardPointsTransactions) {
-            rewardPointsTransactionDtos.add(
-                toRewardPointsTransactionResponseDto(rewardPointsTransaction)
+        for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
+            pointsTransactionDtos.add(
+                toRewardPointsTransactionResponseDto(pointsTransaction)
             );
         }
 
@@ -176,9 +177,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             logger,
             "Retrieved RewardPointsTransactions for userId {}: {}",
             user.getId(),
-            rewardPointsTransactionDtos
+            pointsTransactionDtos
         );
 
-        return rewardPointsTransactionDtos;
+        return pointsTransactionDtos;
     }
 }

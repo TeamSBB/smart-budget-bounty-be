@@ -36,6 +36,7 @@ public class TransferServiceImpl implements TransferService {
         PaymentMethodRepository paymentMethodRepo,
         RewardPointsTransactionService pointsTransactionService
     ) {
+        super();
         this.userService = userService;
         this.transferRepository = transferRepository;
         this.paymentMethodRepo = paymentMethodRepo;
@@ -99,18 +100,18 @@ public class TransferServiceImpl implements TransferService {
         );
     }
 
-    // retrieve Transaction from TransactionRepository
+    // retrieve Transfer from TransferRepository
     // - to be called by other services
     @Override
     public Transfer getById(Long id) {
-        LogUtil.logStart(logger, "Getting Transaction by id.");
+        LogUtil.logStart(logger, "Getting Transfer by id.");
 
         Transfer transfer = transferRepository.findById(id).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find transactionId: {}.", id);
-            return new EntityNotFoundException("Unable to find transactionId: " + id);
+            LogUtil.logError(logger, "Unable to find transferId: {}.", id);
+            return new EntityNotFoundException("Unable to find transferId: " + id);
         });
 
-        LogUtil.logEnd(logger, "Retrieved Transaction: {}", transfer);
+        LogUtil.logEnd(logger, "Retrieved Transfer: {}", transfer);
 
         return transfer;
     }
