@@ -50,7 +50,7 @@ public class Transaction {
         // delete RewardPointsTransaction (child) if it is removed from Transaction (parent)
         orphanRemoval = true
     )
-    private RewardPointsTransaction rewardPointsTransaction;
+    private RewardPointsTransaction pointsTransaction;
 
 //	@OneToOne // Owner - Because Transaction is created for an Account, not the other way around
 //	@JoinColumn(name="account_id")
@@ -171,12 +171,12 @@ public class Transaction {
         this.paymentMethod2 = paymentMethod2;
     }
 
-    public RewardPointsTransaction getRewardPointsTransaction() {
-        return rewardPointsTransaction;
+    public RewardPointsTransaction getPointsTransaction() {
+        return pointsTransaction;
     }
 
-    public void setRewardPointsTransaction(RewardPointsTransaction rewardPointsTransaction) {
-        this.rewardPointsTransaction = rewardPointsTransaction;
+    public void setPointsTransaction(RewardPointsTransaction pointsTransaction) {
+        this.pointsTransaction = pointsTransaction;
     }
 
     @Override
