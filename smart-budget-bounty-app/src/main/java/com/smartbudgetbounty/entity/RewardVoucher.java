@@ -43,7 +43,6 @@ public class RewardVoucher {
         super();
     }
 
-    // constructor for earning a reward voucher from redeeming reward points
     public RewardVoucher(Double discount, Instant rewardTransactionDate, User user) {
         super();
         this.voucherStatus = RewardVoucherStatus.AVAILABLE;
