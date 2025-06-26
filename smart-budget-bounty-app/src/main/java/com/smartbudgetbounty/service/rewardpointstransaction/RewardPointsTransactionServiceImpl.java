@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transaction;
@@ -78,7 +79,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
         // set bidirectional relationship between RewardPointsTransaction and Transaction
         rewardPointsTransaction.setTransaction(transaction);
-        transaction.setRewardPointsTransaction(rewardPointsTransaction);
+        transaction.setPointsTransaction(rewardPointsTransaction);
 
         // persist RewardPointsTransaction and Transaction
         rewardPointsTransactionRepository.save(rewardPointsTransaction);
@@ -92,7 +93,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // create and persist RewardPointsTransaction
     // - to be called by RewardPointsTransactionController
     @Override
-    public RewardPointsTransactionResponseDto createRedeem(Long userId, Integer redeemAmount) {
+    public
+        RewardPointsTransactionResponseDto
+        createRedeem(Long userId, CreateRedeemRewardPointsTransactionRequestDto requestDto) {
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
         // get User from repository
@@ -102,7 +105,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.save(
             new RewardPointsTransaction(
                 RewardPointsTransactionType.REDEEM,
-                redeemAmount,
+                requestDto.getRedeemAmount(),
                 Instant.now(),
                 user
             )

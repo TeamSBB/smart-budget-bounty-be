@@ -2,6 +2,7 @@ package com.smartbudgetbounty.service.rewardpointstransaction;
 
 import java.util.List;
 
+import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transaction;
@@ -14,7 +15,8 @@ public interface RewardPointsTransactionService {
 
     // create and persist RewardPointsTransaction
     // - to be called by RewardPointsTransactionController
-    RewardPointsTransactionResponseDto createRedeem(Long userId, Integer redeemAmount);
+    RewardPointsTransactionResponseDto
+        createRedeem(Long userId, CreateRedeemRewardPointsTransactionRequestDto requestDto);
 
     // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
     // - to be called by other services
