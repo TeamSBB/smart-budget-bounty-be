@@ -8,9 +8,10 @@ import com.smartbudgetbounty.entity.User;
 
 public interface RewardVoucherService {
     // create and persist RewardVoucher
+    // update, persist and return RewardPointsTransaction
     // - to be called by RewardPointsTransactionService whenever a REDEEM RewardPointsTransaction is
     // created
-    RewardVoucherResponseDto createRewardVoucher(
+    RewardPointsTransaction create(
         User user,
         RewardPointsTransaction pointsTransaction
     );
@@ -21,7 +22,7 @@ public interface RewardVoucherService {
 
     // change the status of a RewardVoucher from AVAILABLE to REDEEMED
     // - to be called by RewardVoucherController
-    RewardVoucherResponseDto redeemRewardVoucher(
+    RewardVoucherResponseDto redeem(
         Long userId,
         RedeemRewardVoucherRequestDto requestDto
     );

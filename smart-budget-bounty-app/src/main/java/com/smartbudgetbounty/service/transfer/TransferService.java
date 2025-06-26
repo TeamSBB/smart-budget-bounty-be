@@ -6,6 +6,7 @@ import com.smartbudgetbounty.entity.Transfer;
 
 public interface TransferService {
     // create and persist Transfer
+    // create and persist RewardPointsTransaction
     // - to be called by TransferController
     CreateTransferDtoResponse create(CreateTransferDtoRequest request);
 

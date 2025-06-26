@@ -52,9 +52,11 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // service methods
 
     // create and persist RewardVoucher
+    // update, persist and return RewardPointsTransaction
     // - to be called by RewardPointsTransactionService whenever a REDEEM RewardPointsTransaction is
     // created
-    public RewardVoucherResponseDto createRewardVoucher(
+    @Override
+    public RewardPointsTransaction create(
         User user,
         RewardPointsTransaction pointsTransaction
     ) {
@@ -70,15 +72,16 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
         // persist RewardVoucher and RewardPointsTransaction
         voucher = voucherRepository.save(voucher);
-        pointsTransactionRepository.save(pointsTransaction);
+        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
 
         LogUtil.logEnd(logger, "Created RewardVoucher: {}", voucher);
 
-        return toRewardVoucherResponseDto(voucher);
+        return pointsTransaction;
     }
 
     // retrieve RewardVoucher from RewardVoucherRepository
     // - to be called by other service methods
+    @Override
     public RewardVoucher getById(Long id) {
         LogUtil.logStart(logger, "Getting RewardVoucher by id.");
 
@@ -96,7 +99,8 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
     // change the status of a RewardVoucher from AVAILABLE to REDEEMED
     // - to be called by RewardVoucherController
-    public RewardVoucherResponseDto redeemRewardVoucher(
+    @Override
+    public RewardVoucherResponseDto redeem(
         Long userId,
         RedeemRewardVoucherRequestDto requestDto
     ) {

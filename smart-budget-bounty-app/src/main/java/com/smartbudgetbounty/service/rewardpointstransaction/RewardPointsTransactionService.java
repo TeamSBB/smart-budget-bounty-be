@@ -10,10 +10,12 @@ import com.smartbudgetbounty.entity.User;
 
 public interface RewardPointsTransactionService {
     // create and persist RewardPointsTransaction
+    // update, persist and return Transfer
     // - to be called by TransferService whenever a Transfer is created
-    RewardPointsTransactionResponseDto createEarn(User user, Transfer transfer);
+    Transfer createEarn(User user, Transfer transfer);
 
     // create and persist RewardPointsTransaction
+    // create and persist RewardVoucher
     // - to be called by RewardPointsTransactionController
     RewardPointsTransactionResponseDto createRedeem(
         Long userId,

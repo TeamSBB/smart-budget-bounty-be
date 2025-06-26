@@ -43,9 +43,14 @@ public class TransferServiceImpl implements TransferService {
         this.pointsTransactionService = pointsTransactionService;
     }
 
+    // service methods
+
+    // create and persist Transfer
+    // create and persist RewardPointsTransaction
+    // - to be called by TransferController
     @Override
     public CreateTransferDtoResponse create(CreateTransferDtoRequest request) {
-        LogUtil.logStart(logger, "Creating Transaction.");
+        LogUtil.logStart(logger, "Creating Transfer.");
 
         // get User from repository
         User user = userService.getById(request.getUserId());
@@ -81,9 +86,9 @@ public class TransferServiceImpl implements TransferService {
         );
 
         // create and persist RewardPointsTransaction
-        pointsTransactionService.createEarn(user, transfer);
+        transfer = pointsTransactionService.createEarn(user, transfer);
 
-        LogUtil.logEnd(logger, "Created Transaction: {}", transfer);
+        LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 
         return new CreateTransferDtoResponse(
             transfer.getId(),

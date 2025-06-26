@@ -16,6 +16,7 @@ import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
 import com.smartbudgetbounty.repository.TransferRepository;
+import com.smartbudgetbounty.service.rewardvoucher.RewardVoucherService;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -31,16 +32,19 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     private final UserService userService;
     private final TransferRepository transferRepository;
     private final RewardPointsTransactionRepository pointsTransactionRepository;
+    private final RewardVoucherService voucherService;
 
     public RewardPointsTransactionServiceImpl(
         UserService userService,
         TransferRepository transferRepository,
-        RewardPointsTransactionRepository pointsTransactionRepository
+        RewardPointsTransactionRepository pointsTransactionRepository,
+        RewardVoucherService voucherService
     ) {
         super();
         this.userService = userService;
         this.transferRepository = transferRepository;
         this.pointsTransactionRepository = pointsTransactionRepository;
+        this.voucherService = voucherService;
     }
 
     // helper methods
@@ -66,9 +70,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // service methods
 
     // create and persist RewardPointsTransaction
+    // update, persist and return Transfer
     // - to be called by TransferService whenever a Transfer is created
     @Override
-    public RewardPointsTransactionResponseDto createEarn(User user, Transfer transfer) {
+    public Transfer createEarn(User user, Transfer transfer) {
         LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
 
         // create rewardPointsTransaction
@@ -85,14 +90,15 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
         // persist RewardPointsTransaction and Transfer
         pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
-        transferRepository.save(transfer);
+        transfer = transferRepository.save(transfer);
 
         LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", pointsTransaction);
 
-        return toRewardPointsTransactionResponseDto(pointsTransaction);
+        return transfer;
     }
 
     // create and persist RewardPointsTransaction
+    // create and persist RewardVoucher
     // - to be called by RewardPointsTransactionController
     @Override
     public RewardPointsTransactionResponseDto createRedeem(
@@ -114,7 +120,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             )
         );
 
-        // TODO: call RewardVoucherServiceImpl.create to create and persist RewardVoucher
+        // create and persist RewardVoucher, update and persist RewardPointsTransaction
+        pointsTransaction = voucherService.create(user, pointsTransaction);
 
         LogUtil.logEnd(
             logger,
