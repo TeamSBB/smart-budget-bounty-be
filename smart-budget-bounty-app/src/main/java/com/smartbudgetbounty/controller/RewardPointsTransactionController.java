@@ -96,13 +96,13 @@ public class RewardPointsTransactionController {
     ) {
         LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
 
-        RewardPointsTransactionResponseDto responseDto = rewardPointsTransactionService.getDtoById(
+        RewardPointsTransactionResponseDto rewardPointsTransactionResponseDto = rewardPointsTransactionService.getDtoById(
             id
         );
 
         return ResponseEntity.ok(
             new ApiResponse<RewardPointsTransactionResponseDto>(
-                responseDto,
+                rewardPointsTransactionResponseDto,
                 "Retrieved RewardPointsTransaction successfully."
             )
         );
