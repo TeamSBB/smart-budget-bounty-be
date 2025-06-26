@@ -49,6 +49,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // helper methods
 
+    // convert RewardPointsTransaction to RewardPointsTransactionResponseDto
     private RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
         RewardPointsTransaction pointsTransaction
     ) {
@@ -61,6 +62,21 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             pointsTransaction.getTransfer().getId(),
             pointsTransaction.getRewardVoucher().getId()
         );
+    }
+
+    // convert a list of RewardPointsTransactions to a list of RewardPointsTransactionResponseDtos
+    private List<RewardPointsTransactionResponseDto> toRewardPointsTransactionResponseDtos(
+        List<RewardPointsTransaction> pointsTransactions
+    ) {
+        ArrayList<RewardPointsTransactionResponseDto> pointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
+
+        for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
+            pointsTransactionDtos.add(
+                toRewardPointsTransactionResponseDto(pointsTransaction)
+            );
+        }
+
+        return pointsTransactionDtos;
     }
 
     private Integer toRewardPointsAmount(Double transferAmount) {
@@ -123,11 +139,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         // create and persist RewardVoucher, update and persist RewardPointsTransaction
         pointsTransaction = voucherService.create(user, pointsTransaction);
 
-        LogUtil.logEnd(
-            logger,
-            "Created REDEEM RewardPointsTransaction: {}",
-            pointsTransaction
-        );
+        LogUtil.logEnd(logger, "Created REDEEM RewardPointsTransaction: {}", pointsTransaction);
 
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
@@ -171,19 +183,13 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
         // convert RewardPointsTransactions to RewardPointsTransactionResponseDto
         List<RewardPointsTransaction> pointsTransactions = user.getPointsTransactions();
-
-        ArrayList<RewardPointsTransactionResponseDto> pointsTransactionDtos = new ArrayList<RewardPointsTransactionResponseDto>();
-
-        for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
-            pointsTransactionDtos.add(
-                toRewardPointsTransactionResponseDto(pointsTransaction)
-            );
-        }
+        List<RewardPointsTransactionResponseDto> pointsTransactionDtos = toRewardPointsTransactionResponseDtos(
+            pointsTransactions
+        );
 
         LogUtil.logEnd(
             logger,
-            "Retrieved RewardPointsTransactions for userId {}: {}",
-            user.getId(),
+            "Retrieved RewardPointsTransactions: {}",
             pointsTransactionDtos
         );
 
