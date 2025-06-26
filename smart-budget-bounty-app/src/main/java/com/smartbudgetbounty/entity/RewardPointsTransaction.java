@@ -33,8 +33,8 @@ public class RewardPointsTransaction {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // RewardPointsTransaction (owning side) -> Transaction (inverse side)
-    // - RewardPointsTransaction holds the foreign key to Transaction
+    // RewardPointsTransaction (owning side) -> Transfer (inverse side)
+    // - RewardPointsTransaction holds the foreign key to Transfer
     @OneToOne
     @JoinColumn(name = "transaction_id")
     private Transfer transfer;

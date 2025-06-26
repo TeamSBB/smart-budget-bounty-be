@@ -13,103 +13,71 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "\"user\"")  // Use escaped quotes to tell DB to treat it literally
+@Table(name = "\"user\"") // Use escaped quotes to tell DB to treat it literally
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable=false, unique=true)
-	private String username;
-    
-	@Column(nullable=false, unique=true)
-	private String email;
-	
-	private String password;    
-	private String address;	
-	private String contactNumber;	
-	private String firstName;
-	private String lastName;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-	private Instant createdAt;
-	private Instant updatedAt;
-	private Instant lastLogin;
-	
-    @OneToMany(mappedBy = "user")  // inverse side
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    private String password;
+    private String address;
+    private String contactNumber;
+    private String firstName;
+    private String lastName;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+    private Instant lastLogin;
+
+    @OneToMany(mappedBy = "user") // inverse side
     private List<SchedulePayment> schedulePayments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")  // inverse side
+    @OneToMany(mappedBy = "user") // inverse side
     private List<Transfer> transactions = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user") // inverse side
-	private List<RewardPointsTransaction> rewardPointsTransactions = new ArrayList<>();
-    
-	public User() {}
+    @OneToMany(mappedBy = "user") // inverse side
+    private List<RewardPointsTransaction> pointsTransactions = new ArrayList<>();
 
-	public User(Long id, String username, String password) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		createdAt = lastLogin = Instant.now();
-	}
-    
-    
-	public User(String username, String password, String address,
-		String contactNumber, String email, String firstName,
-		String lastName) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.address = address;
-		this.contactNumber = contactNumber;
-		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		createdAt = lastLogin = updatedAt = Instant.now();
-	}
+    @OneToMany(mappedBy = "user") // inverse side
+    private List<RewardVoucher> vouchers = new ArrayList<>();
 
-	public String getAddress() {
-		return address;
-	}
+    public User() {
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        createdAt = lastLogin = Instant.now();
+    }
 
-	public String getContactNumber() {
-		return contactNumber;
-	}
+    public User(
+        String username,
+        String password,
+        String address,
+        String contactNumber,
+        String email,
+        String firstName,
+        String lastName
+    ) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.contactNumber = contactNumber;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        createdAt = lastLogin = updatedAt = Instant.now();
+    }
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	// Getters and Setters
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -125,6 +93,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -133,67 +109,127 @@ public class User {
         this.password = password;
     }
 
-	public List<SchedulePayment> getSchedulePayments() {
-		return schedulePayments;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setSchedulePayments(List<SchedulePayment> schedulePayments) {
-		this.schedulePayments = schedulePayments;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public List<Transfer> getTransactions() {
-		return transactions;
-	}
+    public String getContactNumber() {
+        return contactNumber;
+    }
 
-	public void setTransactions(List<Transfer> transactions) {
-		this.transactions = transactions;
-	}
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public Instant getLastLogin() {
-		return lastLogin;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastLogin(Instant lastLogin) {
-		this.lastLogin = lastLogin;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public List<RewardPointsTransaction> getRewardPointsTransactions() {
-		return rewardPointsTransactions;
-	}
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setRewardPointsTransactions(
-			List<RewardPointsTransaction> rewardPointsTransactions) {
-		this.rewardPointsTransactions = rewardPointsTransactions;
-	}
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public Instant getUpdatedAt() {
-		return updatedAt;
-	}
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
 
-	public void setUpdatedAt(Instant updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", email=" + email
-				+ ", password=" + password + ", address=" + address
-				+ ", contactNumber=" + contactNumber + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", createdAt="
-				+ createdAt + ", updatedAt=" + updatedAt + ", lastLogin="
-				+ lastLogin + ", schedulePayments=" + schedulePayments
-				+ ", transactions=" + transactions
-				+ ", rewardPointsTransactions=" + rewardPointsTransactions
-				+ "]";
-	}
-	
-	
+    public Instant getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Instant lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public List<SchedulePayment> getSchedulePayments() {
+        return schedulePayments;
+    }
+
+    public void setSchedulePayments(List<SchedulePayment> schedulePayments) {
+        this.schedulePayments = schedulePayments;
+    }
+
+    public List<Transfer> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transfer> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<RewardPointsTransaction> getPointsTransactions() {
+        return pointsTransactions;
+    }
+
+    public void setPointsTransactions(List<RewardPointsTransaction> pointsTransactions) {
+        this.pointsTransactions = pointsTransactions;
+    }
+
+    public List<RewardVoucher> getVouchers() {
+        return vouchers;
+    }
+
+    public void setVouchers(List<RewardVoucher> vouchers) {
+        this.vouchers = vouchers;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id="
+            + id
+            + ", username="
+            + username
+            + ", email="
+            + email
+            + ", password="
+            + password
+            + ", address="
+            + address
+            + ", contactNumber="
+            + contactNumber
+            + ", firstName="
+            + firstName
+            + ", lastName="
+            + lastName
+            + ", createdAt="
+            + createdAt
+            + ", updatedAt="
+            + updatedAt
+            + ", lastLogin="
+            + lastLogin
+            + ", schedulePayments="
+            + schedulePayments
+            + ", transactions="
+            + transactions
+            + ", rewardPointsTransactions="
+            + pointsTransactions
+            + ", vouchers="
+            + vouchers
+            + "]";
+    }
+
 }

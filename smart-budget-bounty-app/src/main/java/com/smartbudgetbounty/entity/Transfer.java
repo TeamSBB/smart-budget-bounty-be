@@ -38,14 +38,14 @@ public class Transfer {
     @JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName = "id")
     private PaymentMethod paymentMethod;
 
-    // Transaction (inverse side) <- RewardPointsTransaction (owning side)
-    // - RewardPointsTransaction holds the foreign key to Transaction
+    // Transfer (inverse side) <- RewardPointsTransaction (owning side)
+    // - RewardPointsTransaction holds the foreign key to Transfer
     @OneToOne(
-        // relationship is mapped by the "transaction" field in RewardVoucher
-        mappedBy = "transaction",
-        // cascade operations from Transaction (parent) to RewardPointsTransaction (child)
+        // relationship is mapped by the "transfer" field in RewardVoucher
+        mappedBy = "transfer",
+        // cascade operations from Transfer (parent) to RewardPointsTransaction (child)
         cascade = CascadeType.ALL,
-        // delete RewardPointsTransaction (child) if it is removed from Transaction (parent)
+        // delete RewardPointsTransaction (child) if it is removed from Transfer (parent)
         orphanRemoval = true
     )
     private RewardPointsTransaction pointsTransaction;
