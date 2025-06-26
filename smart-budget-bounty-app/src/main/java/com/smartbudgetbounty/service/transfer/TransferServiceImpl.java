@@ -45,6 +45,22 @@ public class TransferServiceImpl implements TransferService {
 
     // service methods
 
+    private CreateTransferDtoResponse toCreateTransferDtoResponse(Transfer transfer) {
+        return new CreateTransferDtoResponse(
+            transfer.getId(),
+            transfer.getTransactionAmount(),
+            transfer.getRecipientName(),
+            transfer.getPaymentMethod().getId(),
+            transfer.getCreatedAt(),
+            transfer.getTransferDate(),
+            transfer.getPaynowPhoneNumber(),
+            transfer.getAccountNumber(),
+            transfer.getRemarks(),
+            transfer.getBankName(),
+            transfer.getBeneficiaryName()
+        );
+    }
+
     // create and persist Transfer
     // create and persist RewardPointsTransaction
     // - to be called by TransferController
@@ -90,19 +106,7 @@ public class TransferServiceImpl implements TransferService {
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 
-        return new CreateTransferDtoResponse(
-            transfer.getId(),
-            transfer.getTransactionAmount(),
-            transfer.getRecipientName(),
-            request.getPaymentMethodId(),
-            now,
-            request.getTransferDate() != null ? request.getTransferDate() : now,
-            transfer.getPaynowPhoneNumber(),
-            transfer.getAccountNumber(),
-            transfer.getRemarks(),
-            transfer.getBankName(),
-            transfer.getBeneficiaryName()
-        );
+        return toCreateTransferDtoResponse(transfer);
     }
 
     // retrieve Transfer from TransferRepository
