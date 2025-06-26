@@ -2,7 +2,7 @@ package com.smartbudgetbounty.dto.transfer;
 
 import java.time.Instant;
 
-public class CreateTransferDtoResponse {
+public class TransferResponseDto {
 	private Long transferId;
 
 	// Card
@@ -25,7 +25,7 @@ public class CreateTransferDtoResponse {
 	private Long paymentMethodId;
 	private String remarks;
 	
-	public CreateTransferDtoResponse(Long transferId,
+	public TransferResponseDto(Long transferId,
 			Double transactionAmount, String recipientName, Long paymentMethodId, 
 			Instant createdAt, Instant transferDate, String paynowPhoneNumber,
 			String accountNumber, String remarks, String bankName,
