@@ -42,8 +42,9 @@ public class TransferServiceImpl implements TransferService {
         this.pointsTransactionService = pointsTransactionService;
     }
 
-    // service methods
+    // helper methods
 
+    // convert Transfer to CreateTransferDtoResponse
     private CreateTransferDtoResponse toCreateTransferDtoResponse(Transfer transfer) {
         return new CreateTransferDtoResponse(
             transfer.getId(),
@@ -59,6 +60,8 @@ public class TransferServiceImpl implements TransferService {
             transfer.getBeneficiaryName()
         );
     }
+
+    // service methods
 
     // create and persist Transfer
     // create and persist RewardPointsTransaction

@@ -33,6 +33,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
     // helper methods
 
+    // convert RewardVoucher to RewardVoucherResponseDto
     private RewardVoucherResponseDto toRewardVoucherResponseDto(RewardVoucher voucher) {
         return new RewardVoucherResponseDto(
             voucher.getId(),
