@@ -8,31 +8,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.dto.transaction.CreateTransactionDtoRequest;
-import com.smartbudgetbounty.dto.transaction.CreateTransactionDtoResponse;
+import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
+import com.smartbudgetbounty.dto.transfer.CreateTransferDtoResponse;
 import com.smartbudgetbounty.entity.ApiResponse;
-import com.smartbudgetbounty.service.transaction.TransactionService;
+import com.smartbudgetbounty.service.transfer.TransferService;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/transaction")
-public class TransactionController {
-    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
+@RequestMapping("/api/transfer")
+public class TransferController {
+    private static final Logger logger = LoggerFactory.getLogger(TransferController.class);
 
-    private final TransactionService transferService;
+    private final TransferService transferService;
 
-    public TransactionController(TransactionService transferService) {
+    public TransferController(TransferService transferService) {
         this.transferService = transferService;
     }
     
     @PostMapping()
-    public ResponseEntity<?> createTransaction(@Valid @RequestBody CreateTransactionDtoRequest createDtoReq) {
-        LogUtil.logInfoController(logger, "API called: POST /api/transaction");
+    public ResponseEntity<?> createTransfer(@Valid @RequestBody CreateTransferDtoRequest createDtoReq) {
+        LogUtil.logInfoController(logger, "API called: POST /api/transfer");
         
         // Call service to insert into db
-        CreateTransactionDtoResponse createResponseDto = transferService.create(createDtoReq);
+        CreateTransferDtoResponse createResponseDto = transferService.create(createDtoReq);
         
         return ResponseEntity.ok(new ApiResponse<>(
     		createResponseDto,

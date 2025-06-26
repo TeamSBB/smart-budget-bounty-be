@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Transaction {
+public class Transfer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -18,11 +18,12 @@ public class Transaction {
 	private Instant createdAt;
 	private String recipientName;
 	
-	private String paymentMethod;
-	private String paynowRecipient;
+	private String paynowPhoneNumber;
 	private String accountNumber;
+	private String bankName;
+	private String beneficiaryName;
 	private String remarks;
-	
+		
 	private Instant transferDate;
 	
 	@ManyToOne // Owner - Because in a one-many r/s, the many is the owner
@@ -30,8 +31,8 @@ public class Transaction {
 	private User user;
 	
 	@ManyToOne // Owner - Because in a one-many r/s, the many is the owner
-	@JoinColumn(name = "payment_method_id", nullable = false, referencedColumnName="id")
-	private PaymentMethod paymentMethod2;
+	@JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName="id")
+	private PaymentMethod paymentMethod;
 	
 	
 	
@@ -43,24 +44,28 @@ public class Transaction {
 //	@JoinColumn(name="account_id")
 //	private Account account;
 
-	public Transaction() {
+	public Transfer() {
 		super();
 	}
 
-	public Transaction(Double transactionAmount, Instant createdAt,
-		String recipientName, String paymentMethod, String paynowRecipient, 
-		String accountNumber, String remarks,
+	public Transfer(Double transactionAmount, Instant createdAt,
+		String recipientName, PaymentMethod paymentMethod, String paynowPhoneNumber, 
+		String accountNumber, String remarks, 
+		String bankName, String beneficiaryName,
 		Instant transferDate, User user) {
 		super();
 		this.transactionAmount = transactionAmount;
 		this.createdAt = createdAt;
 		this.recipientName = recipientName;
 		this.paymentMethod = paymentMethod;
-		this.paynowRecipient = paynowRecipient;
+		this.paynowPhoneNumber = paynowPhoneNumber;
 		this.accountNumber = accountNumber;
 		this.remarks = remarks;
 		this.transferDate = transferDate;
 		this.user = user;
+		this.bankName = bankName;
+		this.beneficiaryName = beneficiaryName;
+		this.paymentMethod = paymentMethod;
 	}
 
 
@@ -105,24 +110,13 @@ public class Transaction {
 	}
 
 
-	public String getPaymentMethod() {
-		return paymentMethod;
+	public String getPaynowPhoneNumber() {
+		return paynowPhoneNumber;
 	}
 
-
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
+	public void setPaynowPhoneNumber(String paynowPhoneNumber) {
+		this.paynowPhoneNumber = paynowPhoneNumber;
 	}
-
-	public String getPaynowRecipient() {
-		return paynowRecipient;
-	}
-
-
-	public void setPaynowRecipient(String paynowRecipient) {
-		this.paynowRecipient = paynowRecipient;
-	}
-
 
 	public String getAccountNumber() {
 		return accountNumber;
@@ -153,16 +147,39 @@ public class Transaction {
 		this.transferDate = transferDate;
 	}
 
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getBeneficiaryName() {
+		return beneficiaryName;
+	}
+
+	public void setBeneficiaryName(String beneficiaryName) {
+		this.beneficiaryName = beneficiaryName;
+	}
+
+	public PaymentMethod getPaymentMethod() {
+		return paymentMethod;
+	}
+
+	public void setPaymentMethod(PaymentMethod paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
 	@Override
 	public String toString() {
-		return "Transaction [id=" + id + ", transactionAmount="
-				+ transactionAmount + ", createdAt=" + createdAt
-				+ ", recipientName=" + recipientName + ", paymentMethod="
-				+ paymentMethod + ", paynowRecipient=" + paynowRecipient
-				+ ", accountNumber=" + accountNumber + ", remarks=" + remarks
-				+ ", transferDate=" + transferDate + ", user=" + user
-				+ ", paymentMethod2=" + paymentMethod2 + "]";
+		return "Transfer [id=" + id + ", transactionAmount=" + transactionAmount
+				+ ", createdAt=" + createdAt + ", recipientName="
+				+ recipientName + ", paynowPhoneNumber=" + paynowPhoneNumber
+				+ ", accountNumber=" + accountNumber + ", bankName=" + bankName
+				+ ", beneficiaryName=" + beneficiaryName + ", remarks="
+				+ remarks + ", transferDate=" + transferDate + ", user=" + user
+				+ ", paymentMethod=" + paymentMethod + "]";
 	}
-	
-	
+
 }

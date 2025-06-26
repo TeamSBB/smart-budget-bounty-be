@@ -1,1 +1,3 @@
-insert into "user" (address,contact_number,email,first_name,last_name,password,username,id) VALUES ('address','91232333','email@gmail.com','firstname','lastname','P@ssword1','username',default)
+insert into payment_method (payment_method_name) values ('credit card');
+insert into payment_method (payment_method_name) values ('paynow');
+insert into payment_method (payment_method_name) values ('bank transfer');
