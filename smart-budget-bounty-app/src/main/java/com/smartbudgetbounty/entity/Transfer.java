@@ -17,10 +17,13 @@ public class Transfer {
 	private Double transactionAmount;
 	private Instant createdAt;
 	private String recipientName;
+
+	private String fromPaynowPhoneNumber;
+	private String toPaynowPhoneNumber;
 	
-	private String paynowPhoneNumber;
-	private String accountNumber;
-	private String bankName;
+	private String fromAccountNumber;
+	private String toAccountNumber;
+	
 	private String beneficiaryName;
 	private String remarks;
 		
@@ -33,8 +36,6 @@ public class Transfer {
 	@ManyToOne // Owner - Because in a one-many r/s, the many is the owner
 	@JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName="id")
 	private PaymentMethod paymentMethod;
-	
-	
 	
 //	@OneToOne // Owner - Because Transaction exist then can have rewards
 //	@JoinColumn(name="reward_id")
@@ -49,25 +50,24 @@ public class Transfer {
 	}
 
 	public Transfer(Double transactionAmount, Instant createdAt,
-		String recipientName, PaymentMethod paymentMethod, String paynowPhoneNumber, 
-		String accountNumber, String remarks, 
-		String bankName, String beneficiaryName,
-		Instant transferDate, User user) {
+		String recipientName, String fromPaynowPhoneNumber,
+		String toPaynowPhoneNumber, String fromAccountNumber,
+		String toAccountNumber, String beneficiaryName, String remarks,
+		Instant transferDate, User user, PaymentMethod paymentMethod) {
 		super();
 		this.transactionAmount = transactionAmount;
 		this.createdAt = createdAt;
 		this.recipientName = recipientName;
-		this.paymentMethod = paymentMethod;
-		this.paynowPhoneNumber = paynowPhoneNumber;
-		this.accountNumber = accountNumber;
+		this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
+		this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+		this.fromAccountNumber = fromAccountNumber;
+		this.toAccountNumber = toAccountNumber;
+		this.beneficiaryName = beneficiaryName;
 		this.remarks = remarks;
 		this.transferDate = transferDate;
 		this.user = user;
-		this.bankName = bankName;
-		this.beneficiaryName = beneficiaryName;
 		this.paymentMethod = paymentMethod;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -93,14 +93,6 @@ public class Transfer {
 		this.createdAt = createdAt;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 	public String getRecipientName() {
 		return recipientName;
 	}
@@ -109,50 +101,36 @@ public class Transfer {
 		this.recipientName = recipientName;
 	}
 
-
-	public String getPaynowPhoneNumber() {
-		return paynowPhoneNumber;
+	public String getFromPaynowPhoneNumber() {
+		return fromPaynowPhoneNumber;
 	}
 
-	public void setPaynowPhoneNumber(String paynowPhoneNumber) {
-		this.paynowPhoneNumber = paynowPhoneNumber;
+	public void setFromPaynowPhoneNumber(String fromPaynowPhoneNumber) {
+		this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
 	}
 
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getToPaynowPhoneNumber() {
+		return toPaynowPhoneNumber;
 	}
 
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
+		this.toPaynowPhoneNumber = toPaynowPhoneNumber;
 	}
 
-
-	public String getRemarks() {
-		return remarks;
+	public String getFromAccountNumber() {
+		return fromAccountNumber;
 	}
 
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	public void setFromAccountNumber(String fromAccountNumber) {
+		this.fromAccountNumber = fromAccountNumber;
 	}
 
-
-	public Instant getTransferDate() {
-		return transferDate;
+	public String getToAccountNumber() {
+		return toAccountNumber;
 	}
 
-
-	public void setTransferDate(Instant transferDate) {
-		this.transferDate = transferDate;
-	}
-
-	public String getBankName() {
-		return bankName;
-	}
-
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
+	public void setToAccountNumber(String toAccountNumber) {
+		this.toAccountNumber = toAccountNumber;
 	}
 
 	public String getBeneficiaryName() {
@@ -161,6 +139,30 @@ public class Transfer {
 
 	public void setBeneficiaryName(String beneficiaryName) {
 		this.beneficiaryName = beneficiaryName;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public Instant getTransferDate() {
+		return transferDate;
+	}
+
+	public void setTransferDate(Instant transferDate) {
+		this.transferDate = transferDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public PaymentMethod getPaymentMethod() {
@@ -175,11 +177,12 @@ public class Transfer {
 	public String toString() {
 		return "Transfer [id=" + id + ", transactionAmount=" + transactionAmount
 				+ ", createdAt=" + createdAt + ", recipientName="
-				+ recipientName + ", paynowPhoneNumber=" + paynowPhoneNumber
-				+ ", accountNumber=" + accountNumber + ", bankName=" + bankName
+				+ recipientName + ", fromPaynowPhoneNumber="
+				+ fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
+				+ toPaynowPhoneNumber + ", fromAccountNumber="
+				+ fromAccountNumber + ", toAccountNumber=" + toAccountNumber
 				+ ", beneficiaryName=" + beneficiaryName + ", remarks="
 				+ remarks + ", transferDate=" + transferDate + ", user=" + user
 				+ ", paymentMethod=" + paymentMethod + "]";
 	}
-
 }

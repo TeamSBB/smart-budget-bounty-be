@@ -1,5 +1,7 @@
 package com.smartbudgetbounty.service.user;
 
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -70,6 +72,9 @@ public class UserServiceImpl implements UserService {
         if(account == null) {
         	throw new EntityNotFoundException("Account could not be found using userId: " + u.getId());
         }
+        
+        u.setLastLogin(Instant.now());
+        userRepo.save(u);
         
 		LogUtil.logEnd(logger, "End loginUser user: {}, accountId: {}", u, account.getId());
 		

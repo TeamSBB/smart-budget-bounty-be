@@ -54,33 +54,36 @@ public class TransferServiceImpl implements TransferService {
         
         Instant now = Instant.now();
         Transfer entity = transactionRepo.save(new Transfer(
+        	
     		request.getTransactionAmount(),
     		now,
     		request.getRecipientName(),
-    		paymentMethod.get(),
-    		request.getPaynowPhoneNumber(),
-    		request.getAccountNumber(),
-    		request.getRemarks(),
-    		request.getBankName(),
+    		request.getFromPaynowPhoneNumber(),
+    		request.getToPaynowPhoneNumber(),
+    		request.getFromAccountNumber(),
+    		request.getToAccountNumber(),
     		request.getBeneficiaryName(),
+    		request.getRemarks(),
     		request.getTransferDate() != null ? request.getTransferDate() :  Instant.now(),
-    		u.get()
+    		u.get(),
+    		paymentMethod.get()
 		));
 
-        LogUtil.logEnd(logger, "Created Transaction: {}", entity);
+        LogUtil.logEnd(logger, "Created Transaction: {}", entity.getId());
 		
 		return new CreateTransferDtoResponse(
 			entity.getId(), 
-			entity.getTransactionAmount(), 
 			entity.getRecipientName(), 
-			request.getPaymentMethodId(),
-			now,
+			entity.getFromPaynowPhoneNumber(),
+			entity.getToPaynowPhoneNumber(),
 			request.getTransferDate() != null ? request.getTransferDate() : now,
-			entity.getPaynowPhoneNumber(),
-			entity.getAccountNumber(),
-			entity.getRemarks(),
-			entity.getBankName(),
-			entity.getBeneficiaryName()
+			entity.getBeneficiaryName(),
+			entity.getFromAccountNumber(),
+			entity.getToAccountNumber(),
+			entity.getTransactionAmount(), 
+			now,
+			request.getPaymentMethodId(),
+			entity.getRemarks()
 		);
 	}
 
