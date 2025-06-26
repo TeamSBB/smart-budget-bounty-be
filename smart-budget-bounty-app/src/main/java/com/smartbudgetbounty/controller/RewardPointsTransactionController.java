@@ -125,13 +125,13 @@ public class RewardPointsTransactionController {
             "API called: GET /api/reward-point-transaction/user/" + userId
         );
 
-        List<RewardPointsTransactionResponseDto> rewardPointsTransactionDtos = rewardPointsTransactionService.getDtosByUserId(
+        List<RewardPointsTransactionResponseDto> rewardPointsTransactionResponseDtos = rewardPointsTransactionService.getDtosByUserId(
             userId
         );
 
         return ResponseEntity.ok(
             new ApiResponse<List<RewardPointsTransactionResponseDto>>(
-                rewardPointsTransactionDtos,
+                rewardPointsTransactionResponseDtos,
                 String.format(
                     "Retrieved RewardPointsTransactions for userId %d successfully",
                     userId
