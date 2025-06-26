@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
-import com.smartbudgetbounty.dto.transfer.CreateTransferDtoResponse;
+import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.ApiResponse;
 import com.smartbudgetbounty.service.transfer.TransferService;
 import com.smartbudgetbounty.util.LogUtil;
@@ -35,7 +35,7 @@ public class TransferController {
         LogUtil.logInfoController(logger, "API called: POST /api/transfer");
 
         // Call service to insert into db
-        CreateTransferDtoResponse createResponseDto = transferService.create(createDtoReq);
+        TransferResponseDto createResponseDto = transferService.create(createDtoReq);
 
         return ResponseEntity.ok(
             new ApiResponse<>(

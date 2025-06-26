@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
-import com.smartbudgetbounty.dto.transfer.CreateTransferDtoResponse;
+import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.PaymentMethod;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
@@ -45,8 +45,8 @@ public class TransferServiceImpl implements TransferService {
     // helper methods
 
     // convert Transfer to CreateTransferDtoResponse
-    private CreateTransferDtoResponse toCreateTransferDtoResponse(Transfer transfer) {
-        return new CreateTransferDtoResponse(
+    private TransferResponseDto toCreateTransferDtoResponse(Transfer transfer) {
+        return new TransferResponseDto(
             transfer.getId(),
             transfer.getTransactionAmount(),
             transfer.getRecipientName(),
@@ -67,7 +67,7 @@ public class TransferServiceImpl implements TransferService {
     // create and persist RewardPointsTransaction
     // - to be called by TransferController
     @Override
-    public CreateTransferDtoResponse create(CreateTransferDtoRequest request) {
+    public TransferResponseDto create(CreateTransferDtoRequest request) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
         // get User from repository
