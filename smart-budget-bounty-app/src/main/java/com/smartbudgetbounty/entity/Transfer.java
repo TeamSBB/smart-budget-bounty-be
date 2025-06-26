@@ -8,11 +8,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Transaction {
+public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,24 +20,23 @@ public class Transaction {
     private Instant createdAt;
     private String recipientName;
 
-    private String paymentMethod;
-    private String paynowRecipient;
+    private String paynowPhoneNumber;
     private String accountNumber;
+    private String bankName;
+    private String beneficiaryName;
     private String remarks;
 
     private Instant transferDate;
 
-    // Transaction (owning side) -> User (inverse side)
-    // - Transaction holds the foreign key to User
-    @ManyToOne
+    // Transfer (owning side) -> User (inverse side)
+    // - Transfer holds the foreign key to User
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Transaction (owning side) -> User (inverse side)
-    // - Transaction holds the foreign key to User
-    @ManyToOne
-    @JoinColumn(name = "payment_method_id", nullable = false, referencedColumnName = "id")
-    private PaymentMethod paymentMethod2;
+    // Transfer (owning side) -> User (inverse side)
+    // - Transfer holds the foreign key to PaymentMethod
+    @JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName = "id")
+    private PaymentMethod paymentMethod;
 
     // Transaction (inverse side) <- RewardPointsTransaction (owning side)
     // - RewardPointsTransaction holds the foreign key to Transaction
@@ -56,18 +54,20 @@ public class Transaction {
 //	@JoinColumn(name="account_id")
 //	private Account account;
 
-    public Transaction() {
+    public Transfer() {
         super();
     }
 
-    public Transaction(
+    public Transfer(
         Double transactionAmount,
         Instant createdAt,
         String recipientName,
-        String paymentMethod,
-        String paynowRecipient,
+        PaymentMethod paymentMethod,
+        String paynowPhoneNumber,
         String accountNumber,
         String remarks,
+        String bankName,
+        String beneficiaryName,
         Instant transferDate,
         User user
     ) {
@@ -76,11 +76,14 @@ public class Transaction {
         this.createdAt = createdAt;
         this.recipientName = recipientName;
         this.paymentMethod = paymentMethod;
-        this.paynowRecipient = paynowRecipient;
+        this.paynowPhoneNumber = paynowPhoneNumber;
         this.accountNumber = accountNumber;
         this.remarks = remarks;
         this.transferDate = transferDate;
         this.user = user;
+        this.bankName = bankName;
+        this.beneficiaryName = beneficiaryName;
+        this.paymentMethod = paymentMethod;
     }
 
     public Long getId() {
@@ -115,20 +118,12 @@ public class Transaction {
         this.recipientName = recipientName;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public String getPaynowPhoneNumber() {
+        return paynowPhoneNumber;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getPaynowRecipient() {
-        return paynowRecipient;
-    }
-
-    public void setPaynowRecipient(String paynowRecipient) {
-        this.paynowRecipient = paynowRecipient;
+    public void setPaynowPhoneNumber(String paynowPhoneNumber) {
+        this.paynowPhoneNumber = paynowPhoneNumber;
     }
 
     public String getAccountNumber() {
@@ -137,6 +132,22 @@ public class Transaction {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBeneficiaryName() {
+        return beneficiaryName;
+    }
+
+    public void setBeneficiaryName(String beneficiaryName) {
+        this.beneficiaryName = beneficiaryName;
     }
 
     public String getRemarks() {
@@ -163,12 +174,12 @@ public class Transaction {
         this.user = user;
     }
 
-    public PaymentMethod getPaymentMethod2() {
-        return paymentMethod2;
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setPaymentMethod2(PaymentMethod paymentMethod2) {
-        this.paymentMethod2 = paymentMethod2;
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public RewardPointsTransaction getPointsTransaction() {
@@ -181,7 +192,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction [id="
+        return "Transfer [id="
             + id
             + ", transactionAmount="
             + transactionAmount
@@ -189,21 +200,22 @@ public class Transaction {
             + createdAt
             + ", recipientName="
             + recipientName
-            + ", paymentMethod="
-            + paymentMethod
-            + ", paynowRecipient="
-            + paynowRecipient
+            + ", paynowPhoneNumber="
+            + paynowPhoneNumber
             + ", accountNumber="
             + accountNumber
+            + ", bankName="
+            + bankName
+            + ", beneficiaryName="
+            + beneficiaryName
             + ", remarks="
             + remarks
             + ", transferDate="
             + transferDate
             + ", user="
             + user
-            + ", paymentMethod2="
-            + paymentMethod2
+            + ", paymentMethod="
+            + paymentMethod
             + "]";
     }
-
 }

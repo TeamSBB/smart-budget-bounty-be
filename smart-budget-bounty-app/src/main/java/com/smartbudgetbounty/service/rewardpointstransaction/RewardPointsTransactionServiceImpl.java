@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
-import com.smartbudgetbounty.entity.Transaction;
+import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
-import com.smartbudgetbounty.repository.TransactionRepository;
+import com.smartbudgetbounty.repository.TransferRepository;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -29,17 +29,17 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     );
 
     private final UserService userService;
-    private final TransactionRepository transactionRepository;
-    private final RewardPointsTransactionRepository rewardPointsTransactionRepository;
+    private final TransferRepository transferRepository;
+    private final RewardPointsTransactionRepository rewardPointsTransferRepository;
 
     public RewardPointsTransactionServiceImpl(
         UserService userService,
-        TransactionRepository transactionRepository,
-        RewardPointsTransactionRepository rewardPointsTransactionRepository
+        TransferRepository transferRepository,
+        RewardPointsTransactionRepository rewardPointsTransferRepository
     ) {
         this.userService = userService;
-        this.transactionRepository = transactionRepository;
-        this.rewardPointsTransactionRepository = rewardPointsTransactionRepository;
+        this.transferRepository = transferRepository;
+        this.rewardPointsTransferRepository = rewardPointsTransferRepository;
     }
 
     // helper methods
@@ -53,38 +53,38 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             rewardPointsTransaction.getAmount(),
             rewardPointsTransaction.getPointsTransactionDate(),
             rewardPointsTransaction.getUser().getId(),
-            rewardPointsTransaction.getTransaction().getId(),
+            rewardPointsTransaction.getTransfer().getId(),
             rewardPointsTransaction.getRewardVoucher().getId()
         );
     }
 
-    Integer toRewardPointsAmount(Double transactionAmount) {
-        return (int) Math.floor(transactionAmount);
+    Integer toRewardPointsAmount(Double transferAmount) {
+        return (int) Math.floor(transferAmount);
     }
 
     // service methods
 
     // create and persist RewardPointsTransaction
-    // - to be called by TransactionService whenever a Transaction is created
+    // - to be called by TransferService whenever a Transfer is created
     @Override
-    public RewardPointsTransactionResponseDto createEarn(User user, Transaction transaction) {
+    public RewardPointsTransactionResponseDto createEarn(User user, Transfer transfer) {
         LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
 
         // create rewardPointsTransaction
         RewardPointsTransaction rewardPointsTransaction = new RewardPointsTransaction(
             RewardPointsTransactionType.EARN,
-            toRewardPointsAmount(transaction.getTransactionAmount()),
+            toRewardPointsAmount(transfer.getTransactionAmount()),
             Instant.now(),
             user
         );
 
-        // set bidirectional relationship between RewardPointsTransaction and Transaction
-        rewardPointsTransaction.setTransaction(transaction);
-        transaction.setPointsTransaction(rewardPointsTransaction);
+        // set bidirectional relationship between RewardPointsTransaction and Transfer
+        rewardPointsTransaction.setTransfer(transfer);
+        transfer.setPointsTransaction(rewardPointsTransaction);
 
         // persist RewardPointsTransaction and Transaction
-        rewardPointsTransactionRepository.save(rewardPointsTransaction);
-        transactionRepository.save(transaction);
+        rewardPointsTransferRepository.save(rewardPointsTransaction);
+        transferRepository.save(transfer);
 
         LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", rewardPointsTransaction);
 
@@ -104,7 +104,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         User user = userService.getById(userId);
 
         // create and persist RewardPointsTransaction
-        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.save(
+        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransferRepository.save(
             new RewardPointsTransaction(
                 RewardPointsTransactionType.REDEEM,
                 requestDto.getRedeemAmount(),
@@ -130,7 +130,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     public RewardPointsTransaction getById(Long id) {
         LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
 
-        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransactionRepository.findById(
+        RewardPointsTransaction rewardPointsTransaction = rewardPointsTransferRepository.findById(
             id
         ).orElseThrow(() -> {
             LogUtil.logError(logger, "RewardPointsTransaction not found for id: {}", id);

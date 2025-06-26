@@ -37,7 +37,7 @@ public class RewardPointsTransaction {
     // - RewardPointsTransaction holds the foreign key to Transaction
     @OneToOne
     @JoinColumn(name = "transaction_id")
-    private Transaction transaction;
+    private Transfer transfer;
 
     // RewardPointsTransaction (inverse side) <- RewardVoucher (owning side)
     // - RewardVoucher holds the foreign key to RewardPointsTransaction
@@ -108,12 +108,12 @@ public class RewardPointsTransaction {
         this.user = user;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Transfer getTransfer() {
+        return transfer;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransfer(Transfer transfer) {
+        this.transfer = transfer;
     }
 
     public RewardVoucher getRewardVoucher() {
