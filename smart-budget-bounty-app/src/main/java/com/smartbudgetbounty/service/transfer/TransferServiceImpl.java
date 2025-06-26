@@ -1,7 +1,6 @@
 package com.smartbudgetbounty.service.transfer;
 
 import java.time.Instant;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,16 +71,14 @@ public class TransferServiceImpl implements TransferService {
         User user = userService.getById(request.getUserId());
 
         // get PaymentMethod from repository
-        Optional<PaymentMethod> paymentMethod = paymentMethodRepo.findById(
+        PaymentMethod paymentMethod = paymentMethodRepo.findById(
             request.getPaymentMethodId()
-        );
-
-        if (paymentMethod.isEmpty()) {
+        ).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find paymentId: {}.", request.getPaymentMethodId());
-            throw new EntityNotFoundException(
+            return new EntityNotFoundException(
                 "Unable to find paymentId: " + request.getPaymentMethodId()
             );
-        }
+        });
 
         // create and persist Transfer
         Instant now = Instant.now();
@@ -90,7 +87,7 @@ public class TransferServiceImpl implements TransferService {
                 request.getTransactionAmount(),
                 now,
                 request.getRecipientName(),
-                paymentMethod.get(),
+                paymentMethod,
                 request.getPaynowPhoneNumber(),
                 request.getAccountNumber(),
                 request.getRemarks(),
