@@ -4,6 +4,7 @@ import java.time.Instant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.smartbudgetbounty.dto.rewardvoucher.RedeemRewardVoucherRequestDto;
 import com.smartbudgetbounty.dto.rewardvoucher.RewardVoucherResponseDto;
@@ -18,6 +19,7 @@ import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@Service
 public class RewardVoucherServiceImpl implements RewardVoucherService {
 
     private static final Logger logger = LoggerFactory.getLogger(
@@ -69,7 +71,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
         // set bidirectional relationship between RewardVoucher and RewardPointsTransaction
         voucher.setPointsTransaction(pointsTransaction);
-        pointsTransaction.setRewardVoucher(voucher);
+        pointsTransaction.setVoucher(voucher);
 
         // persist RewardVoucher and RewardPointsTransaction
         voucher = voucherRepository.save(voucher);

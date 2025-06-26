@@ -30,26 +30,26 @@ public class RewardPointsTransaction {
     // RewardPointsTransaction (owning side) -> User (inverse side)
     // - RewardPointsTransaction holds the foreign key to User
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
 
     // RewardPointsTransaction (owning side) -> Transfer (inverse side)
     // - RewardPointsTransaction holds the foreign key to Transfer
     @OneToOne
-    @JoinColumn(name = "transaction_id")
+    @JoinColumn(name = "transaction_id", nullable = true, referencedColumnName = "id")
     private Transfer transfer;
 
     // RewardPointsTransaction (inverse side) <- RewardVoucher (owning side)
     // - RewardVoucher holds the foreign key to RewardPointsTransaction
     @OneToOne(
-        // relationship is mapped by the "reward_points_transaction" field in RewardVoucher
-        mappedBy = "reward_points_transaction",
+        // relationship is mapped by the "pointsTransaction" field in RewardVoucher
+        mappedBy = "pointsTransaction",
         // cascade operations from RewardPointsTransaction (parent) to RewardVoucher (child)
         cascade = CascadeType.ALL,
         // delete RewardVoucher (child) if it is removed from RewardPointsTransaction (parent)
         orphanRemoval = true
     )
-    private RewardVoucher rewardVoucher;
+    private RewardVoucher voucher;
 
     public RewardPointsTransaction() {
         super();
@@ -116,11 +116,11 @@ public class RewardPointsTransaction {
         this.transfer = transfer;
     }
 
-    public RewardVoucher getRewardVoucher() {
-        return rewardVoucher;
+    public RewardVoucher getVoucher() {
+        return voucher;
     }
 
-    public void setRewardVoucher(RewardVoucher rewardVoucher) {
-        this.rewardVoucher = rewardVoucher;
+    public void setVoucher(RewardVoucher voucher) {
+        this.voucher = voucher;
     }
 }

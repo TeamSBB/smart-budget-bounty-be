@@ -30,13 +30,13 @@ public class RewardVoucher {
     // RewardVoucher (owning side) -> User (inverse side)
     // - RewardVoucher holds the foreign key to User
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
     private User user;
 
     // RewardVoucher (owning side) -> RewardPointsTransaction (inverse side)
     // - RewardVoucher holds the foreign key to RewardPointsTransaction
     @OneToOne
-    @JoinColumn(name = "reward_points_transaction_id")
+    @JoinColumn(name = "points_transaction_id", nullable = true, referencedColumnName = "id")
     private RewardPointsTransaction pointsTransaction;
 
     public RewardVoucher() {

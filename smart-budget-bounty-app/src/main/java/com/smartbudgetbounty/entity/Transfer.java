@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -30,11 +31,13 @@ public class Transfer {
 
     // Transfer (owning side) -> User (inverse side)
     // - Transfer holds the foreign key to User
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     // Transfer (owning side) -> User (inverse side)
     // - Transfer holds the foreign key to PaymentMethod
+    @OneToOne
     @JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName = "id")
     private PaymentMethod paymentMethod;
 

@@ -39,7 +39,7 @@ public class User {
     private List<SchedulePayment> schedulePayments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user") // inverse side
-    private List<Transfer> transactions = new ArrayList<>();
+    private List<Transfer> transfers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user") // inverse side
     private List<RewardPointsTransaction> pointsTransactions = new ArrayList<>();
@@ -173,12 +173,12 @@ public class User {
         this.schedulePayments = schedulePayments;
     }
 
-    public List<Transfer> getTransactions() {
-        return transactions;
+    public List<Transfer> getTransfers() {
+        return transfers;
     }
 
-    public void setTransactions(List<Transfer> transactions) {
-        this.transactions = transactions;
+    public void setTransfers(List<Transfer> transfers) {
+        this.transfers = transfers;
     }
 
     public List<RewardPointsTransaction> getPointsTransactions() {
@@ -224,7 +224,7 @@ public class User {
             + ", schedulePayments="
             + schedulePayments
             + ", transactions="
-            + transactions
+            + transfers
             + ", rewardPointsTransactions="
             + pointsTransactions
             + ", vouchers="
