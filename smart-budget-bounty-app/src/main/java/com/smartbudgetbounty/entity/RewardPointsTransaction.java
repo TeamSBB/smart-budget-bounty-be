@@ -123,4 +123,25 @@ public class RewardPointsTransaction {
     public void setVoucher(RewardVoucher voucher) {
         this.voucher = voucher;
     }
+
+    @Override
+    public String toString() {
+        return "RewardPointTransaction [id="
+            + id
+            + ", pointsTransactionType="
+            + pointsTransactionType.name()
+            + ", amount="
+            + amount
+            + ", pointsTransactionDate="
+            + pointsTransactionDate
+            + ", userId="
+            + user.getId()
+            + ", transferId="
+            + (transfer
+                != null ? transfer.getId() : null)
+            + ", voucherId="
+            + (voucher
+                != null ? voucher.getId() : null)
+            + "]";
+    }
 }

@@ -59,8 +59,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             pointsTransaction.getAmount(),
             pointsTransaction.getPointsTransactionDate(),
             pointsTransaction.getUser().getId(),
-            pointsTransaction.getTransfer().getId(),
-            pointsTransaction.getVoucher().getId()
+            pointsTransaction.getTransfer()
+                != null ? pointsTransaction.getTransfer().getId() : null,
+            pointsTransaction.getVoucher()
+                != null ? pointsTransaction.getVoucher().getId() : null
         );
     }
 

@@ -223,7 +223,7 @@ public class User {
             + lastLogin
             + ", schedulePayments="
             + schedulePayments
-            + ", transactions="
+            + ", transfers="
             + transfers
             + ", rewardPointsTransactions="
             + pointsTransactions

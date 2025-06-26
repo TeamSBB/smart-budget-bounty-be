@@ -222,10 +222,12 @@ public class Transfer {
             + remarks
             + ", transferDate="
             + transferDate
-            + ", user="
-            + user
+            + ", userId="
+            + user.getId()
             + ", paymentMethod="
             + paymentMethod
+            + ", pointsTransactionId="
+            + pointsTransaction.getId()
             + "]";
     }
 }
