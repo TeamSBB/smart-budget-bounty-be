@@ -45,7 +45,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // helper methods
 
-    RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
+    private RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
         RewardPointsTransaction pointsTransaction
     ) {
         return new RewardPointsTransactionResponseDto(
@@ -59,7 +59,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         );
     }
 
-    Integer toRewardPointsAmount(Double transferAmount) {
+    private Integer toRewardPointsAmount(Double transferAmount) {
         return (int) Math.floor(transferAmount);
     }
 
