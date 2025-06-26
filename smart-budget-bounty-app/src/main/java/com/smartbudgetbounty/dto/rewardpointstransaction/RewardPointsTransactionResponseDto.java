@@ -9,7 +9,7 @@ public class RewardPointsTransactionResponseDto {
     private Instant pointsTransactionDate;
     private Long userId;
     private Long transactionId;
-    private Long rewardVoucherId;
+    private Long voucherId;
 
     public RewardPointsTransactionResponseDto(
         Long id,
@@ -18,7 +18,7 @@ public class RewardPointsTransactionResponseDto {
         Instant pointsTransactionDate,
         Long userId,
         Long transactionId,
-        Long rewardVoucherId
+        Long voucherId
     ) {
         super();
         this.id = id;
@@ -27,7 +27,7 @@ public class RewardPointsTransactionResponseDto {
         this.pointsTransactionDate = pointsTransactionDate;
         this.userId = userId;
         this.transactionId = transactionId;
-        this.rewardVoucherId = rewardVoucherId;
+        this.voucherId = voucherId;
     }
 
     public Long getId() {
@@ -78,11 +78,11 @@ public class RewardPointsTransactionResponseDto {
         this.transactionId = transactionId;
     }
 
-    public Long getRewardVoucherId() {
-        return rewardVoucherId;
+    public Long getVoucherId() {
+        return voucherId;
     }
 
-    public void setRewardVoucherId(Long rewardVoucherId) {
-        this.rewardVoucherId = rewardVoucherId;
+    public void setVoucherId(Long voucherId) {
+        this.voucherId = voucherId;
     }
 }
