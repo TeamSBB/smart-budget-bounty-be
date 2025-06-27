@@ -7,22 +7,20 @@ import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.Transfer;
 
 public interface TransferService {
-    // create and persist Transfer
-    // create and persist RewardPointsTransaction
+    // create a Transfer and associated RewardPointsTransaction
+    // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
     TransferResponseDto create(CreateTransferDtoRequest request);
 
-    // retrieve Transfer from TransferRepository
+    // retrieve a Transfer from TransferRepository
     // - to be called by other services
     Transfer getById(Long id);
 
-    // retrieve Transfer from TransferRepository and return it as a
-    // TransferResponseDto
+    // retrieve a Transfer from TransferRepository as a TransferResopnseDto
     // - to be called by TransferController
     TransferResponseDto getDtoById(Long id);
 
-    // retrieve a user's Transfers from TransferRepository and return it as a
-    // TransferResponseDto
+    // retrieve a user's Transfers from TransferRepository as a list of TransferResponseDtos
     // - to be called by TransferController
     List<TransferResponseDto> getDtosByUserId(Long userId);
 }

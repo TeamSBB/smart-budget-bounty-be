@@ -81,8 +81,8 @@ public class TransferServiceImpl implements TransferService {
 
     // service methods
 
-    // create and persist Transfer
-    // create and persist RewardPointsTransaction
+    // create a Transfer and associated RewardPointsTransaction
+    // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
     @Override
     public TransferResponseDto create(CreateTransferDtoRequest request) {
@@ -128,7 +128,7 @@ public class TransferServiceImpl implements TransferService {
         return toTransferResponseDto(transfer);
     }
 
-    // retrieve Transfer from TransferRepository
+    // retrieve a Transfer from TransferRepository
     // - to be called by other services
     @Override
     public Transfer getById(Long id) {
@@ -144,8 +144,7 @@ public class TransferServiceImpl implements TransferService {
         return transfer;
     }
 
-    // retrieve Transfer from TransferRepository and return it as a
-    // TransferResponseDto
+    // retrieve a Transfer from TransferRepository as a TransferResopnseDto
     // - to be called by TransferController
     @Override
     public TransferResponseDto getDtoById(Long id) {
@@ -153,8 +152,7 @@ public class TransferServiceImpl implements TransferService {
         return toTransferResponseDto(transfer);
     }
 
-    // retrieve a user's Transfers from TransferRepository and return it as a
-    // TransferResponseDto
+    // retrieve a user's Transfers from TransferRepository as a list of TransferResponseDtos
     // - to be called by TransferController
     @Override
     public List<TransferResponseDto> getDtosByUserId(Long userId) {

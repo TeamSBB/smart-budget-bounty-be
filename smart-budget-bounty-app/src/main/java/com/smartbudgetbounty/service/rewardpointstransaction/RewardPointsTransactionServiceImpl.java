@@ -87,9 +87,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // service methods
 
-    // create and persist RewardPointsTransaction
-    // update, persist and return Transfer
+    // create an EARN RewardPointsTransaction
     // - to be called by TransferService whenever a Transfer is created
+    // - persistence is handled by TransferService via cascade
     @Override
     public Transfer createEarn(User user, Transfer transfer) {
         LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
@@ -115,8 +115,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return transfer;
     }
 
-    // create and persist RewardPointsTransaction
-    // create and persist RewardVoucher
+    // create a REDEEM RewardPointsTransaction and associated RewardVoucher
+    // persist RewardPointsTransaction, which persists RewardVoucher via cascade
     // - to be called by RewardPointsTransactionController
     @Override
     public RewardPointsTransactionResponseDto createRedeem(
@@ -146,7 +146,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
-    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository
+    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository
     // - to be called by other services
     @Override
     public RewardPointsTransaction getById(Long id) {
@@ -164,7 +164,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return pointsTransaction;
     }
 
-    // retrieve RewardPointsTransaction from RewardPointsTransactionRepository and return it as a
+    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as a
     // RewardPointsTransactionResponseDto
     // - to be called by RewardPointsTransactionController
     @Override
@@ -173,8 +173,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
-    // retrieve a user's RewardPointsTransactions from RewardPointsTransactionRepository and return
-    // it as a RewardPointsTransactionResponseDto
+    // retrieve a user's RewardPointsTransactions from RewardPointsTransactionRepository as a list
+    // of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {

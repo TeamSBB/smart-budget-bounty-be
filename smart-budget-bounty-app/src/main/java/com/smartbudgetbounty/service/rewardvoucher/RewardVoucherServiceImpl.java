@@ -54,10 +54,10 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
     // service methods
 
-    // create and persist RewardVoucher
-    // update, persist and return RewardPointsTransaction
+    // create a RewardVoucher
     // - to be called by RewardPointsTransactionService whenever a REDEEM RewardPointsTransaction is
     // created
+    // - persistence is handled by RewardPointsTransactionService via cascade
     @Override
     public RewardPointsTransaction create(
         User user,
@@ -82,7 +82,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         return pointsTransaction;
     }
 
-    // retrieve RewardVoucher from RewardVoucherRepository
+    // retrieve a RewardVoucher from RewardVoucherRepository
     // - to be called by other service methods
     @Override
     public RewardVoucher getById(Long id) {
@@ -100,7 +100,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         return voucher;
     }
 
-    // change the status of a RewardVoucher from AVAILABLE to REDEEMED
+    // update the status of a RewardVoucher from AVAILABLE to REDEEMED
     // - to be called by RewardVoucherController
     @Override
     public RewardVoucherResponseDto redeem(
