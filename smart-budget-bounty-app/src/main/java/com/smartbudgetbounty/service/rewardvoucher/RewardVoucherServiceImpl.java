@@ -42,7 +42,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // calculate the discount amount for a RewardVoucher obtained from a REDEEM
     // RewardPointsTransaction
     private Double toRewardVoucherDiscount(RewardPointsTransaction pointsTransaction) {
-        return pointsTransaction.getAmount() / 100.0;
+        return pointsTransaction.getAmount() / 100.0 * -1;
     }
 
     // save RewardVoucher to RewardVoucherRepository
