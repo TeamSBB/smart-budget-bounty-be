@@ -32,11 +32,10 @@ public class TransferServiceImpl implements TransferService {
     private final RewardPointsTransactionService pointsTransactionService;
 
     public TransferServiceImpl(
-        UserService userService,
-        TransferRepository transferRepository,
-        PaymentMethodRepository paymentMethodRepo,
-        RewardPointsTransactionService pointsTransactionService
-    ) {
+            UserService userService,
+            TransferRepository transferRepository,
+            PaymentMethodRepository paymentMethodRepo,
+            RewardPointsTransactionService pointsTransactionService) {
         super();
         this.userService = userService;
         this.transferRepository = transferRepository;
@@ -49,30 +48,27 @@ public class TransferServiceImpl implements TransferService {
     // convert Transfer toTransferResponseDto
     private TransferResponseDto toTransferResponseDto(Transfer transfer) {
         return new TransferResponseDto(
-            transfer.getId(),
-            transfer.getTransactionAmount(),
-            transfer.getRecipientName(),
-            transfer.getPaymentMethod().getId(),
-            transfer.getCreatedAt(),
-            transfer.getTransferDate(),
-            transfer.getPaynowPhoneNumber(),
-            transfer.getAccountNumber(),
-            transfer.getRemarks(),
-            transfer.getBankName(),
-            transfer.getBeneficiaryName()
-        );
+                transfer.getId(),
+                transfer.getTransactionAmount(),
+                transfer.getRecipientName(),
+                transfer.getPaymentMethod().getId(),
+                transfer.getCreatedAt(),
+                transfer.getTransferDate(),
+                transfer.getPaynowPhoneNumber(),
+                transfer.getAccountNumber(),
+                transfer.getRemarks(),
+                transfer.getBankName(),
+                transfer.getBeneficiaryName());
     }
 
     // convert a list of Transfers to a list of TransferResponseDtos
     private List<TransferResponseDto> toTransferResponseDtos(
-        List<Transfer> transfers
-    ) {
+            List<Transfer> transfers) {
         ArrayList<TransferResponseDto> transferResponseDtos = new ArrayList<TransferResponseDto>();
 
         for (Transfer transfer : transfers) {
             transferResponseDtos.add(
-                toTransferResponseDto(transfer)
-            );
+                    toTransferResponseDto(transfer));
         }
 
         return transferResponseDtos;
@@ -92,31 +88,27 @@ public class TransferServiceImpl implements TransferService {
 
         // get PaymentMethod from repository
         PaymentMethod paymentMethod = paymentMethodRepo.findById(
-            request.getPaymentMethodId()
-        ).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find paymentId: {}.", request.getPaymentMethodId());
-            return new EntityNotFoundException(
-                "Unable to find paymentId: " + request.getPaymentMethodId()
-            );
-        });
+                request.getPaymentMethodId()).orElseThrow(() -> {
+                    LogUtil.logError(logger, "Unable to find paymentId: {}.", request.getPaymentMethodId());
+                    return new EntityNotFoundException(
+                            "Unable to find paymentId: " + request.getPaymentMethodId());
+                });
 
         // create and persist Transfer
         Instant now = Instant.now();
         Transfer transfer = transferRepository.save(
-            new Transfer(
-                request.getTransactionAmount(),
-                now,
-                request.getRecipientName(),
-                paymentMethod,
-                request.getPaynowPhoneNumber(),
-                request.getAccountNumber(),
-                request.getRemarks(),
-                request.getBankName(),
-                request.getBeneficiaryName(),
-                request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
-                user
-            )
-        );
+                new Transfer(
+                        request.getTransactionAmount(),
+                        now,
+                        request.getRecipientName(),
+                        paymentMethod,
+                        request.getPaynowPhoneNumber(),
+                        request.getAccountNumber(),
+                        request.getRemarks(),
+                        request.getBankName(),
+                        request.getBeneficiaryName(),
+                        request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
+                        user));
 
         // create and persist RewardPointsTransaction
         transfer = pointsTransactionService.createEarn(user, transfer);
@@ -163,8 +155,7 @@ public class TransferServiceImpl implements TransferService {
 
         // convert Transfers to TransferResponseDtos
         List<TransferResponseDto> transfers = toTransferResponseDtos(
-            user.getTransfers()
-        );
+                user.getTransfers());
 
         LogUtil.logEnd(logger, "Retrieved Transfers: {}", transfers);
 

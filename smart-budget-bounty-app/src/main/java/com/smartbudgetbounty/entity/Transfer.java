@@ -16,25 +16,20 @@ public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // Card
-    private String recipientName;
-
-    // Paynow
-    private String paynowPhoneNumber;
-
-    // Bank
-    private Instant transferDate;
-    private String bankName;
-    private String beneficiaryName;
-
-    // Card and Bank
-    private String accountNumber;
-
-    // Generic
     private Double transactionAmount;
     private Instant createdAt;
+    private String recipientName;
+
+    private String fromPaynowPhoneNumber;
+    private String toPaynowPhoneNumber;
+
+    private String fromAccountNumber;
+    private String toAccountNumber;
+
+    private String beneficiaryName;
     private String remarks;
+
+    private Instant transferDate;
 
     // Transfer (owning side) -> User (inverse side)
     // - Transfer holds the foreign key to User
@@ -51,57 +46,46 @@ public class Transfer {
     // Transfer (inverse side) <- RewardPointsTransaction (owning side)
     // - RewardPointsTransaction holds the foreign key to Transfer
     @OneToOne(
-        // relationship is mapped by the "transfer" field in RewardVoucher
-        mappedBy = "transfer",
-        // cascade operations from Transfer (parent) to RewardPointsTransaction (child)
-        cascade = CascadeType.ALL,
-        // delete RewardPointsTransaction (child) if it is removed from Transfer (parent)
-        orphanRemoval = true
-    )
+            // relationship is mapped by the "transfer" field in RewardVoucher
+            mappedBy = "transfer",
+            // cascade operations from Transfer (parent) to RewardPointsTransaction (child)
+            cascade = CascadeType.ALL,
+            // delete RewardPointsTransaction (child) if it is removed from Transfer
+            // (parent)
+            orphanRemoval = true)
     private RewardPointsTransaction pointsTransaction;
 
-//	@OneToOne // Owner - Because Transaction is created for an Account, not the other way around
-//	@JoinColumn(name="account_id")
-//	private Account account;
+    // @OneToOne // Owner - Because Transaction is created for an Account, not the
+    // other way around
+    // @JoinColumn(name="account_id")
+    // private Account account;
 
     public Transfer() {
         super();
     }
 
-    public Transfer(
-        Double transactionAmount,
-        Instant createdAt,
-        String recipientName,
-        PaymentMethod paymentMethod,
-        String paynowPhoneNumber,
-        String accountNumber,
-        String remarks,
-        String bankName,
-        String beneficiaryName,
-        Instant transferDate,
-        User user
-    ) {
+    public Transfer(Double transactionAmount, Instant createdAt,
+            String recipientName, String fromPaynowPhoneNumber,
+            String toPaynowPhoneNumber, String fromAccountNumber,
+            String toAccountNumber, String beneficiaryName, String remarks,
+            Instant transferDate, User user, PaymentMethod paymentMethod) {
         super();
         this.transactionAmount = transactionAmount;
         this.createdAt = createdAt;
         this.recipientName = recipientName;
-        this.paymentMethod = paymentMethod;
-        this.paynowPhoneNumber = paynowPhoneNumber;
-        this.accountNumber = accountNumber;
+        this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
+        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
+        this.beneficiaryName = beneficiaryName;
         this.remarks = remarks;
         this.transferDate = transferDate;
         this.user = user;
-        this.bankName = bankName;
-        this.beneficiaryName = beneficiaryName;
         this.paymentMethod = paymentMethod;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Double getTransactionAmount() {
@@ -124,32 +108,36 @@ public class Transfer {
         return recipientName;
     }
 
-    public void setRecipientName(String recipientName) {
-        this.recipientName = recipientName;
+    public String getFromPaynowPhoneNumber() {
+        return fromPaynowPhoneNumber;
     }
 
-    public String getPaynowPhoneNumber() {
-        return paynowPhoneNumber;
+    public void setFromPaynowPhoneNumber(String fromPaynowPhoneNumber) {
+        this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
     }
 
-    public void setPaynowPhoneNumber(String paynowPhoneNumber) {
-        this.paynowPhoneNumber = paynowPhoneNumber;
+    public String getToPaynowPhoneNumber() {
+        return toPaynowPhoneNumber;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
+        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public String getFromAccountNumber() {
+        return fromAccountNumber;
     }
 
-    public String getBankName() {
-        return bankName;
+    public void setFromAccountNumber(String fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public String getToAccountNumber() {
+        return toAccountNumber;
+    }
+
+    public void setToAccountNumber(String toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
     }
 
     public String getBeneficiaryName() {
@@ -192,42 +180,16 @@ public class Transfer {
         this.paymentMethod = paymentMethod;
     }
 
-    public RewardPointsTransaction getPointsTransaction() {
-        return pointsTransaction;
-    }
-
-    public void setPointsTransaction(RewardPointsTransaction pointsTransaction) {
-        this.pointsTransaction = pointsTransaction;
-    }
-
     @Override
     public String toString() {
-        return "Transfer [id="
-            + id
-            + ", transactionAmount="
-            + transactionAmount
-            + ", createdAt="
-            + createdAt
-            + ", recipientName="
-            + recipientName
-            + ", paynowPhoneNumber="
-            + paynowPhoneNumber
-            + ", accountNumber="
-            + accountNumber
-            + ", bankName="
-            + bankName
-            + ", beneficiaryName="
-            + beneficiaryName
-            + ", remarks="
-            + remarks
-            + ", transferDate="
-            + transferDate
-            + ", userId="
-            + user.getId()
-            + ", paymentMethod="
-            + paymentMethod
-            + ", pointsTransactionId="
-            + pointsTransaction.getId()
-            + "]";
+        return "Transfer [id=" + id + ", transactionAmount=" + transactionAmount
+                + ", createdAt=" + createdAt + ", recipientName="
+                + recipientName + ", fromPaynowPhoneNumber="
+                + fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
+                + toPaynowPhoneNumber + ", fromAccountNumber="
+                + fromAccountNumber + ", toAccountNumber=" + toAccountNumber
+                + ", beneficiaryName=" + beneficiaryName + ", remarks="
+                + remarks + ", transferDate=" + transferDate + ", user=" + user
+                + ", paymentMethod=" + paymentMethod + "]";
     }
 }
