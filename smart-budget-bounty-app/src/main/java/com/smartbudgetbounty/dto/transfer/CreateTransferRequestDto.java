@@ -5,7 +5,7 @@ import java.time.Instant;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public class CreateTransferDtoRequest {
+public class CreateTransferRequestDto {
     @NotNull(message = "Amount is required.")
     @Positive(message = "Amount must be greater than 0.")
     private Double amount;
@@ -27,7 +27,7 @@ public class CreateTransferDtoRequest {
 
     private Instant transferDate;
 
-    public CreateTransferDtoRequest(
+    public CreateTransferRequestDto(
         @NotNull(message = "Amount is required.")
         @Positive(message = "Amount must be greater than 0.")
         Double amount,

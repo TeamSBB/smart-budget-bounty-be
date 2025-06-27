@@ -2,7 +2,7 @@ package com.smartbudgetbounty.service.transfer;
 
 import java.util.List;
 
-import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
+import com.smartbudgetbounty.dto.transfer.CreateTransferRequestDto;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.Transfer;
 
@@ -10,7 +10,7 @@ public interface TransferService {
     // create a Transfer and associated RewardPointsTransaction
     // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
-    TransferResponseDto create(Long userId, CreateTransferDtoRequest requestDto);
+    TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto);
 
     // retrieve a Transfer from TransferRepository
     // - to be called by other services

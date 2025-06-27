@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
+import com.smartbudgetbounty.dto.transfer.CreateTransferRequestDto;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.transfer.TransferService;
@@ -50,7 +50,7 @@ public class TransferController {
         @Parameter(description = "ID of the User", required = true) @PathVariable
         Long userId,
         @Valid @RequestBody
-        CreateTransferDtoRequest createDtoReq
+        CreateTransferRequestDto createDtoReq
     ) {
         LogUtil.logInfoController(logger, "API called: POST /api/transfer/user/" + userId);
 

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
+import com.smartbudgetbounty.dto.transfer.CreateTransferRequestDto;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.PaymentMethod;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
@@ -97,7 +97,7 @@ public class TransferServiceImpl implements TransferService {
     // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
     @Override
-    public TransferResponseDto create(Long userId, CreateTransferDtoRequest requestDto) {
+    public TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
         // retrieve User from repository
