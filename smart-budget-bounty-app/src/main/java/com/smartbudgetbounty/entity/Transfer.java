@@ -39,7 +39,7 @@ public class Transfer {
 
     // Transfer (owning side) -> User (inverse side)
     // - Transfer holds the foreign key to PaymentMethod
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "payment_method_id", nullable = true, referencedColumnName = "id")
     private PaymentMethod paymentMethod;
 
@@ -231,7 +231,7 @@ public class Transfer {
             + ", paymentMethod="
             + paymentMethod
             + ", pointsTransactionId="
-            + pointsTransaction.getId()
+            + (pointsTransaction != null ? pointsTransaction.getId() : null)
             + "]";
     }
 }
