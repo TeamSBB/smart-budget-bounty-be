@@ -25,22 +25,22 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @Tag(
-    name = "Reward Points Transactions",
-    description = "Operations related to reward points transactions"
+    name = "RewardPointsTransaction Controller",
+    description = "Operations related to the RewardPointsTransaction Entity"
 )
 @RestController
-@RequestMapping("/api/reward-point-transaction")
+@RequestMapping("/api/reward-points-transaction")
 public class RewardPointsTransactionController {
     private static final Logger logger = LoggerFactory.getLogger(
         RewardPointsTransactionController.class
     );
 
-    private final RewardPointsTransactionService rewardPointsTransactionService;
+    private final RewardPointsTransactionService pointsTransactionService;
 
     public RewardPointsTransactionController(
-        RewardPointsTransactionService rewardPointsTransactionService
+        RewardPointsTransactionService pointsTransactionService
     ) {
-        this.rewardPointsTransactionService = rewardPointsTransactionService;
+        this.pointsTransactionService = pointsTransactionService;
     }
 
     @Operation(
@@ -51,28 +51,27 @@ public class RewardPointsTransactionController {
         description = "Created"
     )
     @PostMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> createRedeemRewardPointsTransaction(
+    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> createRedeemPointsTransaction(
         @Parameter(description = "ID of the user", required = true) @PathVariable
         Long userId,
         @Valid @RequestBody
         CreateRedeemRewardPointsTransactionRequestDto requestDto
     ) {
-        LogUtil.logInfoController(logger, "API called: POST /api/reward-point-transaction");
+        LogUtil.logInfoController(logger, "API called: POST /api/reward-points-transaction");
 
-        // create and persist RewardPointsTransaction
-        RewardPointsTransactionResponseDto rewardPointsTransactionDto = rewardPointsTransactionService.createRedeem(
+        RewardPointsTransactionResponseDto pointsTransactionResponseDto = pointsTransactionService.createRedeem(
             userId,
             requestDto
         );
 
         // response
         URI location = URI.create(
-            "/api/reward-point-transaction/" + rewardPointsTransactionDto.getId()
+            "/api/reward-points-transaction/" + pointsTransactionResponseDto.getId()
         );
 
         return ResponseEntity.created(location).body(
             new ApiResponse<RewardPointsTransactionResponseDto>(
-                rewardPointsTransactionDto,
+                pointsTransactionResponseDto,
                 "Created RewardPointsTransaction successfully."
             )
         );
@@ -87,22 +86,22 @@ public class RewardPointsTransactionController {
         description = "OK"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> getRewardPointsTransactionById(
+    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> getPointsTransactionById(
         @Parameter(
-            description = "ID of the reward points transaction",
+            description = "ID of the RewardPointsTransaction",
             required = true
         ) @PathVariable
         Long id
     ) {
-        LogUtil.logInfoController(logger, "API called: GET /api/reward-point-transaction/" + id);
+        LogUtil.logInfoController(logger, "API called: GET /api/reward-points-transaction/" + id);
 
-        RewardPointsTransactionResponseDto rewardPointsTransactionResponseDto = rewardPointsTransactionService.getDtoById(
+        RewardPointsTransactionResponseDto pointsTransactionResponseDto = pointsTransactionService.getDtoById(
             id
         );
 
         return ResponseEntity.ok(
             new ApiResponse<RewardPointsTransactionResponseDto>(
-                rewardPointsTransactionResponseDto,
+                pointsTransactionResponseDto,
                 "Retrieved RewardPointsTransaction successfully."
             )
         );
@@ -116,22 +115,22 @@ public class RewardPointsTransactionController {
         description = "OK"
     )
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<RewardPointsTransactionResponseDto>>> getRewardPointsTransactionsByUserId(
+    public ResponseEntity<ApiResponse<List<RewardPointsTransactionResponseDto>>> getPointsTransactionsByUserId(
         @Parameter(description = "ID of the user", required = true) @PathVariable
         Long userId
     ) {
         LogUtil.logInfoController(
             logger,
-            "API called: GET /api/reward-point-transaction/user/" + userId
+            "API called: GET /api/reward-points-transaction/user/" + userId
         );
 
-        List<RewardPointsTransactionResponseDto> rewardPointsTransactionResponseDtos = rewardPointsTransactionService.getDtosByUserId(
+        List<RewardPointsTransactionResponseDto> pointsTransactionResponseDtos = pointsTransactionService.getDtosByUserId(
             userId
         );
 
         return ResponseEntity.ok(
             new ApiResponse<List<RewardPointsTransactionResponseDto>>(
-                rewardPointsTransactionResponseDtos,
+                pointsTransactionResponseDtos,
                 String.format(
                     "Retrieved RewardPointsTransactions for userId %d successfully",
                     userId
