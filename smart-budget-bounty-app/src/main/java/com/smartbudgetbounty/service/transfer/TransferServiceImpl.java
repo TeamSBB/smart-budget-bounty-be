@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.PaymentMethod;
+import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.repository.TransferRepository;
@@ -94,27 +95,33 @@ public class TransferServiceImpl implements TransferService {
         // retrieve PaymentMethod from repository
         PaymentMethod paymentMethod = paymentMethodService.getById(request.getPaymentMethodId());
 
-        // create and persist Transfer
-        Instant now = Instant.now();
-        Transfer transfer = transferRepository.save(
-            new Transfer(
-                request.getTransactionAmount(),
-                now,
-                request.getRecipientName(),
-                request.getFromPaynowPhoneNumber(),
-                request.getToPaynowPhoneNumber(),
-                request.getFromAccountNumber(),
-                request.getToAccountNumber(),
-                request.getBeneficiaryName(),
-                request.getRemarks(),
-                request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
-                user,
-                paymentMethod
-            )
+        // create Transfer
+        Transfer transfer = new Transfer(
+            request.getTransactionAmount(),
+            Instant.now(),
+            request.getRecipientName(),
+            request.getFromPaynowPhoneNumber(),
+            request.getToPaynowPhoneNumber(),
+            request.getFromAccountNumber(),
+            request.getToAccountNumber(),
+            request.getBeneficiaryName(),
+            request.getRemarks(),
+            request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
+            user,
+            paymentMethod
         );
 
         // create and persist RewardPointsTransaction
-        transfer = pointsTransactionService.createEarn(user, transfer);
+        RewardPointsTransaction pointsTransaction = pointsTransactionService.createEarn(
+            user,
+            transfer
+        );
+
+        // set the relationship from Transfer to RewardPointsTransaction
+        transfer.setPointsTransaction(pointsTransaction);
+
+        // persist Transfer, which persists RewardPointsTransaction via cascade
+        transfer = transferRepository.save(transfer);
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 

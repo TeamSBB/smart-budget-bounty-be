@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
+import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
-import com.smartbudgetbounty.repository.TransferRepository;
 import com.smartbudgetbounty.service.rewardvoucher.RewardVoucherService;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
@@ -30,19 +30,16 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     );
 
     private final UserService userService;
-    private final TransferRepository transferRepository;
     private final RewardPointsTransactionRepository pointsTransactionRepository;
     private final RewardVoucherService voucherService;
 
     public RewardPointsTransactionServiceImpl(
         UserService userService,
-        TransferRepository transferRepository,
         RewardPointsTransactionRepository pointsTransactionRepository,
         RewardVoucherService voucherService
     ) {
         super();
         this.userService = userService;
-        this.transferRepository = transferRepository;
         this.pointsTransactionRepository = pointsTransactionRepository;
         this.voucherService = voucherService;
     }
@@ -91,7 +88,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // - to be called by TransferService whenever a Transfer is created
     // - persistence is handled by TransferService via cascade
     @Override
-    public Transfer createEarn(User user, Transfer transfer) {
+    public RewardPointsTransaction createEarn(User user, Transfer transfer) {
         LogUtil.logStart(logger, "Creating EARN RewardPointsTransaction.");
 
         // create rewardPointsTransaction
@@ -102,17 +99,12 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             user
         );
 
-        // set bidirectional relationship between RewardPointsTransaction and Transfer
+        // set relationship from RewardPointsTransaction to Transfer
         pointsTransaction.setTransfer(transfer);
-        transfer.setPointsTransaction(pointsTransaction);
-
-        // persist RewardPointsTransaction and Transfer
-        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
-        transfer = transferRepository.save(transfer);
 
         LogUtil.logEnd(logger, "Created EARN RewardPointsTransaction: {}", pointsTransaction);
 
-        return transfer;
+        return pointsTransaction;
     }
 
     // create a REDEEM RewardPointsTransaction and associated RewardVoucher
@@ -128,18 +120,22 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         // retrieve User from repository
         User user = userService.getById(userId);
 
-        // create and persist RewardPointsTransaction
-        RewardPointsTransaction pointsTransaction = pointsTransactionRepository.save(
-            new RewardPointsTransaction(
-                RewardPointsTransactionType.REDEEM,
-                requestDto.getRedeemAmount(),
-                Instant.now(),
-                user
-            )
+        // create RewardPointsTransaction
+        RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
+            RewardPointsTransactionType.REDEEM,
+            requestDto.getRedeemAmount(),
+            Instant.now(),
+            user
         );
 
-        // create and persist RewardVoucher, update and persist RewardPointsTransaction
-        pointsTransaction = voucherService.create(user, pointsTransaction);
+        // create RewardVoucher
+        RewardVoucher rewardVoucher = voucherService.create(user, pointsTransaction);
+
+        // set relationship from RewardPointsTransaction to RewardVoucher
+        pointsTransaction.setVoucher(rewardVoucher);
+
+        // persist RewardPointsTransaction, which persists RewardVoucher via cascade
+        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
 
         LogUtil.logEnd(logger, "Created REDEEM RewardPointsTransaction: {}", pointsTransaction);
 

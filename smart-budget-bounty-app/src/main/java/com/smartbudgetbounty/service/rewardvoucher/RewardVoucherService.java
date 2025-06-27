@@ -11,7 +11,7 @@ public interface RewardVoucherService {
     // - to be called by RewardPointsTransactionService whenever a REDEEM RewardPointsTransaction is
     // created
     // - persistence is handled by RewardPointsTransactionService via cascade
-    RewardPointsTransaction create(
+    RewardVoucher create(
         User user,
         RewardPointsTransaction pointsTransaction
     );

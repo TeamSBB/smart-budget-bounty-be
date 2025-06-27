@@ -12,7 +12,7 @@ public interface RewardPointsTransactionService {
     // create an EARN RewardPointsTransaction
     // - to be called by TransferService whenever a Transfer is created
     // - persistence is handled by TransferService via cascade
-    Transfer createEarn(User user, Transfer transfer);
+    RewardPointsTransaction createEarn(User user, Transfer transfer);
 
     // create a REDEEM RewardPointsTransaction and associated RewardVoucher
     // persist RewardPointsTransaction, which persists RewardVoucher via cascade

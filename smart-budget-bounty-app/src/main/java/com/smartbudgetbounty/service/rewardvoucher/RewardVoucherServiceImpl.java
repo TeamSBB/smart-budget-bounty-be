@@ -12,7 +12,6 @@ import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
-import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
 import com.smartbudgetbounty.repository.RewardVoucherRepository;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionServiceImpl;
 import com.smartbudgetbounty.util.LogUtil;
@@ -26,7 +25,6 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         RewardPointsTransactionServiceImpl.class
     );
 
-    private RewardPointsTransactionRepository pointsTransactionRepository;
     private RewardVoucherRepository voucherRepository;
 
     public RewardVoucherServiceImpl() {
@@ -59,7 +57,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // created
     // - persistence is handled by RewardPointsTransactionService via cascade
     @Override
-    public RewardPointsTransaction create(
+    public RewardVoucher create(
         User user,
         RewardPointsTransaction pointsTransaction
     ) {
@@ -69,17 +67,12 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         Double discount = toRewardVoucherDiscount(pointsTransaction.getAmount());
         RewardVoucher voucher = new RewardVoucher(discount, Instant.now(), user);
 
-        // set bidirectional relationship between RewardVoucher and RewardPointsTransaction
+        // set relationship from RewardVoucher to RewardPointsTransaction
         voucher.setPointsTransaction(pointsTransaction);
-        pointsTransaction.setVoucher(voucher);
-
-        // persist RewardVoucher and RewardPointsTransaction
-        voucher = voucherRepository.save(voucher);
-        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
 
         LogUtil.logEnd(logger, "Created RewardVoucher: {}", voucher);
 
-        return pointsTransaction;
+        return voucher;
     }
 
     // retrieve a RewardVoucher from RewardVoucherRepository
