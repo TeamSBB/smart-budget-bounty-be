@@ -44,14 +44,16 @@ public class TransferController {
         description = "Creates a new Transfer for the specified User based on the request and returns the transfer details."
     )
     @ApiResponse(responseCode = "201", description = "Created")
-    @PostMapping()
+    @PostMapping("/user/{userId}")
     public ResponseEntity<ApiResponseBody<TransferResponseDto>> createTransfer(
+        @Parameter(description = "ID of the User", required = true) @PathVariable
+        Long userId,
         @Valid @RequestBody
         CreateTransferDtoRequest createDtoReq
     ) {
         LogUtil.logInfoController(logger, "API called: POST /api/transfer");
 
-        TransferResponseDto createResponseDto = transferService.create(createDtoReq);
+        TransferResponseDto createResponseDto = transferService.create(userId, createDtoReq);
 
         return ResponseEntity.ok(
             new ApiResponseBody<TransferResponseDto>(
@@ -68,7 +70,7 @@ public class TransferController {
     @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseBody<TransferResponseDto>> getTransferById(
-        @Parameter @PathVariable
+        @Parameter(description = "ID of the Transfer", required = true) @PathVariable
         Long id
     ) {
         LogUtil.logInfoController(logger, "API called: GET /api/transfer/" + id);
@@ -92,7 +94,7 @@ public class TransferController {
     @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponseBody<List<TransferResponseDto>>> getTransfersByUserId(
-        @Parameter @PathVariable
+        @Parameter(description = "ID of the User", required = true) @PathVariable
         Long userId
     ) {
         LogUtil.logInfoController(logger, "API called: GET /api/transfer/user/" + userId);
@@ -111,5 +113,4 @@ public class TransferController {
             )
         );
     }
-
 }

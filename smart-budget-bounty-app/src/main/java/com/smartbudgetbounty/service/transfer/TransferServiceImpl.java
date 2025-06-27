@@ -97,27 +97,27 @@ public class TransferServiceImpl implements TransferService {
     // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
     @Override
-    public TransferResponseDto create(CreateTransferDtoRequest request) {
+    public TransferResponseDto create(Long userId, CreateTransferDtoRequest requestDto) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
         // retrieve User from repository
-        User user = userService.getById(request.getUserId());
+        User user = userService.getById(userId);
 
         // retrieve PaymentMethod from repository
-        PaymentMethod paymentMethod = paymentMethodService.getById(request.getPaymentMethodId());
+        PaymentMethod paymentMethod = paymentMethodService.getById(requestDto.getPaymentMethodId());
 
         // create Transfer
         Transfer transfer = new Transfer(
-            request.getTransactionAmount(),
+            requestDto.getTransactionAmount(),
             Instant.now(),
-            request.getRecipientName(),
-            request.getFromPaynowPhoneNumber(),
-            request.getToPaynowPhoneNumber(),
-            request.getFromAccountNumber(),
-            request.getToAccountNumber(),
-            request.getBeneficiaryName(),
-            request.getRemarks(),
-            request.getTransferDate() != null ? request.getTransferDate() : Instant.now(),
+            requestDto.getRecipientName(),
+            requestDto.getFromPaynowPhoneNumber(),
+            requestDto.getToPaynowPhoneNumber(),
+            requestDto.getFromAccountNumber(),
+            requestDto.getToAccountNumber(),
+            requestDto.getBeneficiaryName(),
+            requestDto.getRemarks(),
+            requestDto.getTransferDate() != null ? requestDto.getTransferDate() : Instant.now(),
             user,
             paymentMethod
         );

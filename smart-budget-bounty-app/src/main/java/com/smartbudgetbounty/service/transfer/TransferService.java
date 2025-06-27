@@ -10,7 +10,7 @@ public interface TransferService {
     // create a Transfer and associated RewardPointsTransaction
     // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
-    TransferResponseDto create(CreateTransferDtoRequest request);
+    TransferResponseDto create(Long userId, CreateTransferDtoRequest requestDto);
 
     // retrieve a Transfer from TransferRepository
     // - to be called by other services

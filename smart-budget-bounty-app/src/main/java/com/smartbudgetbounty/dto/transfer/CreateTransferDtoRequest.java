@@ -4,16 +4,11 @@ import java.time.Instant;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 
 public class CreateTransferDtoRequest {
     @NotNull(message = "Transaction amount is required.")
     @Positive(message = "Transaction amount must be greater than 0.")
     private Double transactionAmount;
-
-    @NotNull(message = "User ID is required.")
-    @PositiveOrZero(message = "User ID must be 0 or greater.")
-    private Long userId;
 
     @NotNull(message = "Payment method is required.")
     private Long paymentMethodId;
@@ -36,9 +31,6 @@ public class CreateTransferDtoRequest {
         @NotNull(message = "Transaction amount is required.")
         @Positive(message = "Transaction amount must be greater than 0.")
         Double transactionAmount,
-        @NotNull(message = "User ID is required.")
-        @PositiveOrZero(message = "User ID must be 0 or greater.")
-        Long userId,
         @NotNull(message = "Payment method is required.")
         Long paymentMethodId,
         String recipientName,
@@ -53,7 +45,6 @@ public class CreateTransferDtoRequest {
     ) {
         super();
         this.transactionAmount = transactionAmount;
-        this.userId = userId;
         this.paymentMethodId = paymentMethodId;
         this.recipientName = recipientName;
         this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
@@ -72,14 +63,6 @@ public class CreateTransferDtoRequest {
 
     public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getPaymentMethodId() {
@@ -166,8 +149,6 @@ public class CreateTransferDtoRequest {
     public String toString() {
         return "CreateTransferDtoRequest [transactionAmount="
             + transactionAmount
-            + ", userId="
-            + userId
             + ", paymentMethodId="
             + paymentMethodId
             + ", recipientName="
