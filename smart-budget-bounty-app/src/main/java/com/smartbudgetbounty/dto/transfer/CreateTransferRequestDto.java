@@ -147,7 +147,7 @@ public class CreateTransferRequestDto {
 
     @Override
     public String toString() {
-        return "CreateTransferDtoRequest [amount="
+        return "CreateTransferRequestDto [amount="
             + amount
             + ", paymentMethodId="
             + paymentMethodId
