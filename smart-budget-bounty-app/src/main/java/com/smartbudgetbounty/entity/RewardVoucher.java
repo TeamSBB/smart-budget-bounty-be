@@ -122,7 +122,7 @@ public class RewardVoucher {
             + ", userId="
             + user.getId()
             + ", pointsTransactionId="
-            + pointsTransaction.getId()
+            + (pointsTransaction != null ? pointsTransaction.getId() : null)
             + "]";
     }
 }
