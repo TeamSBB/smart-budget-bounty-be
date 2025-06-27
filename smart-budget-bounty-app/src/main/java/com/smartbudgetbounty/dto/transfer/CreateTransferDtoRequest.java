@@ -7,161 +7,154 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class CreateTransferDtoRequest {
-	@NotNull(message="Transaction amount is required.")
-	@Positive(message = "Transaction amount must be greater than 0.")
-	private Double transactionAmount;
-	
-	@NotNull(message = "User ID is required.")
-	@PositiveOrZero(message = "User ID must be 0 or greater.")
-	private Long userId;
+    @NotNull(message = "Transaction amount is required.")
+    @Positive(message = "Transaction amount must be greater than 0.")
+    private Double transactionAmount;
 
-	@NotNull(message = "Payment method is required.")
-	private Long paymentMethodId;
+    @NotNull(message = "User ID is required.")
+    @PositiveOrZero(message = "User ID must be 0 or greater.")
+    private Long userId;
 
-	private String recipientName;
-	
-	private String fromPaynowPhoneNumber;
-	private String toPaynowPhoneNumber;
-	
-	private String fromAccountNumber;
-	private String toAccountNumber;
-	private String ccv;
+    private String recipientName;
 
-	private String beneficiaryName;
-	private String remarks;
-	
-	private Instant transferDate;
+    private String fromPaynowPhoneNumber;
+    private String toPaynowPhoneNumber;
 
-	public CreateTransferDtoRequest(
-			@NotNull(message = "Transaction amount is required.") @Positive(message = "Transaction amount must be greater than 0.") Double transactionAmount,
-			@NotNull(message = "User ID is required.") @PositiveOrZero(message = "User ID must be 0 or greater.") Long userId,
-			@NotNull(message = "Payment method is required.") Long paymentMethodId,
-			String recipientName, String fromPaynowPhoneNumber,
-			String toPaynowPhoneNumber, String fromAccountNumber,
-			String toAccountNumber, String ccv, String beneficiaryName,
-			String remarks, Instant transferDate) {
-		super();
-		this.transactionAmount = transactionAmount;
-		this.userId = userId;
-		this.paymentMethodId = paymentMethodId;
-		this.recipientName = recipientName;
-		this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
-		this.toPaynowPhoneNumber = toPaynowPhoneNumber;
-		this.fromAccountNumber = fromAccountNumber;
-		this.toAccountNumber = toAccountNumber;
-		this.ccv = ccv;
-		this.beneficiaryName = beneficiaryName;
-		this.remarks = remarks;
-		this.transferDate = transferDate;
-	}
+    private String fromAccountNumber;
+    private String toAccountNumber;
+    private String ccv;
 
-	public Double getTransactionAmount() {
-		return transactionAmount;
-	}
+    private String beneficiaryName;
+    private String remarks;
 
-	public void setTransactionAmount(Double transactionAmount) {
-		this.transactionAmount = transactionAmount;
-	}
+    private Instant transferDate;
 
-	public Long getUserId() {
-		return userId;
-	}
+    public CreateTransferDtoRequest(
+            @NotNull(message = "Transaction amount is required.") @Positive(message = "Transaction amount must be greater than 0.") Double transactionAmount,
+            @NotNull(message = "User ID is required.") @PositiveOrZero(message = "User ID must be 0 or greater.") Long userId,
+            @NotNull(message = "Payment method is required.") Long paymentMethodId,
+            String recipientName, String fromPaynowPhoneNumber,
+            String toPaynowPhoneNumber, String fromAccountNumber,
+            String toAccountNumber, String ccv, String beneficiaryName,
+            String remarks, Instant transferDate) {
+        super();
+        this.transactionAmount = transactionAmount;
+        this.userId = userId;
+        this.paymentMethodId = paymentMethodId;
+        this.recipientName = recipientName;
+        this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
+        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = toAccountNumber;
+        this.ccv = ccv;
+        this.beneficiaryName = beneficiaryName;
+        this.remarks = remarks;
+        this.transferDate = transferDate;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    private String recipientName;
 
-	public Long getPaymentMethodId() {
-		return paymentMethodId;
-	}
+    private String fromPaynowPhoneNumber;
+    private String toPaynowPhoneNumber;
 
-	public void setPaymentMethodId(Long paymentMethodId) {
-		this.paymentMethodId = paymentMethodId;
-	}
+    private String fromAccountNumber;
+    private String toAccountNumber;
+    private String ccv;
 
-	public String getRecipientName() {
-		return recipientName;
-	}
+    private String beneficiaryName;
+    private String remarks;
 
-	public void setRecipientName(String recipientName) {
-		this.recipientName = recipientName;
-	}
+    public Long getPaymentMethodId() {
+        return paymentMethodId;
+    }
 
-	public String getFromPaynowPhoneNumber() {
-		return fromPaynowPhoneNumber;
-	}
+    public void setTransactionAmount(Double transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
 
-	public void setFromPaynowPhoneNumber(String fromPaynowPhoneNumber) {
-		this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
-	}
+    public String getRecipientName() {
+        return recipientName;
+    }
 
-	public String getToPaynowPhoneNumber() {
-		return toPaynowPhoneNumber;
-	}
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
 
-	public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
-		this.toPaynowPhoneNumber = toPaynowPhoneNumber;
-	}
+    public String getFromPaynowPhoneNumber() {
+        return fromPaynowPhoneNumber;
+    }
 
-	public String getFromAccountNumber() {
-		return fromAccountNumber;
-	}
+    public void setFromPaynowPhoneNumber(String fromPaynowPhoneNumber) {
+        this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
+    }
 
-	public void setFromAccountNumber(String fromAccountNumber) {
-		this.fromAccountNumber = fromAccountNumber;
-	}
+    public String getToPaynowPhoneNumber() {
+        return toPaynowPhoneNumber;
+    }
 
-	public String getToAccountNumber() {
-		return toAccountNumber;
-	}
+    public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
+        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+    }
 
-	public void setToAccountNumber(String toAccountNumber) {
-		this.toAccountNumber = toAccountNumber;
-	}
+    public String getFromAccountNumber() {
+        return fromAccountNumber;
+    }
 
-	public String getCcv() {
-		return ccv;
-	}
+    public void setFromAccountNumber(String fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
+    }
 
-	public void setCcv(String ccv) {
-		this.ccv = ccv;
-	}
+    public String getToAccountNumber() {
+        return toAccountNumber;
+    }
 
-	public String getBeneficiaryName() {
-		return beneficiaryName;
-	}
+    public void setToAccountNumber(String toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
+    }
 
-	public void setBeneficiaryName(String beneficiaryName) {
-		this.beneficiaryName = beneficiaryName;
-	}
+    public String getToPaynowPhoneNumber() {
+        return toPaynowPhoneNumber;
+    }
 
-	public String getRemarks() {
-		return remarks;
-	}
+    public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
+        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+    }
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
+    public String getBeneficiaryName() {
+        return beneficiaryName;
+    }
 
-	public Instant getTransferDate() {
-		return transferDate;
-	}
+    public void setBeneficiaryName(String beneficiaryName) {
+        this.beneficiaryName = beneficiaryName;
+    }
 
-	public void setTransferDate(Instant transferDate) {
-		this.transferDate = transferDate;
-	}
+    public String getRemarks() {
+        return remarks;
+    }
 
-	@Override
-	public String toString() {
-		return "CreateTransferDtoRequest [transactionAmount="
-				+ transactionAmount + ", userId=" + userId
-				+ ", paymentMethodId=" + paymentMethodId + ", recipientName="
-				+ recipientName + ", fromPaynowPhoneNumber="
-				+ fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
-				+ toPaynowPhoneNumber + ", fromAccountNumber="
-				+ fromAccountNumber + ", toAccountNumber=" + toAccountNumber
-				+ ", ccv=" + ccv + ", beneficiaryName=" + beneficiaryName
-				+ ", remarks=" + remarks + ", transferDate=" + transferDate
-				+ "]";
-	}
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public Instant getTransferDate() {
+        return transferDate;
+    }
+
+    public void setTransferDate(Instant transferDate) {
+        this.transferDate = transferDate;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateTransferDtoRequest [transactionAmount="
+                + transactionAmount + ", userId=" + userId
+                + ", paymentMethodId=" + paymentMethodId + ", recipientName="
+                + recipientName + ", fromPaynowPhoneNumber="
+                + fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
+                + toPaynowPhoneNumber + ", fromAccountNumber="
+                + fromAccountNumber + ", toAccountNumber=" + toAccountNumber
+                + ", ccv=" + ccv + ", beneficiaryName=" + beneficiaryName
+                + ", remarks=" + remarks + ", transferDate=" + transferDate
+                + "]";
+    }
 }

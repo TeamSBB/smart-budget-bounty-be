@@ -189,7 +189,12 @@ public class Transfer {
                 + toPaynowPhoneNumber + ", fromAccountNumber="
                 + fromAccountNumber + ", toAccountNumber=" + toAccountNumber
                 + ", beneficiaryName=" + beneficiaryName + ", remarks="
-                + remarks + ", transferDate=" + transferDate + ", user=" + user
-                + ", paymentMethod=" + paymentMethod + "]";
+                + remarks + ", transferDate=" + transferDate + ", userId="
+                + user.getId()
+                + ", paymentMethod="
+                + paymentMethod
+                + ", pointsTransactionId="
+                + pointsTransaction.getId()
+                + "]";
     }
 }
