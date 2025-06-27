@@ -1,18 +1,18 @@
 package com.smartbudgetbounty.dto.rewardvoucher;
 
 public class RedeemRewardVoucherRequestDto {
-    private Long voucherId;
+    private Long userId;
 
-    public RedeemRewardVoucherRequestDto(Long voucherId) {
+    public RedeemRewardVoucherRequestDto(Long userId) {
         super();
-        this.voucherId = voucherId;
+        this.userId = userId;
     }
 
-    public Long getVoucherId() {
-        return voucherId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setVoucherId(Long voucherId) {
-        this.voucherId = voucherId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

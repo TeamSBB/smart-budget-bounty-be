@@ -159,13 +159,15 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // - to be called by RewardVoucherController
     @Override
     public RewardVoucherResponseDto redeem(
-        Long userId,
+        Long voucherId,
         RedeemRewardVoucherRequestDto requestDto
     ) {
         LogUtil.logStart(logger, "Redeeming RewardVoucher.");
 
+        // TODO: check if user owns voucher?
+
         // retrieve RewardVoucher from repository
-        RewardVoucher voucher = getById(requestDto.getVoucherId());
+        RewardVoucher voucher = getById(voucherId);
 
         // update Voucher
         voucher.setVoucherStatus(RewardVoucherStatus.REDEEMED);

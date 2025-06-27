@@ -37,8 +37,5 @@ public interface RewardVoucherService {
 
     // update the status of a RewardVoucher from AVAILABLE to REDEEMED
     // - to be called by RewardVoucherController
-    RewardVoucherResponseDto redeem(
-        Long userId,
-        RedeemRewardVoucherRequestDto requestDto
-    );
+    RewardVoucherResponseDto redeem(Long voucherId, RedeemRewardVoucherRequestDto requestDto);
 }
