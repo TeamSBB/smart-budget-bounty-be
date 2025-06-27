@@ -125,7 +125,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     ) {
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
-        // get User from repository
+        // retrieve User from repository
         User user = userService.getById(userId);
 
         // create and persist RewardPointsTransaction
@@ -180,7 +180,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
         LogUtil.logStart(logger, "Getting list of RewardPointsTransaction by userId.");
 
-        // get User from repository
+        // retrieve User from repository
         User user = userService.getById(userId);
 
         // convert RewardPointsTransactions to RewardPointsTransactionResponseDtos
