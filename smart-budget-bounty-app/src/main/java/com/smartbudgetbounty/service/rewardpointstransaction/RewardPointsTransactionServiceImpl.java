@@ -63,7 +63,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         );
     }
 
-    // convert a list of RewardPointsTransactions to a list of RewardPointsTransactionResponseDtos
+    // convert a list of RewardPointsTransactions to a list of
+    // RewardPointsTransactionResponseDtos
     private List<RewardPointsTransactionResponseDto> toRewardPointsTransactionResponseDtos(
         List<RewardPointsTransaction> pointsTransactions
     ) {
@@ -146,7 +147,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     // - to be called by other services
     @Override
     public RewardPointsTransaction getById(Long id) {
-        LogUtil.logStart(logger, "Getting RewardPointsTransaction by id.");
+        LogUtil.logStart(logger, "Retrieving RewardPointsTransaction by id.");
 
         RewardPointsTransaction pointsTransaction = pointsTransactionRepository.findById(
             id
@@ -160,7 +161,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return pointsTransaction;
     }
 
-    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as a
+    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as
+    // a
     // RewardPointsTransactionResponseDto
     // - to be called by RewardPointsTransactionController
     @Override
@@ -169,12 +171,13 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
-    // retrieve a user's RewardPointsTransactions from RewardPointsTransactionRepository as a list
+    // retrieve a user's RewardPointsTransactions from
+    // RewardPointsTransactionRepository as a list
     // of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
-        LogUtil.logStart(logger, "Getting list of RewardPointsTransaction by userId.");
+        LogUtil.logStart(logger, "Retrieving list of RewardPointsTransaction by userId.");
 
         // retrieve User from repository
         User user = userService.getById(userId);

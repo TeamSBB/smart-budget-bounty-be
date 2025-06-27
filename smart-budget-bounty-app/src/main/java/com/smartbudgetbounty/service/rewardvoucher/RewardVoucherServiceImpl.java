@@ -53,7 +53,8 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // service methods
 
     // create a RewardVoucher
-    // - to be called by RewardPointsTransactionService whenever a REDEEM RewardPointsTransaction is
+    // - to be called by RewardPointsTransactionService whenever a REDEEM
+    // RewardPointsTransaction is
     // created
     // - persistence is handled by RewardPointsTransactionService via cascade
     @Override
@@ -79,7 +80,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // - to be called by other service methods
     @Override
     public RewardVoucher getById(Long id) {
-        LogUtil.logStart(logger, "Getting RewardVoucher by id.");
+        LogUtil.logStart(logger, "Retrieving RewardVoucher by id.");
 
         RewardVoucher voucher = voucherRepository.findById(
             id

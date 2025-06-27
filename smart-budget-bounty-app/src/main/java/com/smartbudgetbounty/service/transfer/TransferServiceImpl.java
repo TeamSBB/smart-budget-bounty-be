@@ -132,7 +132,7 @@ public class TransferServiceImpl implements TransferService {
     // - to be called by other services
     @Override
     public Transfer getById(Long id) {
-        LogUtil.logStart(logger, "Getting Transfer by id.");
+        LogUtil.logStart(logger, "Retrieving Transfer by id.");
 
         Transfer transfer = transferRepository.findById(id).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find transferId: {}.", id);
@@ -152,11 +152,12 @@ public class TransferServiceImpl implements TransferService {
         return toTransferResponseDto(transfer);
     }
 
-    // retrieve a user's Transfers from TransferRepository as a list of TransferResponseDtos
+    // retrieve a user's Transfers from TransferRepository as a list of
+    // TransferResponseDtos
     // - to be called by TransferController
     @Override
     public List<TransferResponseDto> getDtosByUserId(Long userId) {
-        LogUtil.logStart(logger, "Getting Transfers by id.");
+        LogUtil.logStart(logger, "Retrieving Transfers by id.");
 
         // retrieve User from repository
         User user = userService.getById(userId);

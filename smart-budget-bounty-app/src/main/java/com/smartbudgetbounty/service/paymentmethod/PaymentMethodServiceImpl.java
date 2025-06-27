@@ -29,7 +29,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     // - to be called by other services
     @Override
     public PaymentMethod getById(Long id) {
-        LogUtil.logStart(logger, "Getting PaymentMethod by id.");
+        LogUtil.logStart(logger, "Retrieving PaymentMethod by id.");
 
         PaymentMethod paymentMethod = paymentMethodRepository.findById(id).orElseThrow(() -> {
             LogUtil.logError(logger, "Unable to find transferId: {}.", id);
