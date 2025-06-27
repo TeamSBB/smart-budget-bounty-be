@@ -46,13 +46,14 @@ public class Transfer {
     // Transfer (inverse side) <- RewardPointsTransaction (owning side)
     // - RewardPointsTransaction holds the foreign key to Transfer
     @OneToOne(
-            // relationship is mapped by the "transfer" field in RewardVoucher
-            mappedBy = "transfer",
-            // cascade operations from Transfer (parent) to RewardPointsTransaction (child)
-            cascade = CascadeType.ALL,
-            // delete RewardPointsTransaction (child) if it is removed from Transfer
-            // (parent)
-            orphanRemoval = true)
+        // relationship is mapped by the "transfer" field in RewardVoucher
+        mappedBy = "transfer",
+        // cascade operations from Transfer (parent) to RewardPointsTransaction (child)
+        cascade = CascadeType.ALL,
+        // delete RewardPointsTransaction (child) if it is removed from Transfer
+        // (parent)
+        orphanRemoval = true
+    )
     private RewardPointsTransaction pointsTransaction;
 
     // @OneToOne // Owner - Because Transaction is created for an Account, not the
@@ -64,11 +65,20 @@ public class Transfer {
         super();
     }
 
-    public Transfer(Double transactionAmount, Instant createdAt,
-            String recipientName, String fromPaynowPhoneNumber,
-            String toPaynowPhoneNumber, String fromAccountNumber,
-            String toAccountNumber, String beneficiaryName, String remarks,
-            Instant transferDate, User user, PaymentMethod paymentMethod) {
+    public Transfer(
+        Double transactionAmount,
+        Instant createdAt,
+        String recipientName,
+        String fromPaynowPhoneNumber,
+        String toPaynowPhoneNumber,
+        String fromAccountNumber,
+        String toAccountNumber,
+        String beneficiaryName,
+        String remarks,
+        Instant transferDate,
+        User user,
+        PaymentMethod paymentMethod
+    ) {
         super();
         this.transactionAmount = transactionAmount;
         this.createdAt = createdAt;
@@ -182,19 +192,34 @@ public class Transfer {
 
     @Override
     public String toString() {
-        return "Transfer [id=" + id + ", transactionAmount=" + transactionAmount
-                + ", createdAt=" + createdAt + ", recipientName="
-                + recipientName + ", fromPaynowPhoneNumber="
-                + fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
-                + toPaynowPhoneNumber + ", fromAccountNumber="
-                + fromAccountNumber + ", toAccountNumber=" + toAccountNumber
-                + ", beneficiaryName=" + beneficiaryName + ", remarks="
-                + remarks + ", transferDate=" + transferDate + ", userId="
-                + user.getId()
-                + ", paymentMethod="
-                + paymentMethod
-                + ", pointsTransactionId="
-                + pointsTransaction.getId()
-                + "]";
+        return "Transfer [id="
+            + id
+            + ", transactionAmount="
+            + transactionAmount
+            + ", createdAt="
+            + createdAt
+            + ", recipientName="
+            + recipientName
+            + ", fromPaynowPhoneNumber="
+            + fromPaynowPhoneNumber
+            + ", toPaynowPhoneNumber="
+            + toPaynowPhoneNumber
+            + ", fromAccountNumber="
+            + fromAccountNumber
+            + ", toAccountNumber="
+            + toAccountNumber
+            + ", beneficiaryName="
+            + beneficiaryName
+            + ", remarks="
+            + remarks
+            + ", transferDate="
+            + transferDate
+            + ", userId="
+            + user.getId()
+            + ", paymentMethod="
+            + paymentMethod
+            + ", pointsTransactionId="
+            + pointsTransaction.getId()
+            + "]";
     }
 }
