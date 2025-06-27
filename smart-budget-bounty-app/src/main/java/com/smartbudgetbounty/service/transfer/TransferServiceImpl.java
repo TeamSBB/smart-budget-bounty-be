@@ -13,8 +13,8 @@ import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.PaymentMethod;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
-import com.smartbudgetbounty.repository.PaymentMethodRepository;
 import com.smartbudgetbounty.repository.TransferRepository;
+import com.smartbudgetbounty.service.paymentmethod.PaymentMethodService;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
@@ -28,19 +28,19 @@ public class TransferServiceImpl implements TransferService {
 
     private final UserService userService;
     private final TransferRepository transferRepository;
-    private final PaymentMethodRepository paymentMethodRepo;
+    private final PaymentMethodService paymentMethodService;
     private final RewardPointsTransactionService pointsTransactionService;
 
     public TransferServiceImpl(
         UserService userService,
         TransferRepository transferRepository,
-        PaymentMethodRepository paymentMethodRepo,
+        PaymentMethodService paymentMethodService,
         RewardPointsTransactionService pointsTransactionService
     ) {
         super();
         this.userService = userService;
         this.transferRepository = transferRepository;
-        this.paymentMethodRepo = paymentMethodRepo;
+        this.paymentMethodService = paymentMethodService;
         this.pointsTransactionService = pointsTransactionService;
     }
 
@@ -88,18 +88,11 @@ public class TransferServiceImpl implements TransferService {
     public TransferResponseDto create(CreateTransferDtoRequest request) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
-        // get User from repository
+        // retrieve User from repository
         User user = userService.getById(request.getUserId());
 
-        // get PaymentMethod from repository
-        PaymentMethod paymentMethod = paymentMethodRepo.findById(
-            request.getPaymentMethodId()
-        ).orElseThrow(() -> {
-            LogUtil.logError(logger, "Unable to find paymentId: {}.", request.getPaymentMethodId());
-            return new EntityNotFoundException(
-                "Unable to find paymentId: " + request.getPaymentMethodId()
-            );
-        });
+        // retrieve PaymentMethod from repository
+        PaymentMethod paymentMethod = paymentMethodService.getById(request.getPaymentMethodId());
 
         // create and persist Transfer
         Instant now = Instant.now();
@@ -158,7 +151,7 @@ public class TransferServiceImpl implements TransferService {
     public List<TransferResponseDto> getDtosByUserId(Long userId) {
         LogUtil.logStart(logger, "Getting Transfers by id.");
 
-        // get User from repository
+        // retrieve User from repository
         User user = userService.getById(userId);
 
         // convert Transfers to TransferResponseDtos
