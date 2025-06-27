@@ -56,7 +56,7 @@ public class Transfer {
     )
     private RewardPointsTransaction pointsTransaction;
 
-    // @OneToOne // Owner - Because Transaction is created for an Account, not the
+    // @OneToOne // Owner - Because Transfer is created for an Account, not the
     // other way around
     // @JoinColumn(name="account_id")
     // private Account account;
