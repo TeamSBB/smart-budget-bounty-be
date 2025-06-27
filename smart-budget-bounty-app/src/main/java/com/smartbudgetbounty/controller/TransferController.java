@@ -33,17 +33,16 @@ public class TransferController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createTransfer(
+    public ResponseEntity<ApiResponse<TransferResponseDto>> createTransfer(
         @Valid @RequestBody
         CreateTransferDtoRequest createDtoReq
     ) {
         LogUtil.logInfoController(logger, "API called: POST /api/transfer");
 
-        // Call service to insert into db
         TransferResponseDto createResponseDto = transferService.create(createDtoReq);
 
         return ResponseEntity.ok(
-            new ApiResponse<>(
+            new ApiResponse<TransferResponseDto>(
                 createResponseDto,
                 "Created Transfer successfully."
             )
