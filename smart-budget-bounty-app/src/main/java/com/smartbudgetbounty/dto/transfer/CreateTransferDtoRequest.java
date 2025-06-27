@@ -15,6 +15,9 @@ public class CreateTransferDtoRequest {
     @PositiveOrZero(message = "User ID must be 0 or greater.")
     private Long userId;
 
+    @NotNull(message = "Payment method is required.")
+    private Long paymentMethodId;
+
     private String recipientName;
 
     private String fromPaynowPhoneNumber;
@@ -30,13 +33,24 @@ public class CreateTransferDtoRequest {
     private Instant transferDate;
 
     public CreateTransferDtoRequest(
-            @NotNull(message = "Transaction amount is required.") @Positive(message = "Transaction amount must be greater than 0.") Double transactionAmount,
-            @NotNull(message = "User ID is required.") @PositiveOrZero(message = "User ID must be 0 or greater.") Long userId,
-            @NotNull(message = "Payment method is required.") Long paymentMethodId,
-            String recipientName, String fromPaynowPhoneNumber,
-            String toPaynowPhoneNumber, String fromAccountNumber,
-            String toAccountNumber, String ccv, String beneficiaryName,
-            String remarks, Instant transferDate) {
+        @NotNull(message = "Transaction amount is required.")
+        @Positive(message = "Transaction amount must be greater than 0.")
+        Double transactionAmount,
+        @NotNull(message = "User ID is required.")
+        @PositiveOrZero(message = "User ID must be 0 or greater.")
+        Long userId,
+        @NotNull(message = "Payment method is required.")
+        Long paymentMethodId,
+        String recipientName,
+        String fromPaynowPhoneNumber,
+        String toPaynowPhoneNumber,
+        String fromAccountNumber,
+        String toAccountNumber,
+        String ccv,
+        String beneficiaryName,
+        String remarks,
+        Instant transferDate
+    ) {
         super();
         this.transactionAmount = transactionAmount;
         this.userId = userId;
@@ -52,24 +66,28 @@ public class CreateTransferDtoRequest {
         this.transferDate = transferDate;
     }
 
-    private String recipientName;
+    public Double getTransactionAmount() {
+        return transactionAmount;
+    }
 
-    private String fromPaynowPhoneNumber;
-    private String toPaynowPhoneNumber;
+    public void setTransactionAmount(Double transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
 
-    private String fromAccountNumber;
-    private String toAccountNumber;
-    private String ccv;
+    public Long getUserId() {
+        return userId;
+    }
 
-    private String beneficiaryName;
-    private String remarks;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Long getPaymentMethodId() {
         return paymentMethodId;
     }
 
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setPaymentMethodId(Long paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
     }
 
     public String getRecipientName() {
@@ -112,12 +130,12 @@ public class CreateTransferDtoRequest {
         this.toAccountNumber = toAccountNumber;
     }
 
-    public String getToPaynowPhoneNumber() {
-        return toPaynowPhoneNumber;
+    public String getCcv() {
+        return ccv;
     }
 
-    public void setToPaynowPhoneNumber(String toPaynowPhoneNumber) {
-        this.toPaynowPhoneNumber = toPaynowPhoneNumber;
+    public void setCcv(String ccv) {
+        this.ccv = ccv;
     }
 
     public String getBeneficiaryName() {
@@ -147,14 +165,29 @@ public class CreateTransferDtoRequest {
     @Override
     public String toString() {
         return "CreateTransferDtoRequest [transactionAmount="
-                + transactionAmount + ", userId=" + userId
-                + ", paymentMethodId=" + paymentMethodId + ", recipientName="
-                + recipientName + ", fromPaynowPhoneNumber="
-                + fromPaynowPhoneNumber + ", toPaynowPhoneNumber="
-                + toPaynowPhoneNumber + ", fromAccountNumber="
-                + fromAccountNumber + ", toAccountNumber=" + toAccountNumber
-                + ", ccv=" + ccv + ", beneficiaryName=" + beneficiaryName
-                + ", remarks=" + remarks + ", transferDate=" + transferDate
-                + "]";
+            + transactionAmount
+            + ", userId="
+            + userId
+            + ", paymentMethodId="
+            + paymentMethodId
+            + ", recipientName="
+            + recipientName
+            + ", fromPaynowPhoneNumber="
+            + fromPaynowPhoneNumber
+            + ", toPaynowPhoneNumber="
+            + toPaynowPhoneNumber
+            + ", fromAccountNumber="
+            + fromAccountNumber
+            + ", toAccountNumber="
+            + toAccountNumber
+            + ", ccv="
+            + ccv
+            + ", beneficiaryName="
+            + beneficiaryName
+            + ", remarks="
+            + remarks
+            + ", transferDate="
+            + transferDate
+            + "]";
     }
 }
