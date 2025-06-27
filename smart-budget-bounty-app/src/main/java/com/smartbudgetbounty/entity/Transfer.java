@@ -118,6 +118,10 @@ public class Transfer {
         return recipientName;
     }
 
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
     public String getFromPaynowPhoneNumber() {
         return fromPaynowPhoneNumber;
     }
@@ -188,6 +192,14 @@ public class Transfer {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public RewardPointsTransaction getPointsTransaction() {
+        return pointsTransaction;
+    }
+
+    public void setPointsTransaction(RewardPointsTransaction pointsTransaction) {
+        this.pointsTransaction = pointsTransaction;
     }
 
     @Override
