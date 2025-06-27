@@ -106,7 +106,7 @@ public class RewardVoucherController {
             String.format("API called: PUT /api/reward-voucher/%d/redeem", id)
         );
 
-        RewardVoucherResponseDto voucherResponseDto = voucherService.redeem(id, null);
+        RewardVoucherResponseDto voucherResponseDto = voucherService.redeem(id, requestDto);
 
         return ResponseEntity.ok(
             new ApiResponseBody<RewardVoucherResponseDto>(

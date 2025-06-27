@@ -1,5 +1,6 @@
 package com.smartbudgetbounty.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -51,13 +52,15 @@ public class TransferController {
         @Valid @RequestBody
         CreateTransferDtoRequest createDtoReq
     ) {
-        LogUtil.logInfoController(logger, "API called: POST /api/transfer");
+        LogUtil.logInfoController(logger, "API called: POST /api/transfer/user/" + userId);
 
-        TransferResponseDto createResponseDto = transferService.create(userId, createDtoReq);
+        TransferResponseDto transferResponseDto = transferService.create(userId, createDtoReq);
 
-        return ResponseEntity.ok(
+        URI location = URI.create("/api/transfer/user/" + userId);
+
+        return ResponseEntity.created(location).body(
             new ApiResponseBody<TransferResponseDto>(
-                createResponseDto,
+                transferResponseDto,
                 "Created Transfer successfully."
             )
         );

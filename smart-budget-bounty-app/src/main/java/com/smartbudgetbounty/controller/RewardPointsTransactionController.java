@@ -56,16 +56,17 @@ public class RewardPointsTransactionController {
         @Valid @RequestBody
         CreateRedeemRewardPointsTransactionRequestDto requestDto
     ) {
-        LogUtil.logInfoController(logger, "API called: POST /api/reward-points-transaction");
+        LogUtil.logInfoController(
+            logger,
+            "API called: POST /api/reward-points-transaction/user/" + userId
+        );
 
         RewardPointsTransactionResponseDto pointsTransactionResponseDto = pointsTransactionService.createRedeem(
             userId,
             requestDto
         );
 
-        URI location = URI.create(
-            "/api/reward-points-transaction/" + pointsTransactionResponseDto.getId()
-        );
+        URI location = URI.create("/api/reward-points-transaction/user/" + userId);
 
         return ResponseEntity.created(location).body(
             new ApiResponseBody<RewardPointsTransactionResponseDto>(
