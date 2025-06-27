@@ -39,8 +39,21 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
     // helper methods
 
-    private Double toRewardVoucherDiscount(Integer pointsTransactionAmount) {
-        return pointsTransactionAmount / 100.0;
+    // calculate the discount amount for a RewardVoucher obtained from a REDEEM
+    // RewardPointsTransaction
+    private Double toRewardVoucherDiscount(RewardPointsTransaction pointsTransaction) {
+        return pointsTransaction.getAmount() / 100.0;
+    }
+
+    // save RewardVoucher to RewardVoucherRepository
+    private RewardVoucher save(RewardVoucher voucher) {
+        LogUtil.logStart(logger, "Saving RewardVoucher.");
+
+        voucher = voucherRepository.save(voucher);
+
+        LogUtil.logEnd(logger, "Saved RewardVoucher: {}", voucher);
+
+        return voucher;
     }
 
     // convert RewardVoucher to RewardVoucherResponseDto
@@ -84,7 +97,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         LogUtil.logStart(logger, "Creating RewardVoucher.");
 
         // create RewardVoucher
-        Double discount = toRewardVoucherDiscount(pointsTransaction.getAmount());
+        Double discount = toRewardVoucherDiscount(pointsTransaction);
         RewardVoucher voucher = new RewardVoucher(discount, Instant.now(), user);
 
         // set relationship from RewardVoucher to RewardPointsTransaction
@@ -159,7 +172,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         voucher.setRedeemDate(Instant.now());
 
         // persist Voucher
-        voucher = voucherRepository.save(voucher);
+        voucher = save(voucher);
 
         LogUtil.logEnd(logger, "Redeemed RewardVoucher: {}", voucher);
 

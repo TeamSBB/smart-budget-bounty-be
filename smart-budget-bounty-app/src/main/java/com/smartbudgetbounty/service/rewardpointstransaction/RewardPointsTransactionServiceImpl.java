@@ -46,8 +46,20 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // helper methods
 
-    private Integer toRewardPointsAmount(Double transferAmount) {
-        return (int) Math.floor(transferAmount);
+    // calculate the amount of reward points earned from a Transfer
+    private Integer toRewardPointsAmount(Transfer transfer) {
+        return (int) Math.floor(transfer.getTransactionAmount());
+    }
+
+    // save RewardPointsTransaction to RewardPointsTransactionRepository
+    private RewardPointsTransaction save(RewardPointsTransaction pointsTransaction) {
+        LogUtil.logStart(logger, "Saving RewardPointsTransaction.");
+
+        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
+
+        LogUtil.logEnd(logger, "Saved RewardPointsTransaction: {}", pointsTransaction);
+
+        return pointsTransaction;
     }
 
     // convert RewardPointsTransaction to RewardPointsTransactionResponseDto
@@ -95,7 +107,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         // create rewardPointsTransaction
         RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
             RewardPointsTransactionType.EARN,
-            toRewardPointsAmount(transfer.getTransactionAmount()),
+            toRewardPointsAmount(transfer),
             Instant.now(),
             user
         );
@@ -136,7 +148,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         pointsTransaction.setVoucher(rewardVoucher);
 
         // persist RewardPointsTransaction, which persists RewardVoucher via cascade
-        pointsTransaction = pointsTransactionRepository.save(pointsTransaction);
+        pointsTransaction = save(pointsTransaction);
 
         LogUtil.logEnd(logger, "Created REDEEM RewardPointsTransaction: {}", pointsTransaction);
 

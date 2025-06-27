@@ -47,7 +47,18 @@ public class TransferServiceImpl implements TransferService {
 
     // helper methods
 
-    // convert Transfer toTransferResponseDto
+    // save Transfer to TransferRepository
+    private Transfer save(Transfer transfer) {
+        LogUtil.logStart(logger, "Saving Transfer.");
+
+        transfer = transferRepository.save(transfer);
+
+        LogUtil.logEnd(logger, "Saved Transfer: {}", transfer);
+
+        return transfer;
+    }
+
+    // convert Transfer to TransferResponseDto
     private TransferResponseDto toTransferResponseDto(Transfer transfer) {
         return new TransferResponseDto(
             transfer.getId(),
@@ -121,7 +132,7 @@ public class TransferServiceImpl implements TransferService {
         transfer.setPointsTransaction(pointsTransaction);
 
         // persist Transfer, which persists RewardPointsTransaction via cascade
-        transfer = transferRepository.save(transfer);
+        transfer = save(transfer);
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 
