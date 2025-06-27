@@ -20,7 +20,11 @@ public interface TransferService {
     // - to be called by TransferController
     TransferResponseDto getDtoById(Long id);
 
-    // retrieve a user's Transfers from TransferRepository as a list of TransferResponseDtos
+    // retrieve a user's list of Transfers from TransferRepository
+    // - to be called by other services
+    List<Transfer> getByUserId(Long userId);
+
+    // retrieve a user's list of Transfers from TransferRepository as a list of TransferResponseDtos
     // - to be called by TransferController
     List<TransferResponseDto> getDtosByUserId(Long userId);
 }

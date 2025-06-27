@@ -46,6 +46,10 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // helper methods
 
+    private Integer toRewardPointsAmount(Double transferAmount) {
+        return (int) Math.floor(transferAmount);
+    }
+
     // convert RewardPointsTransaction to RewardPointsTransactionResponseDto
     private RewardPointsTransactionResponseDto toRewardPointsTransactionResponseDto(
         RewardPointsTransaction pointsTransaction
@@ -77,10 +81,6 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         }
 
         return pointsTransactionResponseDtos;
-    }
-
-    private Integer toRewardPointsAmount(Double transferAmount) {
-        return (int) Math.floor(transferAmount);
     }
 
     // service methods
@@ -161,8 +161,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return pointsTransaction;
     }
 
-    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as
-    // a
+    // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as a
     // RewardPointsTransactionResponseDto
     // - to be called by RewardPointsTransactionController
     @Override
@@ -171,28 +170,28 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         return toRewardPointsTransactionResponseDto(pointsTransaction);
     }
 
-    // retrieve a user's RewardPointsTransactions from
-    // RewardPointsTransactionRepository as a list
-    // of RewardPointsTransactionResponseDtos
+    // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository
+    // - to be called by other services
+    public List<RewardPointsTransaction> getByUserId(Long userId) {
+        LogUtil.logStart(logger, "Retrieving list of RewardPointsTransaction by userId.");
+
+        User user = userService.getById(userId);
+        List<RewardPointsTransaction> pointsTransactions = user.getPointsTransactions();
+
+        LogUtil.logEnd(logger, "Retrieved RewardPointsTransactions: {}", pointsTransactions);
+
+        return pointsTransactions;
+    }
+
+    // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository as
+    // a list of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     @Override
     public List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId) {
-        LogUtil.logStart(logger, "Retrieving list of RewardPointsTransaction by userId.");
-
-        // retrieve User from repository
-        User user = userService.getById(userId);
-
-        // convert RewardPointsTransactions to RewardPointsTransactionResponseDtos
-        List<RewardPointsTransactionResponseDto> pointsTransactionDtos = toRewardPointsTransactionResponseDtos(
-            user.getPointsTransactions()
+        List<RewardPointsTransaction> pointsTransactions = getByUserId(userId);
+        List<RewardPointsTransactionResponseDto> pointsTransactionResponseDtos = toRewardPointsTransactionResponseDtos(
+            pointsTransactions
         );
-
-        LogUtil.logEnd(
-            logger,
-            "Retrieved RewardPointsTransactions: {}",
-            pointsTransactionDtos
-        );
-
-        return pointsTransactionDtos;
+        return pointsTransactionResponseDtos;
     }
 }

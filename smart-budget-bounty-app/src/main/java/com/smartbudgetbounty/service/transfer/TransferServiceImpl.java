@@ -144,31 +144,35 @@ public class TransferServiceImpl implements TransferService {
         return transfer;
     }
 
-    // retrieve a Transfer from TransferRepository as a TransferResopnseDto
+    // retrieve a Transfer from TransferRepository as a TransferResponseDto
     // - to be called by TransferController
     @Override
     public TransferResponseDto getDtoById(Long id) {
         Transfer transfer = getById(id);
-        return toTransferResponseDto(transfer);
+        TransferResponseDto transferResponseDto = toTransferResponseDto(transfer);
+        return transferResponseDto;
     }
 
-    // retrieve a user's Transfers from TransferRepository as a list of
-    // TransferResponseDtos
-    // - to be called by TransferController
+    // retrieve a user's list of Transfers from TransferRepository
+    // - to be called by other services
     @Override
-    public List<TransferResponseDto> getDtosByUserId(Long userId) {
+    public List<Transfer> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving Transfers by id.");
 
-        // retrieve User from repository
         User user = userService.getById(userId);
-
-        // convert Transfers to TransferResponseDtos
-        List<TransferResponseDto> transfers = toTransferResponseDtos(
-            user.getTransfers()
-        );
+        List<Transfer> transfers = user.getTransfers();
 
         LogUtil.logEnd(logger, "Retrieved Transfers: {}", transfers);
 
         return transfers;
+    }
+
+    // retrieve a user's list of Transfers from TransferRepository as a list of TransferResponseDtos
+    // - to be called by TransferController
+    @Override
+    public List<TransferResponseDto> getDtosByUserId(Long userId) {
+        List<Transfer> transfers = getByUserId(userId);
+        List<TransferResponseDto> transferResponseDtos = toTransferResponseDtos(transfers);
+        return transferResponseDtos;
     }
 }

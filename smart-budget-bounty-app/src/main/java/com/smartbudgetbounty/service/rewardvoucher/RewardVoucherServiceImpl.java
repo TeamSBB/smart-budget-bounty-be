@@ -1,6 +1,8 @@
 package com.smartbudgetbounty.service.rewardvoucher;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
 import com.smartbudgetbounty.repository.RewardVoucherRepository;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionServiceImpl;
+import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -25,13 +28,20 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         RewardPointsTransactionServiceImpl.class
     );
 
+    private final UserService userService;
+
     private RewardVoucherRepository voucherRepository;
 
-    public RewardVoucherServiceImpl() {
+    public RewardVoucherServiceImpl(UserService userService) {
         super();
+        this.userService = userService;
     }
 
     // helper methods
+
+    private Double toRewardVoucherDiscount(Integer pointsTransactionAmount) {
+        return pointsTransactionAmount / 100.0;
+    }
 
     // convert RewardVoucher to RewardVoucherResponseDto
     private RewardVoucherResponseDto toRewardVoucherResponseDto(RewardVoucher voucher) {
@@ -46,8 +56,17 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         );
     }
 
-    private Double toRewardVoucherDiscount(Integer pointsTransactionAmount) {
-        return pointsTransactionAmount / 100.0;
+    // convert a list of RewardVouchers to a list of RewardVoucherResponseDtos
+    private List<RewardVoucherResponseDto> toRewardVoucherResponseDtos(
+        List<RewardVoucher> vouchers
+    ) {
+        ArrayList<RewardVoucherResponseDto> voucherResponseDtos = new ArrayList<RewardVoucherResponseDto>();
+
+        for (RewardVoucher voucher : vouchers) {
+            voucherResponseDtos.add(toRewardVoucherResponseDto(voucher));
+        }
+
+        return voucherResponseDtos;
     }
 
     // service methods
@@ -92,6 +111,35 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         LogUtil.logEnd(logger, "Retrieved RewardVoucher: {}", voucher);
 
         return voucher;
+    }
+
+    // retrieve a RewardVoucher from RewardVoucherRepository as a RewardVoucherResponseDto
+    // - to be called by RewardVoucherController
+    public RewardVoucherResponseDto getDtoById(Long voucherId) {
+        RewardVoucher voucher = getById(voucherId);
+        return toRewardVoucherResponseDto(voucher);
+    }
+
+    // retrieve a user's list of RewardVouchers from RewardVoucherRepository
+    // - to be called by other services
+    public List<RewardVoucher> getByUserId(Long userId) {
+        LogUtil.logStart(logger, "Retrieving list of RewardVouchers by userId.");
+
+        User user = userService.getById(userId);
+        List<RewardVoucher> vouchers = user.getVouchers();
+
+        LogUtil.logEnd(logger, "Retrieved RewardVouchers: {}", vouchers);
+
+        return vouchers;
+    }
+
+    // retrieve a user's list of RewardVouchers from RewardVoucherRepository as a list of
+    // RewardVoucherResponseDtos
+    // - to be called by RewardVoucherController
+    public List<RewardVoucherResponseDto> getDtosByUserId(Long userId) {
+        List<RewardVoucher> vouchers = getByUserId(userId);
+        List<RewardVoucherResponseDto> rewardVoucherDtos = toRewardVoucherResponseDtos(vouchers);
+        return rewardVoucherDtos;
     }
 
     // update the status of a RewardVoucher from AVAILABLE to REDEEMED

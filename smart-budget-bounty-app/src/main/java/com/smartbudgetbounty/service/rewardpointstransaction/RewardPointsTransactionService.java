@@ -31,8 +31,12 @@ public interface RewardPointsTransactionService {
     // - to be called by RewardPointsTransactionController
     RewardPointsTransactionResponseDto getDtoById(Long id);
 
-    // retrieve a user's RewardPointsTransactions from RewardPointsTransactionRepository as a list
-    // of RewardPointsTransactionResponseDtos
+    // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository
+    // - to be called by other services
+    List<RewardPointsTransaction> getByUserId(Long userId);
+
+    // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository as
+    // a list of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId);
 }
