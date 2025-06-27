@@ -82,10 +82,7 @@ public class RewardPointsTransactionController {
     @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseBody<RewardPointsTransactionResponseDto>> getPointsTransactionById(
-        @Parameter(
-            description = "ID of the RewardPointsTransaction",
-            required = true
-        ) @PathVariable
+        @Parameter(description = "ID of the RewardPointsTransaction", required = true) @PathVariable
         Long id
     ) {
         LogUtil.logInfoController(logger, "API called: GET /api/reward-points-transaction/" + id);

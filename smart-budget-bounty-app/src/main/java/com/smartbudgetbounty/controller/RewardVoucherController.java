@@ -94,19 +94,19 @@ public class RewardVoucherController {
         description = "Marks the specified RewardVoucher as redeemed and returns the updated voucher details."
     )
     @ApiResponse(responseCode = "200", description = "OK")
-    @PutMapping("/{voucherId}/redeem")
+    @PutMapping("/{id}/redeem")
     public ResponseEntity<ApiResponseBody<RewardVoucherResponseDto>> redeemVoucher(
         @Parameter(description = "ID of the RewardVoucher", required = true) @PathVariable
-        Long voucherId,
+        Long id,
         @Valid @RequestBody
         RedeemRewardVoucherRequestDto requestDto
     ) {
         LogUtil.logInfoController(
             logger,
-            String.format("API called: PUT /api/reward-voucher/%d/redeem", voucherId)
+            String.format("API called: PUT /api/reward-voucher/%d/redeem", id)
         );
 
-        RewardVoucherResponseDto voucherResponseDto = voucherService.redeem(voucherId, null);
+        RewardVoucherResponseDto voucherResponseDto = voucherService.redeem(id, null);
 
         return ResponseEntity.ok(
             new ApiResponseBody<RewardVoucherResponseDto>(
