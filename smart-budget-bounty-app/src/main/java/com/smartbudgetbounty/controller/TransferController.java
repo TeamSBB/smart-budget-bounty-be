@@ -18,9 +18,16 @@ import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.transfer.TransferService;
 import com.smartbudgetbounty.util.LogUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(
+    name = "Transfer",
+    description = "Endpoints for the Transfer entity"
+)
 @RestController
 @RequestMapping("/api/transfer")
 public class TransferController {
@@ -32,6 +39,11 @@ public class TransferController {
         this.transferService = transferService;
     }
 
+    @Operation(
+        summary = "Create a Transfer for a User",
+        description = "Creates a new Transfer for the specified User based on the request and returns the transfer details."
+    )
+    @ApiResponse(responseCode = "201", description = "Created")
     @PostMapping()
     public ResponseEntity<ApiResponseBody<TransferResponseDto>> createTransfer(
         @Valid @RequestBody
@@ -49,6 +61,11 @@ public class TransferController {
         );
     }
 
+    @Operation(
+        summary = "Get a Transfer by its ID",
+        description = "Retrieves a specific Transfer using its ID and returns the transfer details."
+    )
+    @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponseBody<TransferResponseDto>> getTransferById(
         @Parameter @PathVariable
@@ -68,6 +85,11 @@ public class TransferController {
         );
     }
 
+    @Operation(
+        summary = "Get a User's list of Transfers",
+        description = "Retrieves all Transfers associated with the specified User ID and returns the list of transfer details."
+    )
+    @ApiResponse(responseCode = "200", description = "OK")
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApiResponseBody<List<TransferResponseDto>>> getTransfersByUserId(
         @Parameter @PathVariable
