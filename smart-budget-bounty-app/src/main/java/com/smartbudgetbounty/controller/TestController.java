@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
     @GetMapping("/all")
     public ResponseEntity<?> allAccess() { 
-        return ResponseEntity.ok(new ApiResponse<Void>(
+        return ResponseEntity.ok(new ApiResponseBody<Void>(
     		null,
             "Public Content."
         ));
@@ -20,7 +20,7 @@ public class TestController {
     
     @GetMapping("/user")
     public ResponseEntity<?> userAccess() {
-        return ResponseEntity.ok(new ApiResponse<Void>(
+        return ResponseEntity.ok(new ApiResponseBody<Void>(
     		null,
             "User Content."
         ));

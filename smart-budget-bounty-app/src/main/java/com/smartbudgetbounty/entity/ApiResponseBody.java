@@ -1,12 +1,12 @@
 package com.smartbudgetbounty.entity;
 
-public class ApiResponse<T> {
+public class ApiResponseBody<T> {
 	private T data;
 	private String message;
 	
-	public ApiResponse() {}
+	public ApiResponseBody() {}
 	
-	public ApiResponse(T data, String message) {
+	public ApiResponseBody(T data, String message) {
 		super();
 		this.data = data;
 		this.message = message;

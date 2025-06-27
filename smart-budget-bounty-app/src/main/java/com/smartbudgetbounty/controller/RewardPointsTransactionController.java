@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.rewardpointstransaction.CreateRedeemRewardPointsTransactionRequestDto;
 import com.smartbudgetbounty.dto.rewardpointstransaction.RewardPointsTransactionResponseDto;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -51,7 +51,7 @@ public class RewardPointsTransactionController {
         description = "Created"
     )
     @PostMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> createRedeemPointsTransaction(
+    public ResponseEntity<ApiResponseBody<RewardPointsTransactionResponseDto>> createRedeemPointsTransaction(
         @Parameter(description = "ID of the user", required = true) @PathVariable
         Long userId,
         @Valid @RequestBody
@@ -70,7 +70,7 @@ public class RewardPointsTransactionController {
         );
 
         return ResponseEntity.created(location).body(
-            new ApiResponse<RewardPointsTransactionResponseDto>(
+            new ApiResponseBody<RewardPointsTransactionResponseDto>(
                 pointsTransactionResponseDto,
                 "Created RewardPointsTransaction successfully."
             )
@@ -86,7 +86,7 @@ public class RewardPointsTransactionController {
         description = "OK"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RewardPointsTransactionResponseDto>> getPointsTransactionById(
+    public ResponseEntity<ApiResponseBody<RewardPointsTransactionResponseDto>> getPointsTransactionById(
         @Parameter(
             description = "ID of the RewardPointsTransaction",
             required = true
@@ -100,7 +100,7 @@ public class RewardPointsTransactionController {
         );
 
         return ResponseEntity.ok(
-            new ApiResponse<RewardPointsTransactionResponseDto>(
+            new ApiResponseBody<RewardPointsTransactionResponseDto>(
                 pointsTransactionResponseDto,
                 "Retrieved RewardPointsTransaction successfully."
             )
@@ -115,7 +115,7 @@ public class RewardPointsTransactionController {
         description = "OK"
     )
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<RewardPointsTransactionResponseDto>>> getPointsTransactionsByUserId(
+    public ResponseEntity<ApiResponseBody<List<RewardPointsTransactionResponseDto>>> getPointsTransactionsByUserId(
         @Parameter(description = "ID of the user", required = true) @PathVariable
         Long userId
     ) {
@@ -129,7 +129,7 @@ public class RewardPointsTransactionController {
         );
 
         return ResponseEntity.ok(
-            new ApiResponse<List<RewardPointsTransactionResponseDto>>(
+            new ApiResponseBody<List<RewardPointsTransactionResponseDto>>(
                 pointsTransactionResponseDtos,
                 String.format(
                     "Retrieved RewardPointsTransactions for userId %d successfully",

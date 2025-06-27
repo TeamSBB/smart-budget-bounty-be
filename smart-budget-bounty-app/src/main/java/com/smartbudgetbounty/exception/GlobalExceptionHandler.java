@@ -20,7 +20,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper; // Import ObjectMapper
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.util.LogUtil;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
  
     // --- Example: Handling MethodArgumentNotValidException (Validation Errors) ---
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
+    public ResponseEntity<ApiResponseBody<Void>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
  
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error ->
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
         String path = ((ServletWebRequest)request).getRequest().getRequestURI();
         LogUtil.logErrorGlobal(logger, "Validation failed: {}: path: {}", errors, path);
  
-        ApiResponse<Void> apiError = new ApiResponse<>(
+        ApiResponseBody<Void> apiError = new ApiResponseBody<>(
                 null,
                 ex.getMessage() != null ? ex.getMessage() : "Validation failed"
         );
@@ -56,11 +56,11 @@ public class GlobalExceptionHandler {
     }
  
      @ExceptionHandler({NotFoundException.class, EntityNotFoundException.class}) // Assuming NotFoundException is a custom exception
-     public ResponseEntity<ApiResponse<Void>> handleNotFoundException(Exception ex, WebRequest request) {
+     public ResponseEntity<ApiResponseBody<Void>> handleNotFoundException(Exception ex, WebRequest request) {
     	 String path = ((ServletWebRequest)request).getRequest().getRequestURI();
          LogUtil.logErrorGlobal(logger, "Entity not found: {}, path: {}", ex.getMessage(), path);
          
-         ApiResponse<Void> apiError = new ApiResponse<>(
+         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
                  null,
                  ex.getMessage() != null ? ex.getMessage() : "Resource not found"
          );
@@ -69,12 +69,12 @@ public class GlobalExceptionHandler {
 
      
      @ExceptionHandler({BadCredentialsException.class, AuthenticationCredentialsNotFoundException.class, CredentialsExpiredException.class}) // Assuming NotFoundException is a custom exception
-     public ResponseEntity<ApiResponse<Void>> handleUnauthorziedException(Exception ex, WebRequest request) {
+     public ResponseEntity<ApiResponseBody<Void>> handleUnauthorziedException(Exception ex, WebRequest request) {
 
     	 String path = ((ServletWebRequest)request).getRequest().getRequestURI();
          LogUtil.logErrorGlobal(logger, "Bad Credentials error: {}, path: {}", ex.getMessage(), path);
          
-         ApiResponse<Void> apiError = new ApiResponse<>(
+         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
                  null,
              ex.getMessage() != null ? ex.getMessage() : "BadCredentialsException error."
          );
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
         LogUtil.logErrorGlobal(logger, "An unexpected error occurred: {}, path: {}", ex.getMessage(), path);
   
         // Create your custom error response object for internal server error
-        ApiResponse<Void> apiError = new ApiResponse<>(
+        ApiResponseBody<Void> apiError = new ApiResponseBody<>(
             null,
             "An unexpected error occurred. Please try again later."
         );

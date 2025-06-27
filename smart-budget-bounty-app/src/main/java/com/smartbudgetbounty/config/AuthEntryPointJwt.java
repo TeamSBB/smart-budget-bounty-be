@@ -10,7 +10,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper; // Import ObjectMapper
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.exception.GlobalExceptionHandler;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -39,7 +39,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); // Set Content-Type to application/json
  
         // Write the JSON response body
-        objectMapper.writeValue(response.getOutputStream(), new ApiResponse<>(
+        objectMapper.writeValue(response.getOutputStream(), new ApiResponseBody<>(
             null,
             authException.getMessage() != null ? authException.getMessage() : "Unauthorized access"            
         ));

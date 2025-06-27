@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.rewardvoucher.RedeemRewardVoucherRequestDto;
 import com.smartbudgetbounty.dto.rewardvoucher.RewardVoucherResponseDto;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.rewardvoucher.RewardVoucherService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -33,7 +33,7 @@ public class RewardVoucherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<RewardVoucherResponseDto>> getVoucherById(
+    public ResponseEntity<ApiResponseBody<RewardVoucherResponseDto>> getVoucherById(
         @Parameter(description = "ID of the RewardVoucher", required = true) @PathVariable
         Long id
     ) {
@@ -42,7 +42,7 @@ public class RewardVoucherController {
         RewardVoucherResponseDto voucherResponseDto = voucherService.getDtoById(id);
 
         return ResponseEntity.ok(
-            new ApiResponse<RewardVoucherResponseDto>(
+            new ApiResponseBody<RewardVoucherResponseDto>(
                 voucherResponseDto,
                 "Retrieved RewardVoucher successfully."
             )
@@ -50,7 +50,7 @@ public class RewardVoucherController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<RewardVoucherResponseDto>>> getVouchersByUserId(
+    public ResponseEntity<ApiResponseBody<List<RewardVoucherResponseDto>>> getVouchersByUserId(
         @Parameter(description = "ID of the User", required = true) @PathVariable
         Long userId
     ) {
@@ -62,7 +62,7 @@ public class RewardVoucherController {
         List<RewardVoucherResponseDto> voucherResponseDtos = voucherService.getDtosByUserId(userId);
 
         return ResponseEntity.ok(
-            new ApiResponse<List<RewardVoucherResponseDto>>(
+            new ApiResponseBody<List<RewardVoucherResponseDto>>(
                 voucherResponseDtos,
                 String.format(
                     "Retrieved RewardVouchers for userId %d successfully",
@@ -73,7 +73,7 @@ public class RewardVoucherController {
     }
 
     @PutMapping("/{voucherId}/redeem")
-    public ResponseEntity<ApiResponse<RewardVoucherResponseDto>> redeemVoucher(
+    public ResponseEntity<ApiResponseBody<RewardVoucherResponseDto>> redeemVoucher(
         @Parameter(description = "ID of the RewardVoucher", required = true) @PathVariable
         Long voucherId,
         @Valid @RequestBody
@@ -87,7 +87,7 @@ public class RewardVoucherController {
         RewardVoucherResponseDto voucherResponseDto = voucherService.redeem(voucherId, null);
 
         return ResponseEntity.ok(
-            new ApiResponse<RewardVoucherResponseDto>(
+            new ApiResponseBody<RewardVoucherResponseDto>(
                 voucherResponseDto,
                 "Redeemed RewardVoucher successfully"
             )

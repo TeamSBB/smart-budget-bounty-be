@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.transfer.CreateTransferDtoRequest;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.transfer.TransferService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -33,7 +33,7 @@ public class TransferController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<TransferResponseDto>> createTransfer(
+    public ResponseEntity<ApiResponseBody<TransferResponseDto>> createTransfer(
         @Valid @RequestBody
         CreateTransferDtoRequest createDtoReq
     ) {
@@ -42,7 +42,7 @@ public class TransferController {
         TransferResponseDto createResponseDto = transferService.create(createDtoReq);
 
         return ResponseEntity.ok(
-            new ApiResponse<TransferResponseDto>(
+            new ApiResponseBody<TransferResponseDto>(
                 createResponseDto,
                 "Created Transfer successfully."
             )
@@ -50,7 +50,7 @@ public class TransferController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<TransferResponseDto>> getTransferById(
+    public ResponseEntity<ApiResponseBody<TransferResponseDto>> getTransferById(
         @Parameter @PathVariable
         Long id
     ) {
@@ -61,7 +61,7 @@ public class TransferController {
         );
 
         return ResponseEntity.ok(
-            new ApiResponse<TransferResponseDto>(
+            new ApiResponseBody<TransferResponseDto>(
                 transferResponseDto,
                 "Retrieved Transfer successfully."
             )
@@ -69,7 +69,7 @@ public class TransferController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<TransferResponseDto>>> getTransfersByUserId(
+    public ResponseEntity<ApiResponseBody<List<TransferResponseDto>>> getTransfersByUserId(
         @Parameter @PathVariable
         Long userId
     ) {
@@ -80,7 +80,7 @@ public class TransferController {
         );
 
         return ResponseEntity.ok(
-            new ApiResponse<List<TransferResponseDto>>(
+            new ApiResponseBody<List<TransferResponseDto>>(
                 transferResponseDtos,
                 String.format(
                     "Retrieved Transfers for userId %d successfully",
