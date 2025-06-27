@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class CreateTransferDtoRequest {
-    @NotNull(message = "Transaction amount is required.")
-    @Positive(message = "Transaction amount must be greater than 0.")
-    private Double transactionAmount;
+    @NotNull(message = "Amount is required.")
+    @Positive(message = "Amount must be greater than 0.")
+    private Double amount;
 
     @NotNull(message = "Payment method is required.")
     private Long paymentMethodId;
@@ -28,9 +28,9 @@ public class CreateTransferDtoRequest {
     private Instant transferDate;
 
     public CreateTransferDtoRequest(
-        @NotNull(message = "Transaction amount is required.")
-        @Positive(message = "Transaction amount must be greater than 0.")
-        Double transactionAmount,
+        @NotNull(message = "Amount is required.")
+        @Positive(message = "Amount must be greater than 0.")
+        Double amount,
         @NotNull(message = "Payment method is required.")
         Long paymentMethodId,
         String recipientName,
@@ -44,7 +44,7 @@ public class CreateTransferDtoRequest {
         Instant transferDate
     ) {
         super();
-        this.transactionAmount = transactionAmount;
+        this.amount = amount;
         this.paymentMethodId = paymentMethodId;
         this.recipientName = recipientName;
         this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
@@ -57,12 +57,12 @@ public class CreateTransferDtoRequest {
         this.transferDate = transferDate;
     }
 
-    public Double getTransactionAmount() {
-        return transactionAmount;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public Long getPaymentMethodId() {
@@ -147,8 +147,8 @@ public class CreateTransferDtoRequest {
 
     @Override
     public String toString() {
-        return "CreateTransferDtoRequest [transactionAmount="
-            + transactionAmount
+        return "CreateTransferDtoRequest [amount="
+            + amount
             + ", paymentMethodId="
             + paymentMethodId
             + ", recipientName="

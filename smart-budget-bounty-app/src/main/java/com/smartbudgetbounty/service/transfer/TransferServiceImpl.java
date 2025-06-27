@@ -69,7 +69,7 @@ public class TransferServiceImpl implements TransferService {
             transfer.getBeneficiaryName(),
             transfer.getFromAccountNumber(),
             transfer.getToAccountNumber(),
-            transfer.getTransactionAmount(),
+            transfer.getAmount(),
             transfer.getCreatedAt(),
             transfer.getPaymentMethod().getId(),
             transfer.getRemarks()
@@ -108,7 +108,7 @@ public class TransferServiceImpl implements TransferService {
 
         // create Transfer
         Transfer transfer = new Transfer(
-            requestDto.getTransactionAmount(),
+            requestDto.getAmount(),
             Instant.now(),
             requestDto.getRecipientName(),
             requestDto.getFromPaynowPhoneNumber(),

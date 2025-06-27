@@ -48,7 +48,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
 
     // calculate the amount of reward points earned from a Transfer
     private Integer toRewardPointsAmount(Transfer transfer) {
-        return (int) Math.floor(transfer.getTransactionAmount());
+        return (int) Math.floor(transfer.getAmount());
     }
 
     // save RewardPointsTransaction to RewardPointsTransactionRepository

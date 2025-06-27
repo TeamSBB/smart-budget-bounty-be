@@ -16,7 +16,7 @@ public class Transfer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double transactionAmount;
+    private Double amount;
     private Instant createdAt;
     private String recipientName;
 
@@ -66,7 +66,7 @@ public class Transfer {
     }
 
     public Transfer(
-        Double transactionAmount,
+        Double amount,
         Instant createdAt,
         String recipientName,
         String fromPaynowPhoneNumber,
@@ -80,7 +80,7 @@ public class Transfer {
         PaymentMethod paymentMethod
     ) {
         super();
-        this.transactionAmount = transactionAmount;
+        this.amount = amount;
         this.createdAt = createdAt;
         this.recipientName = recipientName;
         this.fromPaynowPhoneNumber = fromPaynowPhoneNumber;
@@ -98,12 +98,12 @@ public class Transfer {
         return id;
     }
 
-    public Double getTransactionAmount() {
-        return transactionAmount;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public Instant getCreatedAt() {
@@ -206,8 +206,8 @@ public class Transfer {
     public String toString() {
         return "Transfer [id="
             + id
-            + ", transactionAmount="
-            + transactionAmount
+            + ", amount="
+            + amount
             + ", createdAt="
             + createdAt
             + ", recipientName="

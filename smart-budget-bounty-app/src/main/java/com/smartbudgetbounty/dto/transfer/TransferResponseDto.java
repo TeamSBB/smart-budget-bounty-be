@@ -21,7 +21,7 @@ public class TransferResponseDto {
     private String toAccountNumber;
 
     // Generic
-    private Double transactionAmount;
+    private Double amount;
     private Instant createdAt;
     private Long paymentMethodId;
     private String remarks;
@@ -35,7 +35,7 @@ public class TransferResponseDto {
         String beneficiaryName,
         String fromAccountNumber,
         String toAccountNumber,
-        Double transactionAmount,
+        Double amount,
         Instant createdAt,
         Long paymentMethodId,
         String remarks
@@ -49,7 +49,7 @@ public class TransferResponseDto {
         this.beneficiaryName = beneficiaryName;
         this.fromAccountNumber = fromAccountNumber;
         this.toAccountNumber = toAccountNumber;
-        this.transactionAmount = transactionAmount;
+        this.amount = amount;
         this.createdAt = createdAt;
         this.paymentMethodId = paymentMethodId;
         this.remarks = remarks;
@@ -119,12 +119,12 @@ public class TransferResponseDto {
         this.toAccountNumber = toAccountNumber;
     }
 
-    public Double getTransactionAmount() {
-        return transactionAmount;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public Instant getCreatedAt() {
@@ -169,8 +169,8 @@ public class TransferResponseDto {
             + fromAccountNumber
             + ", toAccountNumber="
             + toAccountNumber
-            + ", transactionAmount="
-            + transactionAmount
+            + ", amount="
+            + amount
             + ", createdAt="
             + createdAt
             + ", paymentMethodId="
