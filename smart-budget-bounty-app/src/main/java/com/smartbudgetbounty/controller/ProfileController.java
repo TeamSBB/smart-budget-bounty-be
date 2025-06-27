@@ -17,7 +17,7 @@ import com.smartbudgetbounty.dto.profile.UpsertProfileCardInfoDtoRequest;
 import com.smartbudgetbounty.dto.profile.UpsertProfileCardInfoDtoResponse;
 import com.smartbudgetbounty.dto.profile.UpsertProfilePaynowInfoDtoRequest;
 import com.smartbudgetbounty.dto.profile.UpsertProfilePaynowInfoDtoResponse;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.profile.ProfileService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -42,7 +42,7 @@ public class ProfileController {
         // Call service to insert into db
         GetProfileInfoDtoResponse getResponseDto = profileService.getProfileInfo(accountId);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		getResponseDto,
             "Get Profile Info successfully."
         ));    
@@ -55,7 +55,7 @@ public class ProfileController {
         // Call service to insert into db
         UpsertProfileBankInfoDtoResponse upsertResponseDto = profileService.upsertBankInfo(upsertDtoReq);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		upsertResponseDto,
             "Upsert Profile Bank Info successfully."
         ));    
@@ -68,7 +68,7 @@ public class ProfileController {
         // Call service to insert into db
         UpsertProfileCardInfoDtoResponse upsertResponseDto = profileService.upsertCardInfo(upsertDtoReq);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		upsertResponseDto,
             "Upsert Profile Card Info successfully."
         ));    
@@ -81,7 +81,7 @@ public class ProfileController {
         // Call service to insert into db
         UpsertProfilePaynowInfoDtoResponse upsertResponseDto = profileService.upsertPaynowInfo(upsertDtoReq);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		upsertResponseDto,
             "Upsert Profile paynow Info successfully."
         ));    

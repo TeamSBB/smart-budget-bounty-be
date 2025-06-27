@@ -12,7 +12,7 @@ import com.smartbudgetbounty.dto.auth.LoginDtoRequest;
 import com.smartbudgetbounty.dto.auth.LoginDtoResponse;
 import com.smartbudgetbounty.dto.auth.RegisterDtoRequest;
 import com.smartbudgetbounty.dto.auth.RegisterDtoResponse;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -36,7 +36,7 @@ public class AuthController {
         
         LoginDtoResponse loginResponseDto = userService.loginUser(loginUserDtoRequest);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		loginResponseDto,
             "Token generated for login."
         ));    
@@ -49,7 +49,7 @@ public class AuthController {
         // Format DTO and return response.
         RegisterDtoResponse registerResponseDto = userService.registerUser(registerUserDto);
         
-        return ResponseEntity.ok(new ApiResponse<>(
+        return ResponseEntity.ok(new ApiResponseBody<>(
     		registerResponseDto,
             "Created user successfully."
         ));

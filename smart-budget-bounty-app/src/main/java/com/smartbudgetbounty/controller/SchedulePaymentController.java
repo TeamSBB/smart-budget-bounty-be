@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoRequest;
 import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoResponse;
-import com.smartbudgetbounty.entity.ApiResponse;
+import com.smartbudgetbounty.entity.ApiResponseBody;
 import com.smartbudgetbounty.service.schedulepayment.SchedulePaymentService;
 import com.smartbudgetbounty.util.LogUtil;
 
@@ -34,7 +34,7 @@ public class SchedulePaymentController {
     public ResponseEntity<?> createSchedule(@Valid @RequestBody SchedulePaymentDtoRequest requestDto) {
     	LogUtil.logInfoController(logger, "API called: POST /api/schedulePayment");
     	SchedulePaymentDtoResponse response = schedulePaymentService.createSchedule(requestDto);
-    	return ResponseEntity.ok().body(new ApiResponse<>(
+    	return ResponseEntity.ok().body(new ApiResponseBody<>(
     			response, "Scheduled successfully."
     			));
     }
@@ -59,7 +59,7 @@ public class SchedulePaymentController {
     	List<SchedulePaymentDtoResponse> schedules = 
     			schedulePaymentService.getAllSchedulesByUser(userId);
     	return ResponseEntity.ok().body(
-    			new ApiResponse<>(
+    			new ApiResponseBody<>(
     					schedules, "Fetched all schedules successfully."
     			));
     }
