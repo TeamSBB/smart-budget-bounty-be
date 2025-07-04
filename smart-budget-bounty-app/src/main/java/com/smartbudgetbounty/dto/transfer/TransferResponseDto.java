@@ -25,6 +25,9 @@ public class TransferResponseDto {
     private Instant createdAt;
     private Long paymentMethodId;
     private String remarks;
+    
+    // Rewards
+    private Integer rewardAmount;
 
     public TransferResponseDto(
         Long transferId,
@@ -38,7 +41,8 @@ public class TransferResponseDto {
         Double amount,
         Instant createdAt,
         Long paymentMethodId,
-        String remarks
+        String remarks,
+        Integer rewardAmount
     ) {
         super();
         this.transferId = transferId;
@@ -53,6 +57,7 @@ public class TransferResponseDto {
         this.createdAt = createdAt;
         this.paymentMethodId = paymentMethodId;
         this.remarks = remarks;
+        this.rewardAmount = rewardAmount;
     }
 
     public Long getTransferId() {
@@ -151,32 +156,25 @@ public class TransferResponseDto {
         this.remarks = remarks;
     }
 
-    @Override
-    public String toString() {
-        return "CreateTransferDtoResponse [transferId="
-            + transferId
-            + ", recipientName="
-            + recipientName
-            + ", fromPaynowPhoneNumber="
-            + fromPaynowPhoneNumber
-            + ", toPaynowPhoneNumber="
-            + toPaynowPhoneNumber
-            + ", transferDate="
-            + transferDate
-            + ", beneficiaryName="
-            + beneficiaryName
-            + ", fromAccountNumber="
-            + fromAccountNumber
-            + ", toAccountNumber="
-            + toAccountNumber
-            + ", amount="
-            + amount
-            + ", createdAt="
-            + createdAt
-            + ", paymentMethodId="
-            + paymentMethodId
-            + ", remarks="
-            + remarks
-            + "]";
-    }
+	public Integer getRewardAmount() {
+		return rewardAmount;
+	}
+
+	public void setRewardAmount(Integer rewardAmount) {
+		this.rewardAmount = rewardAmount;
+	}
+
+	@Override
+	public String toString() {
+		return "TransferResponseDto [transferId=" + transferId
+				+ ", recipientName=" + recipientName
+				+ ", fromPaynowPhoneNumber=" + fromPaynowPhoneNumber
+				+ ", toPaynowPhoneNumber=" + toPaynowPhoneNumber
+				+ ", transferDate=" + transferDate + ", beneficiaryName="
+				+ beneficiaryName + ", fromAccountNumber=" + fromAccountNumber
+				+ ", toAccountNumber=" + toAccountNumber + ", amount=" + amount
+				+ ", createdAt=" + createdAt + ", paymentMethodId="
+				+ paymentMethodId + ", remarks=" + remarks + ", rewardAmount="
+				+ rewardAmount + "]";
+	}
 }

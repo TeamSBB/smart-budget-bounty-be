@@ -72,7 +72,8 @@ public class TransferServiceImpl implements TransferService {
             transfer.getAmount(),
             transfer.getCreatedAt(),
             transfer.getPaymentMethod().getId(),
-            transfer.getRemarks()
+            transfer.getRemarks(),
+            transfer.getPointsTransaction().getAmount()
         );
     }
 
