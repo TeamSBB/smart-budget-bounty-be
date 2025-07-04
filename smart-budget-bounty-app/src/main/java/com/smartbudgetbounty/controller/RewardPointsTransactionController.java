@@ -129,4 +129,28 @@ public class RewardPointsTransactionController {
             )
         );
     }
+
+    @Operation(
+        summary = "Get a User's reward points balance",
+        description = "Retrieves the reward points balance associated with the specified User ID."
+    )
+    @ApiResponse(responseCode = "200", description = "OK")
+    @GetMapping("/user/{userId}/balance")
+    public ResponseEntity<ApiResponseBody<Integer>> getPointsBalanceByUserId(
+        @Parameter(description = "ID of the User", required = true) @PathVariable
+        Long userId
+    ) {
+        Integer pointsBalance = pointsTransactionService.getBalance(userId);
+
+        return ResponseEntity.ok(
+            new ApiResponseBody<Integer>(
+                pointsBalance,
+                String.format(
+                    "Retrieved reward points balance for userId %d successfully",
+                    userId
+                )
+            )
+        );
+    }
+
 }

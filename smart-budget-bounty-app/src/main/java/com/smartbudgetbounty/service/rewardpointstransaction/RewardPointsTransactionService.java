@@ -39,4 +39,8 @@ public interface RewardPointsTransactionService {
     // a list of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId);
+
+    // calculate the user's reward points balance
+    // - to be called by RewardPointsTransactionController and other service methods
+    Integer getBalance(Long userId);
 }

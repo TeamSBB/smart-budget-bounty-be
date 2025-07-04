@@ -210,4 +210,21 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         );
         return pointsTransactionResponseDtos;
     }
+
+    // calculate the user's reward points balance
+    // - to be called by RewardPointsTransactionController and other service methods
+    public Integer getBalance(Long userId) {
+        LogUtil.logStart(logger, "Calculating reward points balance.");
+
+        Integer pointsBalance = 0;
+
+        List<RewardPointsTransaction> pointsTransactions = getByUserId(userId);
+        for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
+            pointsBalance += pointsTransaction.getAmount();
+        }
+
+        LogUtil.logEnd(logger, "Calculated reward points balance: {}", pointsBalance);
+
+        return pointsBalance;
+    }
 }
