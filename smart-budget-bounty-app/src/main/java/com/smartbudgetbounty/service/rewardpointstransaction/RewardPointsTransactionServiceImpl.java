@@ -160,7 +160,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public RewardPointsTransaction getById(Long id) {
         LogUtil.logStart(logger, "Retrieving RewardPointsTransaction by id.");
@@ -187,7 +187,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     public List<RewardPointsTransaction> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving list of RewardPointsTransaction by userId.");
 

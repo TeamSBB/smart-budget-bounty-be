@@ -13,7 +13,7 @@ public interface TransferService {
     TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto);
 
     // retrieve a Transfer from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     Transfer getById(Long id);
 
     // retrieve a Transfer from TransferRepository as a TransferResopnseDto
@@ -21,7 +21,7 @@ public interface TransferService {
     TransferResponseDto getDtoById(Long id);
 
     // retrieve a user's list of Transfers from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     List<Transfer> getByUserId(Long userId);
 
     // retrieve a user's list of Transfers from TransferRepository as a list of TransferResponseDtos

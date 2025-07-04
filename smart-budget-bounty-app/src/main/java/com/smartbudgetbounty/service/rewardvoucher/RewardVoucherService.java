@@ -27,7 +27,7 @@ public interface RewardVoucherService {
     RewardVoucherResponseDto getDtoById(Long voucherId);
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository
-    // - to be called by other services
+    // - to be called by other service methods
     List<RewardVoucher> getByUserId(Long userId);
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository as a list of

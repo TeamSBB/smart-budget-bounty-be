@@ -137,7 +137,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     }
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository
-    // - to be called by other services
+    // - to be called by other service methods
     public List<RewardVoucher> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving list of RewardVouchers by userId.");
 

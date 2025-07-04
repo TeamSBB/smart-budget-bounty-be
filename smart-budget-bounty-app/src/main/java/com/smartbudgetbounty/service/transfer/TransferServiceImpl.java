@@ -141,7 +141,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     // retrieve a Transfer from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public Transfer getById(Long id) {
         LogUtil.logStart(logger, "Retrieving Transfer by id.");
@@ -166,7 +166,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     // retrieve a user's list of Transfers from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public List<Transfer> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving Transfers by id.");
