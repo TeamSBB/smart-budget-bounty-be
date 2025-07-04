@@ -29,12 +29,15 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     );
 
     private final UserService userService;
+    private final RewardVoucherRepository voucherRepository;
 
-    private RewardVoucherRepository voucherRepository;
-
-    public RewardVoucherServiceImpl(UserService userService) {
+    public RewardVoucherServiceImpl(
+        UserService userService,
+        RewardVoucherRepository voucherRepository
+    ) {
         super();
         this.userService = userService;
+        this.voucherRepository = voucherRepository;
     }
 
     // helper methods
