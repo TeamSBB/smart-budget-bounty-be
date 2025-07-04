@@ -128,6 +128,8 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         Long userId,
         CreateRedeemRewardPointsTransactionRequestDto requestDto
     ) {
+        // TODO: redeeming points should fail if points result in negative
+
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
         // retrieve User from repository
