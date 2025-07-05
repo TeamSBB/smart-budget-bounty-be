@@ -101,13 +101,10 @@ public class TransferServiceImpl implements TransferService {
     public TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
-        // retrieve User from repository
+        // create Transfer
         User user = userService.getById(userId);
-
-        // retrieve PaymentMethod from repository
         PaymentMethod paymentMethod = paymentMethodService.getById(requestDto.getPaymentMethodId());
 
-        // create Transfer
         Transfer transfer = new Transfer(
             requestDto.getAmount(),
             Instant.now(),

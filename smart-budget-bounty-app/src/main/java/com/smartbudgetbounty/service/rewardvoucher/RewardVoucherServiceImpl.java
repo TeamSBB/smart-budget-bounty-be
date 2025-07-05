@@ -165,13 +165,13 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         Long voucherId,
         RedeemRewardVoucherRequestDto requestDto
     ) {
-        // TODO: fail if user does not own voucher
-        // TODO: fail if voucher was already redeemed
-
         LogUtil.logStart(logger, "Redeeming RewardVoucher.");
 
-        // retrieve RewardVoucher from repository
+        // check if user owns voucher
         RewardVoucher voucher = getById(voucherId);
+        User user = userService.getById(requestDto.getUserId());
+
+        // check if voucher is available
 
         // update Voucher
         voucher.setVoucherStatus(RewardVoucherStatus.REDEEMED);

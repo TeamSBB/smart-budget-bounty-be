@@ -150,10 +150,9 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             );
         }
 
-        // retrieve User from repository
+        // create RewardPointsTransaction
         User user = userService.getById(userId);
 
-        // create RewardPointsTransaction
         RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
             RewardPointsTransactionType.REDEEM,
             requestDto.getRedeemAmount() * -1,
