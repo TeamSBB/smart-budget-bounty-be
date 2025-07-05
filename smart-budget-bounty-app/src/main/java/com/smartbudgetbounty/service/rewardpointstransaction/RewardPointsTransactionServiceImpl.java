@@ -128,14 +128,30 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
         Long userId,
         CreateRedeemRewardPointsTransactionRequestDto requestDto
     ) {
-        // TODO: redeeming points should fail if points result in negative
-
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
+
+        // check if user has sufficient points
+        Integer pointsBalance = getBalance(userId);
+
+        if (pointsBalance < requestDto.getRedeemAmount()) {
+            LogUtil.logError(
+                logger,
+                "User has insufficient points: redeem amount ({}) exceeds points balance ({}).",
+                requestDto.getRedeemAmount(),
+                pointsBalance
+
+            );
+            throw new IllegalStateException(
+                String.format(
+                    "User has insufficient points: redeem amount (%d) exceeds points balance (%d).",
+                    requestDto.getRedeemAmount(),
+                    pointsBalance
+                )
+            );
+        }
 
         // retrieve User from repository
         User user = userService.getById(userId);
-
-        // TODO: check user have sufficient points
 
         // create RewardPointsTransaction
         RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(

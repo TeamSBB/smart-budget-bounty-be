@@ -49,6 +49,10 @@ public class RewardPointsTransactionController {
         description = "Creates a new RewardPointsTransaction to redeem reward points for the specified User in exchange for a RewardVoucher, based on the request. Returns the transaction details."
     )
     @ApiResponse(responseCode = "201", description = "Created")
+    @ApiResponse(
+        responseCode = "400",
+        description = "Bad Request: the User has insufficient points"
+    )
     @PostMapping("/user/{userId}")
     public ResponseEntity<ApiResponseBody<RewardPointsTransactionResponseDto>> createRedeemPointsTransaction(
         @Parameter(description = "ID of the User", required = true) @PathVariable

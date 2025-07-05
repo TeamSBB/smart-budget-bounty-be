@@ -66,7 +66,22 @@ public class GlobalExceptionHandler {
          );
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
      }
+     
+     @ExceptionHandler(IllegalStateException.class)
+     public ResponseEntity<ApiResponseBody<Void>> handleIllegalStateException(
+         Exception ex,
+         WebRequest request
+     ) {
+         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+         LogUtil.logErrorGlobal(logger, "Illegal State error: {}, path: {}", ex.getMessage(), path);
 
+         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
+             null,
+             ex.getMessage() != null ? ex.getMessage() : "Operation performed at unsuitable state"
+         );
+
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+     }
      
      @ExceptionHandler({BadCredentialsException.class, AuthenticationCredentialsNotFoundException.class, CredentialsExpiredException.class}) // Assuming NotFoundException is a custom exception
      public ResponseEntity<ApiResponseBody<Void>> handleUnauthorziedException(Exception ex, WebRequest request) {
