@@ -108,6 +108,15 @@ public class RewardVoucher {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof RewardVoucher) {
+            RewardVoucher otherRewardVoucher = (RewardVoucher) obj;
+            return otherRewardVoucher.getId() == id;
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "RewardPointTransaction [id="
             + id

@@ -171,7 +171,33 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         RewardVoucher voucher = getById(voucherId);
         User user = userService.getById(requestDto.getUserId());
 
+        if (!user.getVouchers().contains(voucher)) {
+            LogUtil.logError(
+                logger,
+                "User with id {} does not own voucher with id {}.",
+                user.getId(),
+                voucherId
+            );
+            throw new IllegalStateException(
+                String.format(
+                    "User with id %d does not own voucher with id %d.",
+                    user.getId(),
+                    voucherId
+                )
+            );
+        }
+
         // check if voucher is available
+        if (voucher.getVoucherStatus() != RewardVoucherStatus.AVAILABLE) {
+            LogUtil.logError(
+                logger,
+                "Voucher with id {} is not available for redemption.",
+                voucherId
+            );
+            throw new IllegalStateException(
+                String.format("Voucher with id %d is not available for redemption.", voucherId)
+            );
+        }
 
         // update Voucher
         voucher.setVoucherStatus(RewardVoucherStatus.REDEEMED);
