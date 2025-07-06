@@ -15,6 +15,7 @@ import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
 import com.smartbudgetbounty.service.rewardvoucher.RewardVoucherService;
 import com.smartbudgetbounty.service.user.UserService;
@@ -150,7 +151,17 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             );
         }
 
-        // create RewardPointsTransaction
+        // check if request voucherType is valid
+        String requestVoucherType = requestDto.getVoucherType();
+        RewardVoucherType voucherType;
+
+        try {
+            voucherType = RewardVoucherType.valueOf(requestVoucherType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid voucher type: " + requestVoucherType);
+        }
+
+        // create RewardPointsTransaction and RewardVoucher
         User user = userService.getById(userId);
 
         RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
@@ -160,8 +171,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             user
         );
 
-        // create RewardVoucher
-        RewardVoucher rewardVoucher = voucherService.create(user, pointsTransaction);
+        RewardVoucher rewardVoucher = voucherService.create(voucherType, user, pointsTransaction);
 
         // set relationship from RewardPointsTransaction to RewardVoucher
         pointsTransaction.setVoucher(rewardVoucher);

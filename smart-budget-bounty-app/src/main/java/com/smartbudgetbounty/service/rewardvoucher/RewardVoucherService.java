@@ -7,6 +7,7 @@ import com.smartbudgetbounty.dto.rewardvoucher.RewardVoucherResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.User;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 
 public interface RewardVoucherService {
     // create a RewardVoucher
@@ -14,6 +15,7 @@ public interface RewardVoucherService {
     // created
     // - persistence is handled by RewardPointsTransactionService via cascade
     RewardVoucher create(
+        RewardVoucherType voucherType,
         User user,
         RewardPointsTransaction pointsTransaction
     );

@@ -3,6 +3,7 @@ package com.smartbudgetbounty.entity;
 import java.time.Instant;
 
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +23,9 @@ public class RewardVoucher {
 
     @Enumerated(EnumType.STRING)
     private RewardVoucherStatus voucherStatus;
+
+    @Enumerated(EnumType.STRING)
+    private RewardVoucherType voucherType;
 
     private Double discount;
     private Instant earnDate;
@@ -43,9 +47,15 @@ public class RewardVoucher {
         super();
     }
 
-    public RewardVoucher(Double discount, Instant earnDate, User user) {
+    public RewardVoucher(
+        RewardVoucherType voucherType,
+        Double discount,
+        Instant earnDate,
+        User user
+    ) {
         super();
         this.voucherStatus = RewardVoucherStatus.AVAILABLE;
+        this.voucherType = voucherType;
         this.discount = discount;
         this.earnDate = earnDate;
         this.user = user;
@@ -65,6 +75,14 @@ public class RewardVoucher {
 
     public void setVoucherStatus(RewardVoucherStatus voucherStatus) {
         this.voucherStatus = voucherStatus;
+    }
+
+    public RewardVoucherType getVoucherType() {
+        return voucherType;
+    }
+
+    public void setVoucherType(RewardVoucherType voucherType) {
+        this.voucherType = voucherType;
     }
 
     public Double getDiscount() {
@@ -122,6 +140,8 @@ public class RewardVoucher {
             + id
             + ", voucherStatus="
             + voucherStatus.name()
+            + ", voucherType="
+            + voucherType.name()
             + ", discount="
             + discount
             + ", earnDate="

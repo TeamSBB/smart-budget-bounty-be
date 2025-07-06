@@ -14,6 +14,7 @@ import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 import com.smartbudgetbounty.repository.RewardVoucherRepository;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionServiceImpl;
 import com.smartbudgetbounty.service.user.UserService;
@@ -64,6 +65,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         return new RewardVoucherResponseDto(
             voucher.getId(),
             voucher.getVoucherStatus().name(),
+            voucher.getVoucherType().name(),
             voucher.getDiscount(),
             voucher.getEarnDate(),
             voucher.getRedeemDate(),
@@ -94,6 +96,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // - persistence is handled by RewardPointsTransactionService via cascade
     @Override
     public RewardVoucher create(
+        RewardVoucherType voucherType,
         User user,
         RewardPointsTransaction pointsTransaction
     ) {
@@ -101,7 +104,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
         // create RewardVoucher
         Double discount = toRewardVoucherDiscount(pointsTransaction);
-        RewardVoucher voucher = new RewardVoucher(discount, Instant.now(), user);
+        RewardVoucher voucher = new RewardVoucher(voucherType, discount, Instant.now(), user);
 
         // set relationship from RewardVoucher to RewardPointsTransaction
         voucher.setPointsTransaction(pointsTransaction);
@@ -168,8 +171,8 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         LogUtil.logStart(logger, "Redeeming RewardVoucher.");
 
         // check if user owns voucher
-        RewardVoucher voucher = getById(voucherId);
         User user = userService.getById(requestDto.getUserId());
+        RewardVoucher voucher = getById(voucherId);
 
         if (!user.getVouchers().contains(voucher)) {
             LogUtil.logError(
