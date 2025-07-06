@@ -49,6 +49,10 @@ public class RewardPointsTransactionController {
         description = "Creates a new RewardPointsTransaction to redeem reward points for the specified User in exchange for a RewardVoucher, based on the request. Returns the transaction details."
     )
     @ApiResponse(responseCode = "201", description = "Created")
+    @ApiResponse(
+        responseCode = "400",
+        description = "Bad Request: the User has insufficient points or the RewardVoucher type is incorrect"
+    )
     @PostMapping("/user/{userId}")
     public ResponseEntity<ApiResponseBody<RewardPointsTransactionResponseDto>> createRedeemPointsTransaction(
         @Parameter(description = "ID of the User", required = true) @PathVariable
@@ -129,4 +133,28 @@ public class RewardPointsTransactionController {
             )
         );
     }
+
+    @Operation(
+        summary = "Get a User's reward points balance",
+        description = "Retrieves the reward points balance associated with the specified User ID."
+    )
+    @ApiResponse(responseCode = "200", description = "OK")
+    @GetMapping("/user/{userId}/balance")
+    public ResponseEntity<ApiResponseBody<Integer>> getPointsBalanceByUserId(
+        @Parameter(description = "ID of the User", required = true) @PathVariable
+        Long userId
+    ) {
+        Integer pointsBalance = pointsTransactionService.getBalance(userId);
+
+        return ResponseEntity.ok(
+            new ApiResponseBody<Integer>(
+                pointsBalance,
+                String.format(
+                    "Retrieved reward points balance for userId %d successfully",
+                    userId
+                )
+            )
+        );
+    }
+
 }

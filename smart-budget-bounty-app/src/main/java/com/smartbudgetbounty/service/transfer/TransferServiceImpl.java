@@ -101,13 +101,10 @@ public class TransferServiceImpl implements TransferService {
     public TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto) {
         LogUtil.logStart(logger, "Creating Transfer.");
 
-        // retrieve User from repository
+        // create Transfer
         User user = userService.getById(userId);
-
-        // retrieve PaymentMethod from repository
         PaymentMethod paymentMethod = paymentMethodService.getById(requestDto.getPaymentMethodId());
 
-        // create Transfer
         Transfer transfer = new Transfer(
             requestDto.getAmount(),
             Instant.now(),
@@ -141,7 +138,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     // retrieve a Transfer from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public Transfer getById(Long id) {
         LogUtil.logStart(logger, "Retrieving Transfer by id.");
@@ -166,7 +163,7 @@ public class TransferServiceImpl implements TransferService {
     }
 
     // retrieve a user's list of Transfers from TransferRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public List<Transfer> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving Transfers by id.");

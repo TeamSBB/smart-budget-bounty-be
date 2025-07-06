@@ -94,6 +94,10 @@ public class RewardVoucherController {
         description = "Marks the specified RewardVoucher as redeemed and returns the updated voucher details."
     )
     @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(
+        responseCode = "400",
+        description = "Bad Request: the user does not own the RewardVoucher or the RewardVoucher is not available"
+    )
     @PutMapping("/{id}/redeem")
     public ResponseEntity<ApiResponseBody<RewardVoucherResponseDto>> redeemVoucher(
         @Parameter(description = "ID of the RewardVoucher", required = true) @PathVariable

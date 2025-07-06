@@ -23,7 +23,7 @@ public interface RewardPointsTransactionService {
     );
 
     // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     RewardPointsTransaction getById(Long id);
 
     // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository as a
@@ -32,11 +32,15 @@ public interface RewardPointsTransactionService {
     RewardPointsTransactionResponseDto getDtoById(Long id);
 
     // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     List<RewardPointsTransaction> getByUserId(Long userId);
 
     // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository as
     // a list of RewardPointsTransactionResponseDtos
     // - to be called by RewardPointsTransactionController
     List<RewardPointsTransactionResponseDto> getDtosByUserId(Long userId);
+
+    // calculate the user's reward points balance
+    // - to be called by RewardPointsTransactionController and other service methods
+    Integer getBalance(Long userId);
 }

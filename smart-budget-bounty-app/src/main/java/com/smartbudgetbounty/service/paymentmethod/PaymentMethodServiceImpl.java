@@ -26,7 +26,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     // service methods
 
     // retrieve a PaymentMethod from PaymentMethodRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public PaymentMethod getById(Long id) {
         LogUtil.logStart(logger, "Retrieving PaymentMethod by id.");

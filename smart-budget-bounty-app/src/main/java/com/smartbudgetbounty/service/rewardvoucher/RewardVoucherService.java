@@ -7,6 +7,7 @@ import com.smartbudgetbounty.dto.rewardvoucher.RewardVoucherResponseDto;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.User;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 
 public interface RewardVoucherService {
     // create a RewardVoucher
@@ -14,6 +15,7 @@ public interface RewardVoucherService {
     // created
     // - persistence is handled by RewardPointsTransactionService via cascade
     RewardVoucher create(
+        RewardVoucherType voucherType,
         User user,
         RewardPointsTransaction pointsTransaction
     );
@@ -27,7 +29,7 @@ public interface RewardVoucherService {
     RewardVoucherResponseDto getDtoById(Long voucherId);
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository
-    // - to be called by other services
+    // - to be called by other service methods
     List<RewardVoucher> getByUserId(Long userId);
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository as a list of
