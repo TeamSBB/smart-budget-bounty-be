@@ -1,10 +1,12 @@
 package com.smartbudgetbounty.service.transfer;
 
-import java.util.List;
-
 import com.smartbudgetbounty.dto.transfer.CreateTransferRequestDto;
+import com.smartbudgetbounty.dto.transfer.SearchTransferRequestDto;
+import com.smartbudgetbounty.dto.transfer.SearchTransferResponseDto;
 import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
 import com.smartbudgetbounty.entity.Transfer;
+
+import java.util.List;
 
 public interface TransferService {
     // create a Transfer and associated RewardPointsTransaction
@@ -27,4 +29,6 @@ public interface TransferService {
     // retrieve a user's list of Transfers from TransferRepository as a list of TransferResponseDtos
     // - to be called by TransferController
     List<TransferResponseDto> getDtosByUserId(Long userId);
+
+    SearchTransferResponseDto searchTransfersByUserId(Long userId, SearchTransferRequestDto requestDto);
 }

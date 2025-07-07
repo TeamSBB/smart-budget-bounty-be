@@ -12,6 +12,10 @@ public class LoginDtoRequest {
 	@Size(max = 50, message = "Password must not exceed 50 characters")
     private String password;
     
+	public LoginDtoRequest() {
+		
+	}
+	
 	public LoginDtoRequest(String email, String password) {
 		super();
 		this.email = email;

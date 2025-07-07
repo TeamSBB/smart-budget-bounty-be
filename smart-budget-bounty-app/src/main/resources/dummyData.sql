@@ -1,3 +1,3 @@
-insert into payment_method (payment_method_name) values ('credit card');
-insert into payment_method (payment_method_name) values ('paynow');
-insert into payment_method (payment_method_name) values ('bank transfer');
+insert into payment_method (payment_method_name) values ('Credit / Debit Card');
+insert into payment_method (payment_method_name) values ('PayNow');
+insert into payment_method (payment_method_name) values ('Bank Transfer');

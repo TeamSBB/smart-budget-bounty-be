@@ -1,37 +1,36 @@
 package com.smartbudgetbounty.dto.auth;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
 public class RegisterDtoRequest {
-	@NotBlank(message="username must not be blank")
-	@Size(max = 50, message = "Data must not exceed 50 characters")
+//	@NotBlank(message="username must not be blank")
+//	@Size(max = 50, message = "Data must not exceed 50 characters")
     private String username;
 	
-	@NotBlank(message="password must not be blank")
-	@Size(max = 50, message = "Password must not exceed 50 characters")
+//	@NotBlank(message="password must not be blank")
+//	@Size(max = 50, message = "Password must not exceed 50 characters")
     private String password;
 
-	@NotBlank(message="address must not be blank")
-	@Size(max = 50, message = "address must not exceed 50 characters")
+//	@NotBlank(message="address must not be blank")
+//	@Size(max = 50, message = "address must not exceed 50 characters")
 	private String address;
 	
-	@NotBlank(message="contactNumber must not be blank")
-	@Size(max = 50, message = "contactNumber must not exceed 50 characters")
+//	@NotBlank(message="contactNumber must not be blank")
+//	@Size(max = 50, message = "contactNumber must not exceed 50 characters")
 	private String contactNumber;
 	
-	@NotBlank(message="email must not be blank")
-	@Size(max = 50, message = "email must not exceed 50 characters")
+//	@NotBlank(message="email must not be blank")
+//	@Size(max = 50, message = "email must not exceed 50 characters")
 	private String email;
 	
-	@NotBlank(message="firstName must not be blank")
-	@Size(max = 50, message = "firstName must not exceed 50 characters")
+//	@NotBlank(message="firstName must not be blank")
+//	@Size(max = 50, message = "firstName must not exceed 50 characters")
 	private String firstName;
 	
-	@NotBlank(message="lastName must not be blank")
-	@Size(max = 50, message = "lastName must not exceed 50 characters")
+//	@NotBlank(message="lastName must not be blank")
+//	@Size(max = 50, message = "lastName must not exceed 50 characters")
 	private String lastName;
 
+	public RegisterDtoRequest() {}
+	
 	public RegisterDtoRequest(
 			String username,
 			String password,
