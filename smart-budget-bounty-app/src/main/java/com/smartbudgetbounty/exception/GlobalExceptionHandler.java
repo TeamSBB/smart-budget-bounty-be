@@ -67,7 +67,38 @@ public class GlobalExceptionHandler {
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
      }
 
-     
+     @ExceptionHandler(IllegalArgumentException.class)
+     public ResponseEntity<ApiResponseBody<Void>> handleIllegalArgumentException(
+         Exception ex,
+         WebRequest request
+     ) {
+         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+         LogUtil.logErrorGlobal(logger, "Illegal Argument error: {}, path: {}", ex.getMessage(), path);
+
+         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
+             null,
+             ex.getMessage() != null ? ex.getMessage() : "The request contained inappropriate argument(s)"
+         );
+
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+     }
+
+     @ExceptionHandler(IllegalStateException.class)
+     public ResponseEntity<ApiResponseBody<Void>> handleIllegalStateException(
+         Exception ex,
+         WebRequest request
+     ) {
+         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+         LogUtil.logErrorGlobal(logger, "Illegal State error: {}, path: {}", ex.getMessage(), path);
+
+         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
+             null,
+             ex.getMessage() != null ? ex.getMessage() : "The requested operation cannot be performed at an inappropriate state"
+         );
+
+         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+     }
+
      @ExceptionHandler({BadCredentialsException.class, AuthenticationCredentialsNotFoundException.class, CredentialsExpiredException.class}) // Assuming NotFoundException is a custom exception
      public ResponseEntity<ApiResponseBody<Void>> handleUnauthorziedException(Exception ex, WebRequest request) {
 

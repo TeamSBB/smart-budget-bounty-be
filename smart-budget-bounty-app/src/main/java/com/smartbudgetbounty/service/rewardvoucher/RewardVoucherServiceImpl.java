@@ -14,6 +14,7 @@ import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardVoucherStatus;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 import com.smartbudgetbounty.repository.RewardVoucherRepository;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionServiceImpl;
 import com.smartbudgetbounty.service.user.UserService;
@@ -29,12 +30,15 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     );
 
     private final UserService userService;
+    private final RewardVoucherRepository voucherRepository;
 
-    private RewardVoucherRepository voucherRepository;
-
-    public RewardVoucherServiceImpl(UserService userService) {
+    public RewardVoucherServiceImpl(
+        UserService userService,
+        RewardVoucherRepository voucherRepository
+    ) {
         super();
         this.userService = userService;
+        this.voucherRepository = voucherRepository;
     }
 
     // helper methods
@@ -61,6 +65,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
         return new RewardVoucherResponseDto(
             voucher.getId(),
             voucher.getVoucherStatus().name(),
+            voucher.getVoucherType().name(),
             voucher.getDiscount(),
             voucher.getEarnDate(),
             voucher.getRedeemDate(),
@@ -91,6 +96,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     // - persistence is handled by RewardPointsTransactionService via cascade
     @Override
     public RewardVoucher create(
+        RewardVoucherType voucherType,
         User user,
         RewardPointsTransaction pointsTransaction
     ) {
@@ -98,7 +104,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
 
         // create RewardVoucher
         Double discount = toRewardVoucherDiscount(pointsTransaction);
-        RewardVoucher voucher = new RewardVoucher(discount, Instant.now(), user);
+        RewardVoucher voucher = new RewardVoucher(voucherType, discount, Instant.now(), user);
 
         // set relationship from RewardVoucher to RewardPointsTransaction
         voucher.setPointsTransaction(pointsTransaction);
@@ -134,7 +140,7 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     }
 
     // retrieve a user's list of RewardVouchers from RewardVoucherRepository
-    // - to be called by other services
+    // - to be called by other service methods
     public List<RewardVoucher> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving list of RewardVouchers by userId.");
 
@@ -164,10 +170,37 @@ public class RewardVoucherServiceImpl implements RewardVoucherService {
     ) {
         LogUtil.logStart(logger, "Redeeming RewardVoucher.");
 
-        // TODO: check if user owns voucher?
-
-        // retrieve RewardVoucher from repository
+        // check if user owns voucher
+        User user = userService.getById(requestDto.getUserId());
         RewardVoucher voucher = getById(voucherId);
+
+        if (!user.getVouchers().contains(voucher)) {
+            LogUtil.logError(
+                logger,
+                "User with id {} does not own voucher with id {}.",
+                user.getId(),
+                voucherId
+            );
+            throw new IllegalStateException(
+                String.format(
+                    "User with id %d does not own voucher with id %d.",
+                    user.getId(),
+                    voucherId
+                )
+            );
+        }
+
+        // check if voucher is available
+        if (voucher.getVoucherStatus() != RewardVoucherStatus.AVAILABLE) {
+            LogUtil.logError(
+                logger,
+                "Voucher with id {} is not available for redemption.",
+                voucherId
+            );
+            throw new IllegalStateException(
+                String.format("Voucher with id %d is not available for redemption.", voucherId)
+            );
+        }
 
         // update Voucher
         voucher.setVoucherStatus(RewardVoucherStatus.REDEEMED);

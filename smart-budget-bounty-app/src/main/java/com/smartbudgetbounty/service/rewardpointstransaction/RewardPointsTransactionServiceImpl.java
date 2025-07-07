@@ -15,6 +15,7 @@ import com.smartbudgetbounty.entity.RewardVoucher;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
 import com.smartbudgetbounty.enums.RewardPointsTransactionType;
+import com.smartbudgetbounty.enums.RewardVoucherType;
 import com.smartbudgetbounty.repository.RewardPointsTransactionRepository;
 import com.smartbudgetbounty.service.rewardvoucher.RewardVoucherService;
 import com.smartbudgetbounty.service.user.UserService;
@@ -130,12 +131,39 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     ) {
         LogUtil.logStart(logger, "Creating REDEEM RewardPointsTransaction.");
 
-        // retrieve User from repository
+        // check if user has sufficient points
+        Integer pointsBalance = getBalance(userId);
+
+        if (pointsBalance < requestDto.getRedeemAmount()) {
+            LogUtil.logError(
+                logger,
+                "User has insufficient points: redeem amount ({}) exceeds points balance ({}).",
+                requestDto.getRedeemAmount(),
+                pointsBalance
+
+            );
+            throw new IllegalStateException(
+                String.format(
+                    "User has insufficient points: redeem amount (%d) exceeds points balance (%d).",
+                    requestDto.getRedeemAmount(),
+                    pointsBalance
+                )
+            );
+        }
+
+        // check if request voucherType is valid
+        String requestVoucherType = requestDto.getVoucherType();
+        RewardVoucherType voucherType;
+
+        try {
+            voucherType = RewardVoucherType.valueOf(requestVoucherType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid voucher type: " + requestVoucherType);
+        }
+
+        // create RewardPointsTransaction and RewardVoucher
         User user = userService.getById(userId);
 
-        // TODO: check user have sufficient points
-
-        // create RewardPointsTransaction
         RewardPointsTransaction pointsTransaction = new RewardPointsTransaction(
             RewardPointsTransactionType.REDEEM,
             requestDto.getRedeemAmount() * -1,
@@ -143,8 +171,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             user
         );
 
-        // create RewardVoucher
-        RewardVoucher rewardVoucher = voucherService.create(user, pointsTransaction);
+        RewardVoucher rewardVoucher = voucherService.create(voucherType, user, pointsTransaction);
 
         // set relationship from RewardPointsTransaction to RewardVoucher
         pointsTransaction.setVoucher(rewardVoucher);
@@ -158,7 +185,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     // retrieve a RewardPointsTransaction from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     @Override
     public RewardPointsTransaction getById(Long id) {
         LogUtil.logStart(logger, "Retrieving RewardPointsTransaction by id.");
@@ -185,7 +212,7 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
     }
 
     // retrieve a user's list of RewardPointsTransactions from RewardPointsTransactionRepository
-    // - to be called by other services
+    // - to be called by other service methods
     public List<RewardPointsTransaction> getByUserId(Long userId) {
         LogUtil.logStart(logger, "Retrieving list of RewardPointsTransaction by userId.");
 
@@ -207,5 +234,22 @@ public class RewardPointsTransactionServiceImpl implements RewardPointsTransacti
             pointsTransactions
         );
         return pointsTransactionResponseDtos;
+    }
+
+    // calculate the user's reward points balance
+    // - to be called by RewardPointsTransactionController and other service methods
+    public Integer getBalance(Long userId) {
+        LogUtil.logStart(logger, "Calculating reward points balance.");
+
+        Integer pointsBalance = 0;
+
+        List<RewardPointsTransaction> pointsTransactions = getByUserId(userId);
+        for (RewardPointsTransaction pointsTransaction : pointsTransactions) {
+            pointsBalance += pointsTransaction.getAmount();
+        }
+
+        LogUtil.logEnd(logger, "Calculated reward points balance: {}", pointsBalance);
+
+        return pointsBalance;
     }
 }

@@ -5,6 +5,7 @@ import java.time.Instant;
 public class RewardVoucherResponseDto {
     private Long id;
     private String voucherStatus;
+    private String voucherType;
     private Double discount;
     private Instant earnDate;
     private Instant redeemDate;
@@ -18,6 +19,7 @@ public class RewardVoucherResponseDto {
     public RewardVoucherResponseDto(
         Long id,
         String voucherStatus,
+        String voucherType,
         Double discount,
         Instant earnDate,
         Instant redeemDate,
@@ -27,6 +29,7 @@ public class RewardVoucherResponseDto {
         super();
         this.id = id;
         this.voucherStatus = voucherStatus;
+        this.voucherType = voucherType;
         this.discount = discount;
         this.earnDate = earnDate;
         this.redeemDate = redeemDate;
@@ -48,6 +51,14 @@ public class RewardVoucherResponseDto {
 
     public void setVoucherStatus(String voucherStatus) {
         this.voucherStatus = voucherStatus;
+    }
+
+    public String getVoucherType() {
+        return voucherType;
+    }
+
+    public void setVoucherType(String voucherType) {
+        this.voucherType = voucherType;
     }
 
     public Double getDiscount() {

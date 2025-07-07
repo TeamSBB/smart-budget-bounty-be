@@ -1,12 +1,12 @@
 package com.smartbudgetbounty.enums;
 
-public enum RewardVoucherStatus {
-    AVAILABLE("reward voucher available to be redeemed for partner benefits"),
-    REDEEMED("reward voucher redeemed for partner benefits");
+public enum RewardVoucherType {
+    MCDONALDS("reward voucher for redemption at McDonald's stores"),
+    STARBUCKS("reward voucher for redemption at Starbucks stores");
 
     private final String description;
 
-    RewardVoucherStatus(String description) {
+    RewardVoucherType(String description) {
         this.description = description;
     }
 
