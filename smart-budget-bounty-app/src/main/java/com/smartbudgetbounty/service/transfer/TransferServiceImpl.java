@@ -1,15 +1,6 @@
 package com.smartbudgetbounty.service.transfer;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import com.smartbudgetbounty.dto.transfer.CreateTransferRequestDto;
-import com.smartbudgetbounty.dto.transfer.TransferResponseDto;
+import com.smartbudgetbounty.dto.transfer.*;
 import com.smartbudgetbounty.entity.PaymentMethod;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transfer;
@@ -19,8 +10,19 @@ import com.smartbudgetbounty.service.paymentmethod.PaymentMethodService;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
-
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransferServiceImpl implements TransferService {
@@ -33,10 +35,10 @@ public class TransferServiceImpl implements TransferService {
     private final RewardPointsTransactionService pointsTransactionService;
 
     public TransferServiceImpl(
-        UserService userService,
-        TransferRepository transferRepository,
-        PaymentMethodService paymentMethodService,
-        RewardPointsTransactionService pointsTransactionService
+            UserService userService,
+            TransferRepository transferRepository,
+            PaymentMethodService paymentMethodService,
+            RewardPointsTransactionService pointsTransactionService
     ) {
         super();
         this.userService = userService;
@@ -61,31 +63,31 @@ public class TransferServiceImpl implements TransferService {
     // convert Transfer to TransferResponseDto
     private TransferResponseDto toTransferResponseDto(Transfer transfer) {
         return new TransferResponseDto(
-            transfer.getId(),
-            transfer.getRecipientName(),
-            transfer.getFromPaynowPhoneNumber(),
-            transfer.getToPaynowPhoneNumber(),
-            transfer.getTransferDate(),
-            transfer.getBeneficiaryName(),
-            transfer.getFromAccountNumber(),
-            transfer.getToAccountNumber(),
-            transfer.getAmount(),
-            transfer.getCreatedAt(),
-            transfer.getPaymentMethod().getId(),
-            transfer.getRemarks(),
-            transfer.getPointsTransaction().getAmount()
+                transfer.getId(),
+                transfer.getRecipientName(),
+                transfer.getFromPaynowPhoneNumber(),
+                transfer.getToPaynowPhoneNumber(),
+                transfer.getTransferDate(),
+                transfer.getBeneficiaryName(),
+                transfer.getFromAccountNumber(),
+                transfer.getToAccountNumber(),
+                transfer.getAmount(),
+                transfer.getCreatedAt(),
+                transfer.getPaymentMethod().getId(),
+                transfer.getRemarks(),
+                transfer.getPointsTransaction().getAmount()
         );
     }
 
     // convert a list of Transfers to a list of TransferResponseDtos
     private List<TransferResponseDto> toTransferResponseDtos(
-        List<Transfer> transfers
+            List<Transfer> transfers
     ) {
         ArrayList<TransferResponseDto> transferResponseDtos = new ArrayList<TransferResponseDto>();
 
         for (Transfer transfer : transfers) {
             transferResponseDtos.add(
-                toTransferResponseDto(transfer)
+                    toTransferResponseDto(transfer)
             );
         }
 
@@ -109,24 +111,24 @@ public class TransferServiceImpl implements TransferService {
 
         // create Transfer
         Transfer transfer = new Transfer(
-            requestDto.getAmount(),
-            Instant.now(),
-            requestDto.getRecipientName(),
-            requestDto.getFromPaynowPhoneNumber(),
-            requestDto.getToPaynowPhoneNumber(),
-            requestDto.getFromAccountNumber(),
-            requestDto.getToAccountNumber(),
-            requestDto.getBeneficiaryName(),
-            requestDto.getRemarks(),
-            requestDto.getTransferDate() != null ? requestDto.getTransferDate() : Instant.now(),
-            user,
-            paymentMethod
+                requestDto.getAmount(),
+                Instant.now(),
+                requestDto.getRecipientName(),
+                requestDto.getFromPaynowPhoneNumber(),
+                requestDto.getToPaynowPhoneNumber(),
+                requestDto.getFromAccountNumber(),
+                requestDto.getToAccountNumber(),
+                requestDto.getBeneficiaryName(),
+                requestDto.getRemarks(),
+                requestDto.getTransferDate() != null ? requestDto.getTransferDate() : Instant.now(),
+                user,
+                paymentMethod
         );
 
         // create and persist RewardPointsTransaction
         RewardPointsTransaction pointsTransaction = pointsTransactionService.createEarn(
-            user,
-            transfer
+                user,
+                transfer
         );
 
         // set the relationship from Transfer to RewardPointsTransaction
@@ -186,5 +188,49 @@ public class TransferServiceImpl implements TransferService {
         List<Transfer> transfers = getByUserId(userId);
         List<TransferResponseDto> transferResponseDtos = toTransferResponseDtos(transfers);
         return transferResponseDtos;
+    }
+
+    @Override
+    public SearchTransferResponseDto searchTransfersByUserId(Long userId,
+                                                             SearchTransferRequestDto requestDto) {
+        List<Sort.Order> orders = requestDto.getSorts() == null
+                ? List.of()
+                : requestDto.getSorts()
+                .stream()
+                .map(s -> "desc".equalsIgnoreCase(s.getDirection())
+                        ? Sort.Order.desc(s.getField())
+                        : Sort.Order.asc(s.getField()))
+                .collect(Collectors.toList());
+
+        Pageable pageable = PageRequest.of(requestDto.getPage(), requestDto.getSize(), orders.isEmpty() ? Sort.unsorted() : Sort.by(orders));
+        Page<Transfer> transferPages = transferRepository.searchTransfers(
+                userId,
+                requestDto.getRecipientName(),
+                requestDto.getPaymentMethodId(),
+                requestDto.getStartSearchDate(),
+                pageable);
+
+        List<SearchTransferDto> responseDtos = new ArrayList<>();
+        for (Transfer x : transferPages) {
+            responseDtos.add(
+                    new SearchTransferDto(
+                            x.getId(),
+                            x.getRecipientName(),
+                            x.getFromPaynowPhoneNumber(),
+                            x.getToPaynowPhoneNumber(),
+                            x.getTransferDate(),
+                            x.getBeneficiaryName(),
+                            x.getFromAccountNumber(),
+                            x.getToAccountNumber(),
+                            x.getAmount(),
+                            x.getCreatedAt(),
+                            x.getPaymentMethod().getPaymentMethodName(),
+                            x.getRemarks(),
+                            x.getPointsTransaction().getAmount()
+                    )
+            );
+        }
+
+        return new SearchTransferResponseDto(responseDtos, transferPages.getTotalPages());
     }
 }
