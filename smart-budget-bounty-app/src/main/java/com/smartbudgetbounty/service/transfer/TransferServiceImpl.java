@@ -1,16 +1,20 @@
 package com.smartbudgetbounty.service.transfer;
 
+import com.smartbudgetbounty.dto.notification.CreateNotificationDtoRequest;
 import com.smartbudgetbounty.dto.transfer.*;
 import com.smartbudgetbounty.entity.PaymentMethod;
 import com.smartbudgetbounty.entity.RewardPointsTransaction;
 import com.smartbudgetbounty.entity.Transfer;
 import com.smartbudgetbounty.entity.User;
+import com.smartbudgetbounty.enums.NotificationType;
 import com.smartbudgetbounty.repository.TransferRepository;
+import com.smartbudgetbounty.service.notification.NotificationService;
 import com.smartbudgetbounty.service.paymentmethod.PaymentMethodService;
 import com.smartbudgetbounty.service.rewardpointstransaction.RewardPointsTransactionService;
 import com.smartbudgetbounty.service.user.UserService;
 import com.smartbudgetbounty.util.LogUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,18 +37,21 @@ public class TransferServiceImpl implements TransferService {
     private final TransferRepository transferRepository;
     private final PaymentMethodService paymentMethodService;
     private final RewardPointsTransactionService pointsTransactionService;
+    private final NotificationService notificationService;
 
     public TransferServiceImpl(
             UserService userService,
             TransferRepository transferRepository,
             PaymentMethodService paymentMethodService,
-            RewardPointsTransactionService pointsTransactionService
+            RewardPointsTransactionService pointsTransactionService,
+            NotificationService notificationService
     ) {
         super();
         this.userService = userService;
         this.transferRepository = transferRepository;
         this.paymentMethodService = paymentMethodService;
         this.pointsTransactionService = pointsTransactionService;
+        this.notificationService = notificationService;
     }
 
     // helper methods
@@ -99,6 +106,7 @@ public class TransferServiceImpl implements TransferService {
     // create a Transfer and associated RewardPointsTransaction
     // persist Transfer, which persists RewardPointsTransaction via cascade
     // - to be called by TransferController
+    @Transactional
     @Override
     public TransferResponseDto create(Long userId, CreateTransferRequestDto requestDto) {
         LogUtil.logStart(logger, "Creating Transfer.");
@@ -133,6 +141,17 @@ public class TransferServiceImpl implements TransferService {
 
         // persist Transfer, which persists RewardPointsTransaction via cascade
         transfer = save(transfer);
+        String transferTo = "";
+        if (transfer.getPaymentMethod().getPaymentMethodName().equals("PayNow")) {
+            transferTo = transfer.getRecipientName() + " via PayNow.";
+        } else if (transfer.getPaymentMethod().getPaymentMethodName().equals("Credit / Debit Card")) {
+            transferTo = transfer.getRecipientName() + " via Credit / Debit Card.";
+        } else {
+            transferTo = transfer.getBeneficiaryName() + " via Bank transfer.";
+        }
+
+        String message = String.format("Transferred $%.2f to %s", transfer.getAmount(), transferTo);
+        notificationService.createNotification(new CreateNotificationDtoRequest(userId, message, requestDto.getTransferDate(), NotificationType.INFO));
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
 
