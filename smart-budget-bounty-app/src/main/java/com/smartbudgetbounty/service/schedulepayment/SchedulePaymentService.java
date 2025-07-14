@@ -1,13 +1,20 @@
 package com.smartbudgetbounty.service.schedulepayment;
 
+import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentCreateRequestDto;
+import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.time.Instant;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoRequest;
-import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoResponse;
-
+ 
 public interface SchedulePaymentService {
-	SchedulePaymentDtoResponse createSchedule(SchedulePaymentDtoRequest dto);
-	List<SchedulePaymentDtoResponse> getAllSchedulesByUser(Long userId);
+ 
+    SchedulePaymentResponseDto createSchedulePayment(SchedulePaymentCreateRequestDto request);
+ 
+    List<SchedulePaymentResponseDto> getAllSchedulePayments();
+ 
+    List<SchedulePaymentResponseDto> getSchedulePaymentsByStatus(String status);
+ 
+    Page<SchedulePaymentResponseDto> searchSchedulePayments(String paymentMethod, String status, Instant fromDate, Instant toDate, Pageable pageable);
 }
