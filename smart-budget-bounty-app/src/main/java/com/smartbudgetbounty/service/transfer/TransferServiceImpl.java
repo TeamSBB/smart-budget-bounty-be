@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -227,7 +228,13 @@ public class TransferServiceImpl implements TransferService {
                 pageable);
 
         List<SearchTransferDto> responseDtos = new ArrayList<>();
-        for (Transfer x : transferPages) {
+
+
+        List<Transfer> sortedTransfers = transferPages.getContent().stream()
+                .sorted(Comparator.comparing(Transfer::getCreatedAt).reversed())
+                .toList();
+
+        for (Transfer x : sortedTransfers) {
             responseDtos.add(
                     new SearchTransferDto(
                             x.getId(),
