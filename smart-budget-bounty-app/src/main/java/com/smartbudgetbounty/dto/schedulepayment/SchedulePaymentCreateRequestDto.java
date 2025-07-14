@@ -1,82 +1,47 @@
-package com.smartbudgetbounty.entity;
+package com.smartbudgetbounty.dto.schedulepayment;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.time.Instant;
 
-@Entity
-@Table(name = "schedule_payments")
-public class SchedulePayment {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class SchedulePaymentCreateRequestDto {
 
+	@NotBlank
 	private String paymentMethod;
+
+	@NotBlank
 	private String accountId;
 
-	// Giro fields
 	private String bankName;
 	private String bankCode;
 	private String branchCode;
 	private String recipientAccountNumber;
 	private String accountHolderName;
 	private String billingOrganizationCode;
+
+	@Positive
 	private Double giroAmount;
+
 	private String giroFrequency;
+
+	@FutureOrPresent
 	private Instant giroStartDate;
 
-	// Standing Instruction fields
 	private String recipientName;
 	private String standingRecipientAccountNumber;
+
+	@Positive
 	private Double standingAmount;
+
 	private String frequency;
+
+	@FutureOrPresent
 	private Instant startDate;
+
+	@Future
 	private Instant endDate;
 
-	private String status;
-
-	@ManyToOne
-	@JoinColumn(name = "user_id") // owning side: FK is here
-	private User user;
-
-	// TODO1: Yet to add 1 more r/s to Rewards Table
-
-	public SchedulePayment() {
-	}
-
-	public SchedulePayment(Long id, String paymentMethod, String bankName, String bankCode, String branchCode,
-			String recipientAccountNumber, String accountHolderName, String billingOrganizationCode, Double giroAmount,
-			String giroFrequency, Instant giroStartDate, String recipientName, String standingRecipientAccountNumber,
-			Double standingAmount, String frequency, Instant startDate, Instant endDate, User user) {
-		super();
-		this.id = id;
-		this.paymentMethod = paymentMethod;
-		this.bankName = bankName;
-		this.bankCode = bankCode;
-		this.branchCode = branchCode;
-		this.recipientAccountNumber = recipientAccountNumber;
-		this.accountHolderName = accountHolderName;
-		this.billingOrganizationCode = billingOrganizationCode;
-		this.giroAmount = giroAmount;
-		this.giroFrequency = giroFrequency;
-		this.giroStartDate = giroStartDate;
-		this.recipientName = recipientName;
-		this.standingRecipientAccountNumber = standingRecipientAccountNumber;
-		this.standingAmount = standingAmount;
-		this.frequency = frequency;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.user = user;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+	// Getters and Setters
 	public String getPaymentMethod() {
 		return paymentMethod;
 	}
@@ -212,21 +177,4 @@ public class SchedulePayment {
 	public void setEndDate(Instant endDate) {
 		this.endDate = endDate;
 	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
 }

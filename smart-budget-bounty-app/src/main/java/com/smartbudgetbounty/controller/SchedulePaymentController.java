@@ -1,66 +1,47 @@
 package com.smartbudgetbounty.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoRequest;
-import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentDtoResponse;
-import com.smartbudgetbounty.entity.ApiResponseBody;
+import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentCreateRequestDto;
+import com.smartbudgetbounty.dto.schedulepayment.SchedulePaymentResponseDto;
 import com.smartbudgetbounty.service.schedulepayment.SchedulePaymentService;
-import com.smartbudgetbounty.util.LogUtil;
-
 import jakarta.validation.Valid;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+ 
+import java.time.LocalDate;
 import java.util.List;
-
+ 
 @RestController
-@RequestMapping("/api/schedulePayment")
+@RequestMapping("/api/schedule-payments")
 public class SchedulePaymentController {
-    private static final Logger logger = LoggerFactory.getLogger(SchedulePaymentController.class);
-    
+ 
     @Autowired
-    private SchedulePaymentService schedulePaymentService;
-    
-    //Post: Create a new scheduled payment
+    private SchedulePaymentService service;
+ 
     @PostMapping
-    public ResponseEntity<?> createSchedule(@Valid @RequestBody SchedulePaymentDtoRequest requestDto) {
-    	LogUtil.logInfoController(logger, "API called: POST /api/schedulePayment");
-    	SchedulePaymentDtoResponse response = schedulePaymentService.createSchedule(requestDto);
-    	return ResponseEntity.ok().body(new ApiResponseBody<>(
-    			response, "Scheduled successfully."
-    			));
+    public SchedulePaymentResponseDto create(@Valid @RequestBody SchedulePaymentCreateRequestDto request) {
+        return service.createSchedulePayment(request);
     }
-    
-//    @PostMapping()
-//    public ResponseEntity<?> createSchedulePayment(@Valid @RequestBody SchedulePaymentDtoRequest createDtoReq) {
-//        LogUtil.logInfoController(logger, "API called: POST /api/schedulePayment");
-//        
-//        // Call service to insert into db
-//        SchedulePaymentDtoResponse createResponseDto = schedulePaymentService.create(createDtoReq);
-//        
-//        return ResponseEntity.ok(new ApiResponse<>(
-//    		createResponseDto,
-//            "Scheduled successfully."
-//        ));    
-//    }
-    
-    //Get: Retrieve all Schedules set by the user
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getAllSchedulesByUser(
-    		@PathVariable Long userId) {
-    	List<SchedulePaymentDtoResponse> schedules = 
-    			schedulePaymentService.getAllSchedulesByUser(userId);
-    	return ResponseEntity.ok().body(
-    			new ApiResponseBody<>(
-    					schedules, "Fetched all schedules successfully."
-    			));
+ 
+    @GetMapping
+    public List<SchedulePaymentResponseDto> getAll() {
+        return service.getAllSchedulePayments();
+    }
+ 
+    @GetMapping("/status/{status}")
+    public List<SchedulePaymentResponseDto> getByStatus(@PathVariable String status) {
+        return service.getSchedulePaymentsByStatus(status);
+    }
+ 
+    @GetMapping("/search")
+    public Page<SchedulePaymentResponseDto> search(
+            @RequestParam(required = false) String paymentMethod,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) LocalDate fromDate,
+            @RequestParam(required = false) LocalDate toDate,
+            Pageable pageable) {
+ 
+        return service.searchSchedulePayments(paymentMethod, status, fromDate, toDate, pageable);
     }
 }
