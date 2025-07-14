@@ -123,7 +123,8 @@ public class GlobalExceptionHandler {
         // Create your custom error response object for internal server error
         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
             null,
-            "An unexpected error occurred. Please try again later."
+            ex.getMessage()
+                != null ? ex.getMessage() : "An unexpected error occurred. Please try again later."
         );
  
         // Set the response status and content type
