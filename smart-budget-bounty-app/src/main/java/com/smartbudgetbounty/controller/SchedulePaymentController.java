@@ -19,6 +19,7 @@ import java.util.Map;
 @RequestMapping("/api/schedule-payments")
 public class SchedulePaymentController {
 
+
     @Autowired
     private SchedulePaymentService service;
 
@@ -32,10 +33,12 @@ public class SchedulePaymentController {
         return service.getAllSchedulePayments();
     }
 
+
     @GetMapping("/status/{status}")
     public List<SchedulePaymentResponseDto> getByStatus(@PathVariable String status) {
         return service.getSchedulePaymentsByStatus(status);
     }
+
 
     @GetMapping("/search")
     public SearchSchedulePaymentResponseDto search(
@@ -43,7 +46,10 @@ public class SchedulePaymentController {
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Instant fromDate,
             @RequestParam(required = false) Instant toDate,
+            @RequestParam(required = false) Instant fromDate,
+            @RequestParam(required = false) Instant toDate,
             Pageable pageable) {
+
 
         return service.searchSchedulePayments(paymentMethod, status, fromDate, toDate, pageable);
     }

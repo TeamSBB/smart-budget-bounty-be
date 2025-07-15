@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper; // Import ObjectMapper
 import com.smartbudgetbounty.entity.ApiResponseBody;
@@ -111,6 +112,19 @@ public class GlobalExceptionHandler {
          );
          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiError);
      }
+     
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponseBody<Void>> handleResponseStatusException(ResponseStatusException ex, WebRequest request) {
+        String path = ((ServletWebRequest) request).getRequest().getRequestURI();
+        LogUtil.logErrorGlobal(logger, "Illegal State error: {}, path: {}", ex.getMessage(), path);
+
+        ApiResponseBody<Void> apiError = new ApiResponseBody<>(
+            null,
+            ex.getReason() != null ? ex.getReason() : "ResponseStatusException error"
+        );
+
+        return ResponseEntity.status(ex.getStatusCode()).body(apiError);
+    }
  
     // --- Global Catch-All for other unexpected exceptions ---
     @ExceptionHandler(Exception.class)
@@ -123,7 +137,8 @@ public class GlobalExceptionHandler {
         // Create your custom error response object for internal server error
         ApiResponseBody<Void> apiError = new ApiResponseBody<>(
             null,
-            "An unexpected error occurred. Please try again later."
+            ex.getMessage()
+                != null ? ex.getMessage() : "An unexpected error occurred. Please try again later."
         );
  
         // Set the response status and content type
