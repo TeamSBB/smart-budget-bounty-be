@@ -65,46 +65,18 @@ public class SchedulePaymentServiceImpl implements SchedulePaymentService {
                 .collect(Collectors.toList());
     }
  
-//    @Override
-//    public Page<SchedulePaymentResponseDto> searchSchedulePayments(
-//            String paymentMethod, String status, Instant fromDate, Instant toDate, Pageable pageable) {
-// 
-//        Page<SchedulePayment> page;
-// 
-//        if (status != null && paymentMethod != null) {
-//            page = repository.findByStatusIgnoreCaseAndPaymentMethodIgnoreCase(status, paymentMethod, pageable);
-//        } else if (status != null) {
-//            page = repository.findByStatusIgnoreCase(status, pageable);
-//        } else if (paymentMethod != null) {
-//            page = repository.findByPaymentMethodIgnoreCase(paymentMethod, pageable);
-//        } else {
-//            page = repository.findAll(pageable);
-//        }
-// 
-//        List<SchedulePayment> filtered = page.stream()
-//                .filter(p -> (fromDate == null || !p.getStartDate().isBefore(fromDate)) &&
-//                             (toDate == null || !p.getStartDate().isAfter(toDate)))
-//                .collect(Collectors.toList());
-// 
-//        List<SchedulePaymentResponseDto> dtoList = filtered.stream()
-//                .map(this::mapToResponse)
-//                .collect(Collectors.toList());
-// 
-//        return new PageImpl<>(dtoList, pageable, page.getTotalElements());
-//    }
- 
     private SchedulePaymentResponseDto mapToResponse(SchedulePayment entity) {
         SchedulePaymentResponseDto dto = new SchedulePaymentResponseDto();
         dto.setId(entity.getId());
         dto.setPaymentMethod(entity.getPaymentMethod());
         dto.setStatus(entity.getStatus());
- 
-        if ("Giro".equalsIgnoreCase(entity.getPaymentMethod())) {
+        System.out.println("Marcus."+entity.getPaymentMethod());
+        if ("giro".equalsIgnoreCase(entity.getPaymentMethod())) {
             dto.setRecipient(entity.getAccountHolderName());
             dto.setAmount(entity.getGiroAmount());
             dto.setFrequency(entity.getGiroFrequency());
             dto.setStartDate(entity.getGiroStartDate());
-        } else if ("Standing Instruction".equalsIgnoreCase(entity.getPaymentMethod())) {
+        } else if ("standing instruction".equalsIgnoreCase(entity.getPaymentMethod())) {
             dto.setRecipient(entity.getRecipientName());
             dto.setAmount(entity.getStandingAmount());
             dto.setFrequency(entity.getFrequency());

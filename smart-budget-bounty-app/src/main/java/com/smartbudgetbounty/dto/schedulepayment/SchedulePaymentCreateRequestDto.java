@@ -24,7 +24,7 @@ public class SchedulePaymentCreateRequestDto {
 
 	private String giroFrequency;
 
-	@FutureOrPresent
+//	@FutureOrPresent
 	private Instant giroStartDate;
 
 	private String recipientName;
@@ -35,10 +35,10 @@ public class SchedulePaymentCreateRequestDto {
 
 	private String frequency;
 
-	@FutureOrPresent
+//	@FutureOrPresent
 	private Instant startDate;
 
-	@Future
+//	@Future
 	private Instant endDate;
 
 	// Getters and Setters

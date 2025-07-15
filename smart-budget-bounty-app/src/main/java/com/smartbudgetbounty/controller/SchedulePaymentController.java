@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
- 
-import java.time.LocalDate;
+
+import java.time.Instant;
 import java.util.List;
  
 @RestController
@@ -38,8 +38,8 @@ public class SchedulePaymentController {
     public Page<SchedulePaymentResponseDto> search(
             @RequestParam(required = false) String paymentMethod,
             @RequestParam(required = false) String status,
-            @RequestParam(required = false) LocalDate fromDate,
-            @RequestParam(required = false) LocalDate toDate,
+            @RequestParam(required = false) Instant fromDate,
+            @RequestParam(required = false) Instant toDate,
             Pageable pageable) {
  
         return service.searchSchedulePayments(paymentMethod, status, fromDate, toDate, pageable);
