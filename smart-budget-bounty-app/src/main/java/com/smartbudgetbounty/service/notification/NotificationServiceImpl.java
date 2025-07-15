@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -100,7 +101,8 @@ public class NotificationServiceImpl implements NotificationService {
                         notification.isRead(),
                         notification.getShowNotificationDate(),
                         notification.getType()))
-                .toList();
+                .collect(Collectors.toList());
+//                .toList();
 
 
         LogUtil.logEnd(logger, "End getNotificationsByUserId.");
