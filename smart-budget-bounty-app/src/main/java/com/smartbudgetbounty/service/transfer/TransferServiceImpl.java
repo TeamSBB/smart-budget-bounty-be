@@ -143,15 +143,24 @@ public class TransferServiceImpl implements TransferService {
         // persist Transfer, which persists RewardPointsTransaction via cascade
         transfer = save(transfer);
         String transferTo = "";
+        String message = "";
         if (transfer.getPaymentMethod().getPaymentMethodName().equals("PayNow")) {
             transferTo = transfer.getRecipientName() + " via PayNow.";
+            message = String.format("Transferred $%.2f to %s", transfer.getAmount(), transferTo);
         } else if (transfer.getPaymentMethod().getPaymentMethodName().equals("Credit / Debit Card")) {
             transferTo = transfer.getRecipientName() + " via Credit / Debit Card.";
-        } else {
+            message = String.format("Transferred $%.2f to %s", transfer.getAmount(), transferTo);
+        } else if (transfer.getPaymentMethod().getPaymentMethodName().equals("Bank Transfer")) {
             transferTo = transfer.getBeneficiaryName() + " via Bank transfer.";
+            message = String.format("Transferred $%.2f to %s", transfer.getAmount(), transferTo);
+        } else if (transfer.getPaymentMethod().getPaymentMethodName().equals("Giro")) {
+            transferTo = transfer.getBeneficiaryName() + " via Giro.";
+            message = String.format("Transferred $%.2f %s", transfer.getAmount(), transferTo);
+        } else {
+            transferTo = transfer.getBeneficiaryName() + " via Standing Instruction.";
+            message = String.format("Transferred $%.2f %s", transfer.getAmount(), transferTo);
         }
 
-        String message = String.format("Transferred $%.2f to %s", transfer.getAmount(), transferTo);
         notificationService.createNotification(new CreateNotificationDtoRequest(userId, message, requestDto.getTransferDate(), NotificationType.INFO));
 
         LogUtil.logEnd(logger, "Created Transfer: {}", transfer);
