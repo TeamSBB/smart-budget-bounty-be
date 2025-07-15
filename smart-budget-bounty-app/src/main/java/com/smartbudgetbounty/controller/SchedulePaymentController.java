@@ -46,8 +46,6 @@ public class SchedulePaymentController {
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Instant fromDate,
             @RequestParam(required = false) Instant toDate,
-            @RequestParam(required = false) Instant fromDate,
-            @RequestParam(required = false) Instant toDate,
             Pageable pageable) {
 
 
